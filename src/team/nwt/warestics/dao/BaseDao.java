@@ -17,7 +17,7 @@ public class BaseDao {
 				e.printStackTrace();
 			}
 			
-			System.out.println("连接成功");
+			//System.out.println("连接成功");
 	
 		
 	}

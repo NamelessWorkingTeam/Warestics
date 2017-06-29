@@ -47,23 +47,23 @@ public class TMS_Report extends JFrame {
 		setContentPane(contentPane);
 		contentPane.setLayout(null);
 		
-		JLabel label = new JLabel("\u8F6C\u8FD0\u62A5\u544A");
-		label.setFont(new Font("΢���ź�", Font.BOLD, 16));
+		JLabel label = new JLabel("转运报告");
+		label.setFont(new Font("Dialog", Font.BOLD, 16));
 		label.setBounds(132, 10, 105, 34);
 		contentPane.add(label);
 		
-		JLabel label_1 = new JLabel("\u8F6C\u8FD0\u5355\u53F7\uFF1A");
-		label_1.setFont(new Font("΢���ź�", Font.PLAIN, 14));
+		JLabel label_1 = new JLabel("转运单号：");
+		label_1.setFont(new Font("Dialog", Font.PLAIN, 14));
 		label_1.setBounds(61, 64, 75, 24);
 		contentPane.add(label_1);
 		
-		JLabel label_2 = new JLabel("\u59CB\u53D1\u5730\uFF1A");
-		label_2.setFont(new Font("΢���ź�", Font.PLAIN, 14));
+		JLabel label_2 = new JLabel("始发地：");
+		label_2.setFont(new Font("Dialog", Font.PLAIN, 14));
 		label_2.setBounds(61, 109, 75, 24);
 		contentPane.add(label_2);
 		
-		JLabel label_3 = new JLabel("\u76EE\u7684\u5730\uFF1A");
-		label_3.setFont(new Font("΢���ź�", Font.PLAIN, 14));
+		JLabel label_3 = new JLabel("目的地：");
+		label_3.setFont(new Font("Dialog", Font.PLAIN, 14));
 		label_3.setBounds(61, 155, 75, 24);
 		contentPane.add(label_3);
 		
@@ -72,47 +72,51 @@ public class TMS_Report extends JFrame {
 		panel.setBounds(47, 194, 341, 81);
 		contentPane.add(panel);
 		
-		JLabel label_4 = new JLabel("\u8D28\u91CF\u5BA1\u6838\uFF1A");
-		label_4.setFont(new Font("΢���ź�", Font.PLAIN, 14));
+		JLabel label_4 = new JLabel("质量审核：");
+		label_4.setFont(new Font("Dialog", Font.PLAIN, 14));
 		label_4.setBounds(10, 10, 75, 24);
 		panel.add(label_4);
 		
-		JLabel label_5 = new JLabel("\u6570\u91CF\u5BA1\u6838\uFF1A");
-		label_5.setFont(new Font("΢���ź�", Font.PLAIN, 14));
+		JLabel label_5 = new JLabel("数量审核：");
+		label_5.setFont(new Font("Dialog", Font.PLAIN, 14));
 		label_5.setBounds(10, 44, 75, 24);
 		panel.add(label_5);
 		
-		JCheckBox checkBox = new JCheckBox("\u5408\u683C");
+		JCheckBox checkBox = new JCheckBox("合格");
 		checkBox.setSelected(true);
-		checkBox.setFont(new Font("΢���ź�", Font.PLAIN, 12));
+		checkBox.setFont(new Font("Dialog", Font.PLAIN, 12));
 		checkBox.setBounds(112, 11, 80, 24);
 		panel.add(checkBox);
 		
-		JCheckBox checkBox_2 = new JCheckBox("\u5408\u683C");
+		JCheckBox checkBox_2 = new JCheckBox("合格");
 		checkBox_2.setSelected(true);
-		checkBox_2.setFont(new Font("΢���ź�", Font.PLAIN, 12));
+		checkBox_2.setFont(new Font("Dialog", Font.PLAIN, 12));
 		checkBox_2.setBounds(112, 45, 80, 24);
 		panel.add(checkBox_2);
 		
 		textField = new JTextField();
+		textField.setFont(new Font("Lucida Grande", Font.PLAIN, 13));
 		textField.setEnabled(false);
 		textField.setColumns(10);
 		textField.setBounds(146, 67, 114, 21);
 		contentPane.add(textField);
 		
 		textField_1 = new JTextField();
+		textField_1.setFont(new Font("Lucida Grande", Font.PLAIN, 13));
 		textField_1.setEnabled(false);
 		textField_1.setColumns(10);
 		textField_1.setBounds(146, 112, 114, 21);
 		contentPane.add(textField_1);
 		
 		textField_2 = new JTextField();
+		textField_2.setFont(new Font("Lucida Grande", Font.PLAIN, 13));
 		textField_2.setEnabled(false);
 		textField_2.setColumns(10);
 		textField_2.setBounds(146, 158, 114, 21);
 		contentPane.add(textField_2);
 		
-		JButton button = new JButton("\u8FD4\u56DE\u4E0A\u4E00\u7EA7");
+		JButton button = new JButton("返回上一级");
+		button.setFont(new Font("Lucida Grande", Font.PLAIN, 13));
 		button.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				TMS_MainVersion version = new TMS_MainVersion();

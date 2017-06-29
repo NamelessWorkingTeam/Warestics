@@ -46,44 +46,48 @@ public class TMS_Update extends JFrame {
 		setContentPane(contentPane);
 		contentPane.setLayout(null);
 		
-		JLabel label = new JLabel("\u8F6C\u8FD0\u7BA1\u7406\u7CFB\u7EDF(\u66F4\u65B0\u76EE\u7684\u5730)");
-		label.setFont(new Font("΢���ź�", Font.BOLD, 16));
+		JLabel label = new JLabel("转运管理系统(更新目的地)");
+		label.setFont(new Font("Dialog", Font.BOLD, 16));
 		label.setBounds(108, 10, 215, 34);
 		contentPane.add(label);
 		
-		JLabel label_1 = new JLabel("\u8F6C\u8FD0\u5355\u53F7\uFF1A");
-		label_1.setFont(new Font("΢���ź�", Font.PLAIN, 14));
+		JLabel label_1 = new JLabel("转运单号：");
+		label_1.setFont(new Font("Dialog", Font.PLAIN, 14));
 		label_1.setBounds(87, 73, 75, 24);
 		contentPane.add(label_1);
 		
 		textField = new JTextField();
+		textField.setFont(new Font("Lucida Grande", Font.PLAIN, 13));
 		textField.setEnabled(false);
 		textField.setColumns(10);
 		textField.setBounds(178, 76, 114, 21);
 		contentPane.add(textField);
 		
-		JLabel label_2 = new JLabel("\u59CB\u53D1\u5730\uFF1A");
-		label_2.setFont(new Font("΢���ź�", Font.PLAIN, 14));
+		JLabel label_2 = new JLabel("始发地：");
+		label_2.setFont(new Font("Dialog", Font.PLAIN, 14));
 		label_2.setBounds(87, 125, 75, 24);
 		contentPane.add(label_2);
 		
 		textField_1 = new JTextField();
+		textField_1.setFont(new Font("Lucida Grande", Font.PLAIN, 13));
 		textField_1.setEnabled(false);
 		textField_1.setColumns(10);
 		textField_1.setBounds(178, 128, 114, 21);
 		contentPane.add(textField_1);
 		
-		JLabel label_3 = new JLabel("\u76EE\u7684\u5730\uFF1A");
-		label_3.setFont(new Font("΢���ź�", Font.PLAIN, 14));
+		JLabel label_3 = new JLabel("目的地：");
+		label_3.setFont(new Font("Dialog", Font.PLAIN, 14));
 		label_3.setBounds(87, 175, 75, 24);
 		contentPane.add(label_3);
 		
 		textField_2 = new JTextField();
+		textField_2.setFont(new Font("Lucida Grande", Font.PLAIN, 13));
 		textField_2.setColumns(10);
 		textField_2.setBounds(178, 178, 114, 21);
 		contentPane.add(textField_2);
 		
-		JButton button = new JButton("\u8FD4\u56DE\u4E0A\u4E00\u7EA7");
+		JButton button = new JButton("返回上一级");
+		button.setFont(new Font("Lucida Grande", Font.PLAIN, 13));
 		button.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				

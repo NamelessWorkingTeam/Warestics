@@ -26,8 +26,11 @@ import javax.swing.DefaultComboBoxModel;
 public class TMS_MainVersion extends JFrame {
 	
 	static String main_id=TMS.text;
+	static String main_check;
 //	static String check_id=TMS.text;
 	static String transfer_check;
+	static String update_check;
+	static String report_check;
 	private JPanel contentPane;
 
 	/**
@@ -50,6 +53,7 @@ public class TMS_MainVersion extends JFrame {
 	 * Create the frame.
 	 */
 	public TMS_MainVersion() {
+		
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(100, 100, 450, 388);
 		contentPane = new JPanel();
@@ -66,13 +70,12 @@ public class TMS_MainVersion extends JFrame {
 		button.setFont(new Font("Lucida Grande", Font.PLAIN, 13));
 		button.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				
 				String sql_search = "SELECT transfer_check FROM tb_transfer WHERE transfer_id ='"+main_id+"'";
 				MySQLConnect con_search = new MySQLConnect(sql_search);
 				try {
 					ResultSet result = con_search.pst.executeQuery();
 					if(result.next()){
-						String main_check = result.getString("transfer_check");
+						main_check = result.getString("transfer_check");
 						if(main_check.compareTo("Y")==0){
 							TMS_Search search = new TMS_Search();
 							search.setResizable(false);
@@ -90,9 +93,7 @@ public class TMS_MainVersion extends JFrame {
 //					JOptionPane.showMessageDialog(null, "审核不合格或未提交审核！", "提示",JOptionPane.INFORMATION_MESSAGE);
 				}
 				
-				
-				
-				
+	
 			}
 		});
 		button.setBounds(6, 203, 105, 24);
@@ -107,14 +108,31 @@ public class TMS_MainVersion extends JFrame {
 		button_2.setFont(new Font("Lucida Grande", Font.PLAIN, 13));
 		button_2.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				
-				TMS_Update update = new TMS_Update();
-				update.setResizable(false);
-				update.setLocationRelativeTo(null);
-				update.setDefaultCloseOperation(DISPOSE_ON_CLOSE);
-				update.setVisible(true);
-				dispose();
-				
+
+				String sql_update = "SELECT transfer_check FROM tb_transfer WHERE transfer_id ='"+main_id+"'";
+				MySQLConnect con_update = new MySQLConnect(sql_update);
+				try {
+					ResultSet result_update = con_update.pst.executeQuery();
+					if(result_update.next()){
+						update_check = result_update.getString("transfer_check");
+						if(update_check.compareTo("Y")==0){
+							TMS_Update update = new TMS_Update();
+							update.setResizable(false);
+							update.setLocationRelativeTo(null);
+							update.setDefaultCloseOperation(DISPOSE_ON_CLOSE);
+							update.setVisible(true);
+							dispose();
+						}
+						else JOptionPane.showMessageDialog(null, "审核不合格或未提交审核！", "提示",JOptionPane.INFORMATION_MESSAGE);
+					}
+					
+				} catch (SQLException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+//					JOptionPane.showMessageDialog(null, "审核不合格或未提交审核！", "提示",JOptionPane.INFORMATION_MESSAGE);
+				}
+
+	
 			}
 		});
 		button_2.setBounds(291, 203, 105, 24);
@@ -125,12 +143,29 @@ public class TMS_MainVersion extends JFrame {
 		button_3.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				
-				TMS_Report report = new TMS_Report();
-				report.setResizable(false);
-				report.setLocationRelativeTo(null);
-				report.setDefaultCloseOperation(DISPOSE_ON_CLOSE);
-				report.setVisible(true);
-				dispose();
+				String sql_report = "SELECT transfer_check FROM tb_transfer WHERE transfer_id ='"+main_id+"'";
+				MySQLConnect con_report = new MySQLConnect(sql_report);
+				try {
+					ResultSet result_report = con_report.pst.executeQuery();
+					if(result_report.next()){
+						report_check = result_report.getString("transfer_check");
+						if(report_check.compareTo("Y")==0){
+							TMS_Report report = new TMS_Report();
+							report.setResizable(false);
+							report.setLocationRelativeTo(null);
+							report.setDefaultCloseOperation(DISPOSE_ON_CLOSE);
+							report.setVisible(true);
+							dispose();
+						}
+						else JOptionPane.showMessageDialog(null, "审核不合格或未提交审核！", "提示",JOptionPane.INFORMATION_MESSAGE);
+					}
+					
+				} catch (SQLException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+//					JOptionPane.showMessageDialog(null, "审核不合格或未提交审核！", "提示",JOptionPane.INFORMATION_MESSAGE);
+				}
+
 				
 			}
 		});

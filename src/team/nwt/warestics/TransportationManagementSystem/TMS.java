@@ -96,12 +96,12 @@ public class TMS extends JFrame {
 				
 			}
 		});
-		btnNewButton.setFont(new Font("提交", Font.PLAIN, 12));
+		btnNewButton.setFont(new Font("Dialog", Font.PLAIN, 13));
 		btnNewButton.setBounds(153, 147, 93, 23);
 		contentPane.add(btnNewButton);
 		
-		JButton button = new JButton("\u9000\u51FA\u7CFB\u7EDF");
-		button.setFont(new Font("退出系统", Font.PLAIN, 12));
+		JButton button = new JButton("退出登录");
+		button.setFont(new Font("Dialog", Font.PLAIN, 13));
 		button.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 				System.exit(0);

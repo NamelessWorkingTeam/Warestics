@@ -5,18 +5,28 @@ import java.awt.EventQueue;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
+
+import team.nwt.warestics.MySQLConnect;
+
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
+
 import java.awt.Font;
 import javax.swing.JRadioButton;
 import javax.swing.JCheckBox;
 import javax.swing.JButton;
 import java.awt.event.ActionListener;
+import java.sql.SQLException;
 import java.awt.event.ActionEvent;
 import javax.swing.JTextField;
+import javax.swing.JComboBox;
+import javax.swing.DefaultComboBoxModel;
 
 public class TMS_MainVersion extends JFrame {
 	
 	static String text_id=TMS.text;
+//	static String check_id=TMS.text;
+	static String transfer_check;
 	private JPanel contentPane;
 
 	/**
@@ -51,50 +61,6 @@ public class TMS_MainVersion extends JFrame {
 		label.setBounds(165, 22, 105, 34);
 		contentPane.add(label);
 		
-		JPanel panel = new JPanel();
-		panel.setBounds(10, 113, 414, 81);
-		contentPane.add(panel);
-		panel.setLayout(null);
-		
-		JLabel label_1 = new JLabel("质量审核：");
-		label_1.setFont(new Font("Dialog", Font.PLAIN, 14));
-		label_1.setBounds(10, 10, 75, 24);
-		panel.add(label_1);
-		
-		JLabel label_2 = new JLabel("数量审核：");
-		label_2.setFont(new Font("Dialog", Font.PLAIN, 14));
-		label_2.setBounds(10, 44, 75, 24);
-		panel.add(label_2);
-		
-		JCheckBox chckbxNewCheckBox = new JCheckBox("合格");
-		chckbxNewCheckBox.setFont(new Font("Dialog", Font.PLAIN, 12));
-		chckbxNewCheckBox.setBounds(112, 11, 80, 24);
-		panel.add(chckbxNewCheckBox);
-		
-		JCheckBox checkBox = new JCheckBox("不合格");
-		checkBox.setFont(new Font("Dialog", Font.PLAIN, 12));
-		checkBox.setBounds(194, 11, 80, 24);
-		panel.add(checkBox);
-		
-		JCheckBox checkBox_1 = new JCheckBox("合格");
-		checkBox_1.setFont(new Font("Dialog", Font.PLAIN, 12));
-		checkBox_1.setBounds(112, 45, 80, 24);
-		panel.add(checkBox_1);
-		
-		JCheckBox checkBox_2 = new JCheckBox("不合格");
-		checkBox_2.setFont(new Font("Dialog", Font.PLAIN, 12));
-		checkBox_2.setBounds(194, 45, 80, 24);
-		panel.add(checkBox_2);
-		
-		JButton btnNewButton = new JButton("提交");
-		btnNewButton.setFont(new Font("Lucida Grande", Font.PLAIN, 13));
-		btnNewButton.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-			}
-		});
-		btnNewButton.setBounds(280, 29, 105, 24);
-		panel.add(btnNewButton);
-		
 		JButton button = new JButton("查询");
 		button.setFont(new Font("Lucida Grande", Font.PLAIN, 13));
 		button.addActionListener(new ActionListener() {
@@ -109,12 +75,12 @@ public class TMS_MainVersion extends JFrame {
 				
 			}
 		});
-		button.setBounds(10, 220, 105, 24);
+		button.setBounds(6, 203, 105, 24);
 		contentPane.add(button);
 		
 		JButton button_1 = new JButton("退单入库");
 		button_1.setFont(new Font("Lucida Grande", Font.PLAIN, 13));
-		button_1.setBounds(153, 220, 105, 24);
+		button_1.setBounds(153, 203, 105, 24);
 		contentPane.add(button_1);
 		
 		JButton button_2 = new JButton("更新目的地");
@@ -131,7 +97,7 @@ public class TMS_MainVersion extends JFrame {
 				
 			}
 		});
-		button_2.setBounds(291, 220, 105, 24);
+		button_2.setBounds(291, 203, 105, 24);
 		contentPane.add(button_2);
 		
 		JButton button_3 = new JButton("提交转运");
@@ -177,5 +143,41 @@ public class TMS_MainVersion extends JFrame {
 		Label1.setBounds(125, 80, 114, 21);
 		contentPane.add(Label1);
 		Label1.setText(text_id);
+		
+		JLabel label_1 = new JLabel("质量审核：");
+		label_1.setBounds(22, 134, 75, 24);
+		contentPane.add(label_1);
+		label_1.setFont(new Font("Dialog", Font.PLAIN, 14));
+		
+		JComboBox comboBox_check = new JComboBox();
+		comboBox_check.setModel(new DefaultComboBoxModel(new String[] {"合格", "不合格"}));
+		comboBox_check.setBounds(153, 136, 105, 24);
+		contentPane.add(comboBox_check);
+		
+		JButton btnNewButton = new JButton("提交");
+		btnNewButton.setBounds(291, 136, 105, 24);
+		contentPane.add(btnNewButton);
+		btnNewButton.setFont(new Font("Lucida Grande", Font.PLAIN, 13));
+		btnNewButton.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				
+				if(comboBox_check.getSelectedItem().toString().compareTo("合格")==0) transfer_check="Y";
+				if(comboBox_check.getSelectedItem().toString().compareTo("不合格")==0) transfer_check="N";
+				
+				String sql="UPDATE tb_transfer SET transfer_check='"+transfer_check+"' WHERE transfer_id = '"+text_id+"'";
+				MySQLConnect con=new MySQLConnect(sql);
+				try {
+					con.pst.executeUpdate();
+					if(transfer_check=="Y"||transfer_check=="y"){
+						JOptionPane.showMessageDialog(null, "审核提交成功", "提示",JOptionPane.INFORMATION_MESSAGE);
+					}
+					else JOptionPane.showMessageDialog(null, "审核不合格，请联系地面管理人员", "提示",JOptionPane.INFORMATION_MESSAGE);
+				} catch (SQLException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				}
+				
+			}
+		});
 	}
 }

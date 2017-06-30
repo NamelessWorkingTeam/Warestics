@@ -16,6 +16,7 @@ import javax.swing.JRadioButton;
 import javax.swing.JCheckBox;
 import javax.swing.JButton;
 import java.awt.event.ActionListener;
+import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.awt.event.ActionEvent;
 import javax.swing.JTextField;
@@ -24,7 +25,7 @@ import javax.swing.DefaultComboBoxModel;
 
 public class TMS_MainVersion extends JFrame {
 	
-	static String text_id=TMS.text;
+	static String main_id=TMS.text;
 //	static String check_id=TMS.text;
 	static String transfer_check;
 	private JPanel contentPane;
@@ -66,12 +67,31 @@ public class TMS_MainVersion extends JFrame {
 		button.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				
-				TMS_Search search = new TMS_Search();
-				search.setResizable(false);
-				search.setLocationRelativeTo(null);
-				search.setDefaultCloseOperation(DISPOSE_ON_CLOSE);
-				search.setVisible(true);
-				dispose();
+				String sql_search = "SELECT transfer_check FROM tb_transfer WHERE transfer_id ='"+main_id+"'";
+				MySQLConnect con_search = new MySQLConnect(sql_search);
+				try {
+					ResultSet result = con_search.pst.executeQuery();
+					if(result.next()){
+						String main_check = result.getString("transfer_check");
+						if(main_check.compareTo("Y")==0){
+							TMS_Search search = new TMS_Search();
+							search.setResizable(false);
+							search.setLocationRelativeTo(null);
+							search.setDefaultCloseOperation(DISPOSE_ON_CLOSE);
+							search.setVisible(true);
+							dispose();
+						}
+						else JOptionPane.showMessageDialog(null, "审核不合格或未提交审核！", "提示",JOptionPane.INFORMATION_MESSAGE);
+					}
+					
+				} catch (SQLException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+//					JOptionPane.showMessageDialog(null, "审核不合格或未提交审核！", "提示",JOptionPane.INFORMATION_MESSAGE);
+				}
+				
+				
+				
 				
 			}
 		});
@@ -140,11 +160,11 @@ public class TMS_MainVersion extends JFrame {
 		contentPane.add(button_4);
 		
 		JLabel Label1 = new JLabel("New label");
-		Label1.setBounds(125, 80, 114, 21);
+		Label1.setBounds(153, 82, 114, 21);
 		contentPane.add(Label1);
-		Label1.setText(text_id);
+		Label1.setText(main_id);
 		
-		JLabel label_1 = new JLabel("质量审核：");
+		JLabel label_1 = new JLabel("审核：");
 		label_1.setBounds(22, 134, 75, 24);
 		contentPane.add(label_1);
 		label_1.setFont(new Font("Dialog", Font.PLAIN, 14));
@@ -164,7 +184,7 @@ public class TMS_MainVersion extends JFrame {
 				if(comboBox_check.getSelectedItem().toString().compareTo("合格")==0) transfer_check="Y";
 				if(comboBox_check.getSelectedItem().toString().compareTo("不合格")==0) transfer_check="N";
 				
-				String sql="UPDATE tb_transfer SET transfer_check='"+transfer_check+"' WHERE transfer_id = '"+text_id+"'";
+				String sql="UPDATE tb_transfer SET transfer_check='"+transfer_check+"' WHERE transfer_id = '"+main_id+"'";
 				MySQLConnect con=new MySQLConnect(sql);
 				try {
 					con.pst.executeUpdate();

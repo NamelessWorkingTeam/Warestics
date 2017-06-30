@@ -72,27 +72,16 @@ public class TMS_Report extends JFrame {
 		panel.setBounds(47, 194, 341, 81);
 		contentPane.add(panel);
 		
-		JLabel label_4 = new JLabel("质量审核：");
+		JLabel label_4 = new JLabel("审核：");
 		label_4.setFont(new Font("Dialog", Font.PLAIN, 14));
 		label_4.setBounds(10, 10, 75, 24);
 		panel.add(label_4);
-		
-		JLabel label_5 = new JLabel("数量审核：");
-		label_5.setFont(new Font("Dialog", Font.PLAIN, 14));
-		label_5.setBounds(10, 44, 75, 24);
-		panel.add(label_5);
 		
 		JCheckBox checkBox = new JCheckBox("合格");
 		checkBox.setSelected(true);
 		checkBox.setFont(new Font("Dialog", Font.PLAIN, 12));
 		checkBox.setBounds(112, 11, 80, 24);
 		panel.add(checkBox);
-		
-		JCheckBox checkBox_2 = new JCheckBox("合格");
-		checkBox_2.setSelected(true);
-		checkBox_2.setFont(new Font("Dialog", Font.PLAIN, 12));
-		checkBox_2.setBounds(112, 45, 80, 24);
-		panel.add(checkBox_2);
 		
 		textField = new JTextField();
 		textField.setFont(new Font("Lucida Grande", Font.PLAIN, 13));
@@ -128,7 +117,7 @@ public class TMS_Report extends JFrame {
 				
 			}
 		});
-		button.setBounds(319, 291, 105, 24);
+		button.setBounds(319, 312, 105, 24);
 		contentPane.add(button);
 	}
 }

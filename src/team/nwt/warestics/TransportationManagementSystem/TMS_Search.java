@@ -5,19 +5,27 @@ import java.awt.EventQueue;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
+
+import team.nwt.warestics.MySQLConnect;
+
 import javax.swing.JLabel;
 import java.awt.Font;
 import javax.swing.JTextField;
 import javax.swing.JButton;
 import java.awt.event.ActionListener;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.awt.event.ActionEvent;
 
 public class TMS_Search extends JFrame {
 
 	private JPanel contentPane;
-	private JTextField textField;
-	private JTextField textField_1;
-	private JTextField textField_2;
+	static String search_id=TMS.text;
+	static String search_start;
+	static String search_mid;
+	static String search_end;
+	static String search_check;
+	static String check_state;
 
 	/**
 	 * Launch the application.
@@ -39,8 +47,79 @@ public class TMS_Search extends JFrame {
 	 * Create the frame.
 	 */
 	public TMS_Search() {
+		
+//*****************************初始查询开始****************************************
+		
+		//查询始发地
+		String sql_start = "SELECT transfer_start FROM tb_transfer WHERE transfer_id='"+search_id+"'";
+		MySQLConnect con_start = new MySQLConnect(sql_start);
+		try {
+			ResultSet result_start = con_start.pst.executeQuery();
+			
+			if(result_start.next()){
+				search_start = result_start.getString("transfer_start");
+//				System.out.println(search_start);							//测试输出
+			}
+
+		} catch (SQLException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		}
+		
+		//查询中转站
+		String sql_mid = "SELECT transfer_mid FROM tb_transfer WHERE transfer_id='"+search_id+"'";
+		MySQLConnect con_mid = new MySQLConnect(sql_mid);
+		try {
+			ResultSet result_mid = con_mid.pst.executeQuery();
+			
+			if(result_mid.next()){
+				search_mid = result_mid.getString("transfer_mid");
+			}
+
+		} catch (SQLException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		}
+		
+		//查询终点站
+		String sql_end = "SELECT transfer_end FROM tb_transfer WHERE transfer_id='"+search_id+"'";
+		MySQLConnect con_end = new MySQLConnect(sql_end);
+		try {
+			ResultSet result_end = con_end.pst.executeQuery();
+			
+			if(result_end.next()){
+				search_end = result_end.getString("transfer_end");
+			}
+
+		} catch (SQLException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		}
+		
+		//查询审核情况
+		String sql_check = "SELECT transfer_check FROM tb_transfer WHERE transfer_id='"+search_id+"'";
+		MySQLConnect con_check = new MySQLConnect(sql_check);
+		try {
+			ResultSet result_check = con_check.pst.executeQuery();
+			
+			if(result_check.next()){
+				search_check = result_check.getString("transfer_check");
+				if(search_check.compareTo("Y")==0){
+					check_state="合格";
+//					System.out.println(check_state);
+				}
+				else check_state="不合格";
+			}
+
+		} catch (SQLException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		}
+		
+//*****************************初始查询结束****************************************	
+		
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		setBounds(100, 100, 450, 335);
+		setBounds(100, 100, 450, 421);
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 		setContentPane(contentPane);
@@ -58,34 +137,13 @@ public class TMS_Search extends JFrame {
 		
 		JLabel label_2 = new JLabel("始发地：");
 		label_2.setFont(new Font("Dialog", Font.PLAIN, 14));
-		label_2.setBounds(87, 125, 75, 24);
+		label_2.setBounds(87, 114, 75, 24);
 		contentPane.add(label_2);
 		
-		JLabel label_3 = new JLabel("目的地：");
+		JLabel label_3 = new JLabel("中转站：");
 		label_3.setFont(new Font("Dialog", Font.PLAIN, 14));
-		label_3.setBounds(87, 175, 75, 24);
+		label_3.setBounds(87, 150, 75, 24);
 		contentPane.add(label_3);
-		
-		textField = new JTextField();
-		textField.setFont(new Font("Lucida Grande", Font.PLAIN, 13));
-		textField.setEnabled(false);
-		textField.setColumns(10);
-		textField.setBounds(178, 76, 114, 21);
-		contentPane.add(textField);
-		
-		textField_1 = new JTextField();
-		textField_1.setFont(new Font("Lucida Grande", Font.PLAIN, 13));
-		textField_1.setEnabled(false);
-		textField_1.setColumns(10);
-		textField_1.setBounds(178, 128, 114, 21);
-		contentPane.add(textField_1);
-		
-		textField_2 = new JTextField();
-		textField_2.setFont(new Font("Lucida Grande", Font.PLAIN, 13));
-		textField_2.setEnabled(false);
-		textField_2.setColumns(10);
-		textField_2.setBounds(178, 178, 114, 21);
-		contentPane.add(textField_2);
 		
 		JButton button = new JButton("返回上一级");
 		button.setFont(new Font("Lucida Grande", Font.PLAIN, 13));
@@ -99,8 +157,43 @@ public class TMS_Search extends JFrame {
 				dispose();
 			}
 		});
-		button.setBounds(319, 262, 105, 24);
+		button.setBounds(322, 346, 105, 24);
 		contentPane.add(button);
+		
+		JLabel Label_id = new JLabel("transfer_id");
+		Label_id.setBounds(174, 74, 114, 24);
+		contentPane.add(Label_id);
+		Label_id.setText(search_id);
+		
+		JLabel label_4 = new JLabel("目的地：");
+		label_4.setFont(new Font("Dialog", Font.PLAIN, 14));
+		label_4.setBounds(87, 186, 75, 24);
+		contentPane.add(label_4);
+		
+		JLabel Label_start = new JLabel("transfer_start");
+		Label_start.setBounds(174, 115, 114, 24);
+		contentPane.add(Label_start);
+		Label_start.setText(search_start);			//打印始发地信息
+		
+		JLabel Label_mid = new JLabel("transfer_mid");
+		Label_mid.setBounds(174, 151, 114, 24);
+		contentPane.add(Label_mid);
+		Label_mid.setText(search_mid);				//打印中转站
+		
+		JLabel Label_end = new JLabel("transfer_end");
+		Label_end.setBounds(174, 187, 114, 24);
+		contentPane.add(Label_end);
+		Label_end.setText(search_end);				//打印目的地
+		
+		JLabel label_5 = new JLabel("审核情况：");
+		label_5.setFont(new Font("Dialog", Font.PLAIN, 14));
+		label_5.setBounds(87, 222, 75, 24);
+		contentPane.add(label_5);
+	
+		
+		JLabel Label_check = new JLabel("transfer_check");
+		Label_check.setBounds(174, 223, 114, 24);
+		contentPane.add(Label_check);
+		Label_check.setText(check_state);
 	}
-
 }

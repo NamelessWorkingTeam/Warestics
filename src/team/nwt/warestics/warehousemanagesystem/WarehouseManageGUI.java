@@ -50,6 +50,7 @@ public class WarehouseManageGUI {
 	private JTextField textField_3;
 	private JTable table_0;	
 	private JTable table_1;
+	private JTable table_4;
 	
 	private JScrollPane scrollPane_0_1 ;
 	private JComboBox comboBox_0_0;
@@ -158,13 +159,86 @@ public class WarehouseManageGUI {
 		mntmNewMenuItem_4.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
+				show_inventory_table();
 				show_panel(4);
+				
+				
 			}
 		});
 		menuBar.add(mntmNewMenuItem_4);
 		frame.getContentPane().setLayout(null);
 		
 		buttonGroup_0=new ButtonGroup();
+		
+
+		
+//	table_1 = new JTable();
+//	scrollPane_1.setViewportView(table_1);
+//	ButtonGroup buttonGroup_0 = new ButtonGroup();
+			
+
+			
+		panel_4 = new JPanel();
+		panel_4.setBounds(0, 0, 800, 450);
+		frame.getContentPane().add(panel_4);
+		panel_4.setLayout(null);
+		Inventory_Init(panel_4);
+		JScrollPane scrollPane_4 = new JScrollPane();
+		scrollPane_4.setBounds(31, 24, 332, 190);
+		panel_4.add(scrollPane_4);
+		
+		table_4 = new JTable();
+		scrollPane_4.setViewportView(table_4);
+		
+		JButton btnNewButton_4 = new JButton("打印表格");
+		btnNewButton_4.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+			}
+		});
+		btnNewButton_4.setBounds(270, 224, 93, 23);
+		panel_4.add(btnNewButton_4);
+		
+		
+		panel_3 = new JPanel();
+		panel_3.setBounds(0, 0, 800, 450);
+		frame.getContentPane().add(panel_3);
+		Transfer_Init(panel_3);
+		JLabel label_3_0 = new JLabel("物品名:");
+		label_3_0.setBounds(100, 59, 42, 15);
+		panel_3.add(label_3_0);
+		
+		JComboBox comboBox_3_0 = new JComboBox();
+		comboBox_3_0.setBounds(168, 25, 83, 21);
+		panel_3.add(comboBox_3_0);
+		
+		JLabel label_3_1 = new JLabel("仓库号:");
+		label_3_1.setBounds(100, 28, 42, 15);
+		panel_3.add(label_3_1);
+		
+		JComboBox comboBox_3_1 = new JComboBox();
+		comboBox_3_1.setBounds(168, 56, 32, 21);
+		panel_3.add(comboBox_3_1);
+		
+		JLabel label_3_2 = new JLabel("移向");
+		label_3_2.setBounds(275, 59, 24, 15);
+		panel_3.add(label_3_2);
+		
+		JLabel label_3_3 = new JLabel("数量:");
+		label_3_3.setBounds(100, 117, 30, 15);
+		panel_3.add(label_3_3);
+		
+		textField_3 = new JTextField();
+		textField_3.setBounds(168, 114, 66, 21);
+		panel_3.add(textField_3);
+		textField_3.setColumns(10);
+		
+		JButton button_3 = new JButton("提交");
+		button_3.setBounds(292, 113, 57, 23);
+		panel_3.add(button_3);
+		
+		JLabel label_3_4 = new JLabel("目的地");
+		label_3_4.setBounds(304, 28, 36, 15);
+		panel_3.add(label_3_4);
 		
 		panel_2 = new JPanel();
 		panel_2.setBounds(0, 0, 800, 450);
@@ -485,92 +559,16 @@ public class WarehouseManageGUI {
 	
 
 	
-//	table_1 = new JTable();
-//	scrollPane_1.setViewportView(table_1);
-//	ButtonGroup buttonGroup_0 = new ButtonGroup();
-		
-
-		
-	panel_4 = new JPanel();
-	panel_4.setBounds(0, 0, 800, 450);
-	frame.getContentPane().add(panel_4);
-	panel_4.setLayout(null);
-	
-	
-	panel_3 = new JPanel();
-	panel_3.setBounds(0, 0, 800, 450);
-	frame.getContentPane().add(panel_3);
-	
-
-	
 	Panels_Init();
-	Inventory_Init(panel_4);
-	Transfer_Init(panel_3);
 	
 	}
 	private void Inventory_Init(JPanel  panel_4) {		
-		JScrollPane scrollPane_4 = new JScrollPane();
-		scrollPane_4.setBounds(31, 24, 332, 190);
-		panel_4.add(scrollPane_4);
 		
 		
-		Vector<String> rowName=new Vector<>();
-		rowName.add("商品名称");
-		rowName.add("单位");
-		rowName.add("库存量");
-		Vector<Vector<String>> vData=new Vector<>();	
-		
-		DefaultTableModel DFM=new DefaultTableModel(vData,rowName);
-		
-		JTable table_4 = new JTable(DFM);
-		scrollPane_4.setViewportView(table_4);
-		
-		JButton btnNewButton_4 = new JButton("打印表格");
-		btnNewButton_4.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-			}
-		});
-		btnNewButton_4.setBounds(270, 224, 93, 23);
-		panel_4.add(btnNewButton_4);
+
 	}
 	private void Transfer_Init(JPanel panel_3) {		
 		panel_3.setLayout(null);
-		JLabel label_3_0 = new JLabel("物品名:");
-		label_3_0.setBounds(100, 59, 42, 15);
-		panel_3.add(label_3_0);
-		
-		JComboBox comboBox_3_0 = new JComboBox();
-		comboBox_3_0.setBounds(168, 25, 83, 21);
-		panel_3.add(comboBox_3_0);
-		
-		JLabel label_3_1 = new JLabel("仓库号:");
-		label_3_1.setBounds(100, 28, 42, 15);
-		panel_3.add(label_3_1);
-		
-		JComboBox comboBox_3_1 = new JComboBox();
-		comboBox_3_1.setBounds(168, 56, 32, 21);
-		panel_3.add(comboBox_3_1);
-		
-		JLabel label_3_2 = new JLabel("移向");
-		label_3_2.setBounds(275, 59, 24, 15);
-		panel_3.add(label_3_2);
-		
-		JLabel label_3_3 = new JLabel("数量:");
-		label_3_3.setBounds(100, 117, 30, 15);
-		panel_3.add(label_3_3);
-		
-		textField_3 = new JTextField();
-		textField_3.setBounds(168, 114, 66, 21);
-		panel_3.add(textField_3);
-		textField_3.setColumns(10);
-		
-		JButton button_3 = new JButton("提交");
-		button_3.setBounds(292, 113, 57, 23);
-		panel_3.add(button_3);
-		
-		JLabel label_3_4 = new JLabel("目的地");
-		label_3_4.setBounds(304, 28, 36, 15);
-		panel_3.add(label_3_4);
 	}	
 
 
@@ -722,6 +720,19 @@ public class WarehouseManageGUI {
 		//table_1.updateUI();
 		//scrollPane_1.updateUI();
 		panel_1.updateUI();
+	}
+	private void show_inventory_table(){
+		Vector<String> rowName=new Vector<>();
+		rowName.add("仓库位置");
+		rowName.add("物品ID");
+		rowName.add("物品名称");		
+		rowName.add("库存量");
+		WarehouseDao warehouseDao=new WarehouseDao();
+		Vector<Vector<String>> vData=warehouseDao.getInventoryInformation();	
+		
+		warehouseDao.close();
+		DefaultTableModel DFM=new DefaultTableModel(vData,rowName);
+		table_4.setModel(DFM);
 	}
 	private void update_comboBox_2_0(JComboBox comboBox_2_0,int warehouse_id){
 		String sql_count_1="select count(`goods_id`) as `number` from `tb_warehouse` where `warehouse_id`="+warehouse_id;

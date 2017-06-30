@@ -6,7 +6,7 @@ import java.sql.SQLException;
 
 public class BaseDao {
 	Connection connection=null;
-	String url="jdbc:mysql://localhost:3306/warestics?user=root&password=123456";
+	String url="jdbc:mysql://106.14.5.141:3306/warestics?user=general&password=123456";
 	public BaseDao(){
 	
 			try {
@@ -17,7 +17,7 @@ public class BaseDao {
 				e.printStackTrace();
 			}
 			
-			//System.out.println("连接成功");
+			System.out.println("连接成功");
 	
 		
 	}

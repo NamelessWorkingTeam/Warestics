@@ -18,6 +18,8 @@ import javax.swing.JButton;
 import java.awt.event.ActionListener;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.awt.event.ActionEvent;
 import javax.swing.JTextField;
 import javax.swing.JComboBox;
@@ -31,6 +33,8 @@ public class TMS_MainVersion extends JFrame {
 	static String transfer_check;
 	static String update_check;
 	static String report_check;
+	static String main_state;
+	static String state_now;
 	private JPanel contentPane;
 
 	/**
@@ -54,6 +58,24 @@ public class TMS_MainVersion extends JFrame {
 	 */
 	public TMS_MainVersion() {
 		
+		//查询转运状态以判断可否更新目的地和是否可以修改审核
+		//查询转运状态
+		String sql_state = "SELECT transfer_state FROM tb_transfer WHERE transfer_id='"+main_id+"'";
+		MySQLConnect con_state = new MySQLConnect(sql_state);
+		try {
+			ResultSet result_state = con_state.pst.executeQuery();
+			
+			if(result_state.next()){
+				
+				main_state = result_state.getString("transfer_state");
+				
+			}
+
+		} catch (SQLException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		}
+		
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(100, 100, 450, 388);
 		contentPane = new JPanel();
@@ -70,30 +92,39 @@ public class TMS_MainVersion extends JFrame {
 		button.setFont(new Font("Lucida Grande", Font.PLAIN, 13));
 		button.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				String sql_search = "SELECT transfer_check FROM tb_transfer WHERE transfer_id ='"+main_id+"'";
-				MySQLConnect con_search = new MySQLConnect(sql_search);
-				try {
-					ResultSet result = con_search.pst.executeQuery();
-					if(result.next()){
-						main_check = result.getString("transfer_check");
-						if(main_check.compareTo("Y")==0){
-							TMS_Search search = new TMS_Search();
-							search.setResizable(false);
-							search.setLocationRelativeTo(null);
-							search.setDefaultCloseOperation(DISPOSE_ON_CLOSE);
-							search.setVisible(true);
-							dispose();
-						}
-						else JOptionPane.showMessageDialog(null, "审核不合格或未提交审核！", "提示",JOptionPane.INFORMATION_MESSAGE);
-					}
-					
-				} catch (SQLException e1) {
-					// TODO Auto-generated catch block
-					e1.printStackTrace();
-//					JOptionPane.showMessageDialog(null, "审核不合格或未提交审核！", "提示",JOptionPane.INFORMATION_MESSAGE);
-				}
 				
-	
+				TMS_Search search = new TMS_Search();
+				search.setResizable(false);
+				search.setLocationRelativeTo(null);
+				search.setDefaultCloseOperation(DISPOSE_ON_CLOSE);
+				search.setVisible(true);
+				dispose();
+				
+				
+//				String sql_search = "SELECT transfer_check FROM tb_transfer WHERE transfer_id ='"+main_id+"'";
+//				MySQLConnect con_search = new MySQLConnect(sql_search);
+//				try {
+//					ResultSet result = con_search.pst.executeQuery();
+//					if(result.next()){
+//						main_check = result.getString("transfer_check");
+//						if(main_check.compareTo("Y")==0){
+//							TMS_Search search = new TMS_Search();
+//							search.setResizable(false);
+//							search.setLocationRelativeTo(null);
+//							search.setDefaultCloseOperation(DISPOSE_ON_CLOSE);
+//							search.setVisible(true);
+//							dispose();
+//						}
+//						else JOptionPane.showMessageDialog(null, "审核不合格或未提交审核！", "提示",JOptionPane.INFORMATION_MESSAGE);
+//					}
+//					
+//				} catch (SQLException e1) {
+//					// TODO Auto-generated catch block
+//					e1.printStackTrace();
+////					JOptionPane.showMessageDialog(null, "审核不合格或未提交审核！", "提示",JOptionPane.INFORMATION_MESSAGE);
+//				}
+//				
+//	
 			}
 		});
 		button.setBounds(6, 203, 105, 24);
@@ -116,12 +147,15 @@ public class TMS_MainVersion extends JFrame {
 					if(result_update.next()){
 						update_check = result_update.getString("transfer_check");
 						if(update_check.compareTo("Y")==0){
-							TMS_Update update = new TMS_Update();
-							update.setResizable(false);
-							update.setLocationRelativeTo(null);
-							update.setDefaultCloseOperation(DISPOSE_ON_CLOSE);
-							update.setVisible(true);
-							dispose();
+							if(main_state.compareTo("Y")!=0){
+								TMS_Update update = new TMS_Update();
+								update.setResizable(false);
+								update.setLocationRelativeTo(null);
+								update.setDefaultCloseOperation(DISPOSE_ON_CLOSE);
+								update.setVisible(true);
+								dispose();
+							}
+							else JOptionPane.showMessageDialog(null, "已转运！不能更新目的地！", "提示",JOptionPane.INFORMATION_MESSAGE);
 						}
 						else JOptionPane.showMessageDialog(null, "审核不合格或未提交审核！", "提示",JOptionPane.INFORMATION_MESSAGE);
 					}
@@ -143,21 +177,40 @@ public class TMS_MainVersion extends JFrame {
 		button_3.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				
+
+		
 				String sql_report = "SELECT transfer_check FROM tb_transfer WHERE transfer_id ='"+main_id+"'";
 				MySQLConnect con_report = new MySQLConnect(sql_report);
 				try {
 					ResultSet result_report = con_report.pst.executeQuery();
 					if(result_report.next()){
 						report_check = result_report.getString("transfer_check");
-						if(report_check.compareTo("Y")==0){
-							TMS_Report report = new TMS_Report();
-							report.setResizable(false);
-							report.setLocationRelativeTo(null);
-							report.setDefaultCloseOperation(DISPOSE_ON_CLOSE);
-							report.setVisible(true);
-							dispose();
+						if(main_state.compareTo("Y")!=0){
+							if(report_check.compareTo("Y")==0){
+								//当前时间（转运时间）
+								SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");//设置日期格式
+								System.out.println(df.format(new Date()));// new Date()为获取当前系统时间
+								
+								String sql_now = "UPDATE tb_transfer SET transfer_time = '"+df.format(new Date())+"'";
+								MySQLConnect con_now = new MySQLConnect(sql_now);
+								try {
+									con_now.pst.executeUpdate();
+								} catch (SQLException e2) {
+									// TODO Auto-generated catch block
+									e2.printStackTrace();
+								}
+								//
+								TMS_Report report = new TMS_Report();
+								report.setResizable(false);
+								report.setLocationRelativeTo(null);
+								report.setDefaultCloseOperation(DISPOSE_ON_CLOSE);
+								report.setVisible(true);
+								dispose();
+							}
+							else JOptionPane.showMessageDialog(null, "审核不合格或未提交审核！", "提示",JOptionPane.INFORMATION_MESSAGE);
 						}
-						else JOptionPane.showMessageDialog(null, "审核不合格或未提交审核！", "提示",JOptionPane.INFORMATION_MESSAGE);
+						else JOptionPane.showMessageDialog(null, "已转运！不能重复提交！", "提示",JOptionPane.INFORMATION_MESSAGE);
+						
 					}
 					
 				} catch (SQLException e1) {
@@ -215,22 +268,25 @@ public class TMS_MainVersion extends JFrame {
 		btnNewButton.setFont(new Font("Lucida Grande", Font.PLAIN, 13));
 		btnNewButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				
-				if(comboBox_check.getSelectedItem().toString().compareTo("合格")==0) transfer_check="Y";
-				if(comboBox_check.getSelectedItem().toString().compareTo("不合格")==0) transfer_check="N";
-				
-				String sql="UPDATE tb_transfer SET transfer_check='"+transfer_check+"' WHERE transfer_id = '"+main_id+"'";
-				MySQLConnect con=new MySQLConnect(sql);
-				try {
-					con.pst.executeUpdate();
-					if(transfer_check=="Y"||transfer_check=="y"){
-						JOptionPane.showMessageDialog(null, "审核提交成功", "提示",JOptionPane.INFORMATION_MESSAGE);
+				if(main_state.compareTo("Y")!=0){
+					if(comboBox_check.getSelectedItem().toString().compareTo("合格")==0) transfer_check="Y";
+					if(comboBox_check.getSelectedItem().toString().compareTo("不合格")==0) transfer_check="N";
+					
+					String sql="UPDATE tb_transfer SET transfer_check='"+transfer_check+"' WHERE transfer_id = '"+main_id+"'";
+					MySQLConnect con=new MySQLConnect(sql);
+					try {
+						con.pst.executeUpdate();
+						if(transfer_check=="Y"||transfer_check=="y"){
+							JOptionPane.showMessageDialog(null, "审核提交成功", "提示",JOptionPane.INFORMATION_MESSAGE);
+						}
+						else JOptionPane.showMessageDialog(null, "审核不合格，请联系地面管理人员", "提示",JOptionPane.INFORMATION_MESSAGE);
+					} catch (SQLException e1) {
+						// TODO Auto-generated catch block
+						e1.printStackTrace();
 					}
-					else JOptionPane.showMessageDialog(null, "审核不合格，请联系地面管理人员", "提示",JOptionPane.INFORMATION_MESSAGE);
-				} catch (SQLException e1) {
-					// TODO Auto-generated catch block
-					e1.printStackTrace();
 				}
+				else JOptionPane.showMessageDialog(null, "已转运，不能修改审核", "提示",JOptionPane.INFORMATION_MESSAGE);
+
 				
 			}
 		});

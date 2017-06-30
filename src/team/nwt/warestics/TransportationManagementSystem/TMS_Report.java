@@ -33,6 +33,9 @@ import java.text.AttributedCharacterIterator.Attribute;
 import java.util.Map;
 import java.awt.event.ActionEvent;
 
+import java.util.Date;
+import java.text.SimpleDateFormat;
+
 public class TMS_Report extends JFrame {
 
 	private JPanel contentPane;
@@ -43,6 +46,8 @@ public class TMS_Report extends JFrame {
 	static String report_check;
 	static String check_state;
 	static String report_time;
+	static String report_state;			//转运状态（数据库）
+	static String state_now;			//转运状态（中文）
 
 	/**
 	 * Launch the application.
@@ -147,10 +152,13 @@ public class TMS_Report extends JFrame {
 			// TODO Auto-generated catch block
 			e1.printStackTrace();
 		}
+		
+		
+		
 //*****************************初始查询结束****************************************	
 		
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		setBounds(100, 100, 450, 421);
+		setBounds(100, 100, 450, 468);
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 		setContentPane(contentPane);
@@ -188,7 +196,7 @@ public class TMS_Report extends JFrame {
 				dispose();
 			}
 		});
-		button.setBounds(322, 346, 105, 24);
+		button.setBounds(327, 399, 105, 24);
 		contentPane.add(button);
 		
 		JLabel Label_id = new JLabel("transfer_id");
@@ -227,59 +235,98 @@ public class TMS_Report extends JFrame {
 		contentPane.add(Label_check);
 		Label_check.setText(check_state);
 		
-		JButton button_1 = new JButton("生成报告");
+		JButton button_1 = new JButton("提交转运并生成报告");
 		button_1.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {					//生成PDF在项目的根目录
+			public void actionPerformed(ActionEvent e) {					//主要功能：生成PDF在项目的根目录
 				
-				//Step 1—Create a Document.  
-				Document document = new Document();  
-				//Step 2—Get a PdfWriter instance.  
+				
+		//查询转运状态
+				String sql_state = "SELECT transfer_state FROM tb_transfer WHERE transfer_id='"+report_id+"'";
+				MySQLConnect con_state = new MySQLConnect(sql_state);
 				try {
-					PdfWriter.getInstance(document, new FileOutputStream(report_id+".pdf"));
-				} catch (FileNotFoundException e1) {
+					ResultSet result_state = con_state.pst.executeQuery();
+					
+					if(result_state.next()){
+						report_state = result_state.getString("transfer_state");
+						if(report_state.compareTo("Y")==0){
+							state_now="已转运";
+						}
+						else state_now="未转运";
+						
+					}
+
+				} catch (SQLException e1) {
 					// TODO Auto-generated catch block
 					e1.printStackTrace();
-				} catch (DocumentException e1) {
-					// TODO Auto-generated catch block
-					e1.printStackTrace();
-				}  
-				//Step 3—Open the Document.  
-				document.open();  
-//				//中文字体
-//				try {
-//					BaseFont baseFont = BaseFont.createFont("STSong-Light",BaseFont.IDENTITY_H,BaseFont.NOT_EMBEDDED);
-//					@SuppressWarnings("unchecked")
-//					Font font = new Font((Map<? extends Attribute, ?>) baseFont);
-//				} catch (DocumentException e2) {
-//					// TODO Auto-generated catch block
-//					e2.printStackTrace();
-//				} catch (IOException e2) {
-//					// TODO Auto-generated catch block
-//					e2.printStackTrace();
-//				} 
+				}
 				
-//				com.itextpdf.text.Font fontZh = FontFactory.getFont("STSong-Light", "UniGB-UCS2-H", 14, Font.BOLD, new CMYKColor(0, 255, 0, 0));  
-				
-				//Step 4—Add content.  
-				try {
-					document.add(new Paragraph("Transfer_ID：   "+report_id));
-					document.add(new Paragraph("Transfer_Time：   "+report_time));
-					document.add(new Paragraph("Transfer_Start:   "+report_start));
-					document.add(new Paragraph("Transfer_Mid:   "+report_mid));
-					document.add(new Paragraph("Transfer_End:   "+report_end));
-					document.add(new Paragraph("Transfer_Check:   "+report_check));
-					 
-				} catch (DocumentException e1) {
-					// TODO Auto-generated catch block
-					e1.printStackTrace();
-				}  
-				//Step 5—Close the Document.  
-				document.close();  
-				JOptionPane.showMessageDialog(null, "生成报告成功！", "提示",JOptionPane.INFORMATION_MESSAGE);
+				//判断是否重复提交
+				if(report_state.compareTo("Y")!=0){
+					//数据库转运状态已转运设置为Y
+					
+					String sql_now = "UPDATE tb_transfer SET transfer_state = 'Y'";
+					MySQLConnect con_now = new MySQLConnect(sql_now);
+					try {
+						con_now.pst.executeUpdate();
+					} catch (SQLException e2) {
+						// TODO Auto-generated catch block
+						e2.printStackTrace();
+					}
+						
+						
+					//Step 1—Create a Document.  
+					Document document = new Document();  
+					//Step 2—Get a PdfWriter instance.  
+					try {
+						PdfWriter.getInstance(document, new FileOutputStream(report_id+".pdf"));
+					} catch (FileNotFoundException e1) {
+						// TODO Auto-generated catch block
+						e1.printStackTrace();
+					} catch (DocumentException e1) {
+						// TODO Auto-generated catch block
+						e1.printStackTrace();
+					}  
+					//Step 3—Open the Document.  
+					document.open();  
+//					//中文字体
+//					try {
+//						BaseFont baseFont = BaseFont.createFont("STSong-Light",BaseFont.IDENTITY_H,BaseFont.NOT_EMBEDDED);
+//						@SuppressWarnings("unchecked")
+//						Font font = new Font((Map<? extends Attribute, ?>) baseFont);
+//					} catch (DocumentException e2) {
+//						// TODO Auto-generated catch block
+//						e2.printStackTrace();
+//					} catch (IOException e2) {
+//						// TODO Auto-generated catch block
+//						e2.printStackTrace();
+//					} 
+					
+//					com.itextpdf.text.Font fontZh = FontFactory.getFont("STSong-Light", "UniGB-UCS2-H", 14, Font.BOLD, new CMYKColor(0, 255, 0, 0));  
+					
+					//Step 4—Add content.  
+					try {
+						document.add(new Paragraph("Transfer_ID：   "+report_id));
+						document.add(new Paragraph("Transfer_Time：   "+report_time));
+						document.add(new Paragraph("Transfer_Start:   "+report_start));
+						document.add(new Paragraph("Transfer_Mid:   "+report_mid));
+						document.add(new Paragraph("Transfer_End:   "+report_end));
+						document.add(new Paragraph("Transfer_Check:   "+report_check));
+						document.add(new Paragraph("Transfer_State:   "+"Y")); 
+					} catch (DocumentException e1) {
+						// TODO Auto-generated catch block
+						e1.printStackTrace();
+					}  
+					//Step 5—Close the Document.  
+					document.close();  
+					JOptionPane.showMessageDialog(null, "生成报告成功！", "提示",JOptionPane.INFORMATION_MESSAGE);
+//					dispose();
+				}
+				else JOptionPane.showMessageDialog(null, "已转运！不能重复提交！", "提示",JOptionPane.INFORMATION_MESSAGE);
+
 			}
 		});
-		button_1.setFont(new Font("Lucida Grande", Font.PLAIN, 13));
-		button_1.setBounds(174, 303, 105, 24);
+		button_1.setFont(new Font("Lucida Grande", Font.PLAIN, 15));
+		button_1.setBounds(139, 341, 149, 34);
 		contentPane.add(button_1);
 		
 		JLabel label_6 = new JLabel("转运时间：");
@@ -288,7 +335,7 @@ public class TMS_Report extends JFrame {
 		contentPane.add(label_6);
 		
 		JLabel Label_time = new JLabel((String) null);
-		Label_time.setBounds(174, 263, 114, 24);
+		Label_time.setBounds(174, 263, 170, 24);
 		contentPane.add(Label_time);
 		Label_time.setText(report_time);
 	}

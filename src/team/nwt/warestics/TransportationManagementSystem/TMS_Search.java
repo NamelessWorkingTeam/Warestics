@@ -24,9 +24,11 @@ public class TMS_Search extends JFrame {
 	static String search_start;
 	static String search_mid;
 	static String search_end;
-	static String search_check;
-	static String check_state;
+	static String search_check;			//审核的数据库结果
+	static String check_state;			//审核状态（中文结果）
 	static String search_time;
+	static String search_state;			//转运状态
+	static String state_now;			//转运状态（中文）
 
 	/**
 	 * Launch the application.
@@ -131,6 +133,27 @@ public class TMS_Search extends JFrame {
 					// TODO Auto-generated catch block
 					e1.printStackTrace();
 				}
+				
+		//查询转运状态
+				String sql_state = "SELECT transfer_state FROM tb_transfer WHERE transfer_id='"+search_id+"'";
+				MySQLConnect con_state = new MySQLConnect(sql_state);
+				try {
+					ResultSet result_state = con_state.pst.executeQuery();
+					
+					if(result_state.next()){
+						search_state = result_state.getString("transfer_state");
+						if(search_state.compareTo("Y")==0){
+							state_now="已转运";
+						}
+						else state_now="未转运";
+						
+					}
+
+				} catch (SQLException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				}
+				
 		
 //*****************************初始查询结束****************************************	
 		
@@ -218,8 +241,18 @@ public class TMS_Search extends JFrame {
 		contentPane.add(label_6);
 		
 		JLabel Label_time = new JLabel((String) null);
-		Label_time.setBounds(174, 259, 114, 24);
+		Label_time.setBounds(174, 259, 170, 24);
 		contentPane.add(Label_time);
 		Label_time.setText(search_time);
+		
+		JLabel label_7 = new JLabel("转运状态：");
+		label_7.setFont(new Font("Dialog", Font.PLAIN, 14));
+		label_7.setBounds(87, 294, 75, 24);
+		contentPane.add(label_7);
+		
+		JLabel label_8 = new JLabel((String) null);
+		label_8.setBounds(174, 295, 114, 24);
+		contentPane.add(label_8);
+		label_8.setText(state_now);
 	}
 }

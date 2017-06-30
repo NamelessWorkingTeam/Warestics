@@ -26,6 +26,7 @@ public class TMS_Search extends JFrame {
 	static String search_end;
 	static String search_check;
 	static String check_state;
+	static String search_time;
 
 	/**
 	 * Launch the application.
@@ -116,6 +117,21 @@ public class TMS_Search extends JFrame {
 			e1.printStackTrace();
 		}
 		
+		//查询转运时间
+				String sql_time = "SELECT transfer_time FROM tb_transfer WHERE transfer_id='"+search_id+"'";
+				MySQLConnect con_time = new MySQLConnect(sql_time);
+				try {
+					ResultSet result_time = con_time.pst.executeQuery();
+					
+					if(result_time.next()){
+						search_time = result_time.getString("transfer_time");
+					}
+
+				} catch (SQLException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				}
+		
 //*****************************初始查询结束****************************************	
 		
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -195,5 +211,15 @@ public class TMS_Search extends JFrame {
 		Label_check.setBounds(174, 223, 114, 24);
 		contentPane.add(Label_check);
 		Label_check.setText(check_state);
+		
+		JLabel label_6 = new JLabel("转运时间：");
+		label_6.setFont(new Font("Dialog", Font.PLAIN, 14));
+		label_6.setBounds(87, 258, 75, 24);
+		contentPane.add(label_6);
+		
+		JLabel Label_time = new JLabel((String) null);
+		Label_time.setBounds(174, 259, 114, 24);
+		contentPane.add(Label_time);
+		Label_time.setText(search_time);
 	}
 }

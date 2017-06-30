@@ -42,6 +42,7 @@ public class TMS_Report extends JFrame {
 	static String report_end;
 	static String report_check;
 	static String check_state;
+	static String report_time;
 
 	/**
 	 * Launch the application.
@@ -132,6 +133,20 @@ public class TMS_Report extends JFrame {
 			e1.printStackTrace();
 		}
 		
+		//查询转运时间
+		String sql_time = "SELECT transfer_time FROM tb_transfer WHERE transfer_id='"+report_id+"'";
+		MySQLConnect con_time = new MySQLConnect(sql_time);
+		try {
+			ResultSet result_time = con_time.pst.executeQuery();
+			
+			if(result_time.next()){
+				report_time = result_time.getString("transfer_time");
+			}
+
+		} catch (SQLException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		}
 //*****************************初始查询结束****************************************	
 		
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -248,6 +263,7 @@ public class TMS_Report extends JFrame {
 				//Step 4—Add content.  
 				try {
 					document.add(new Paragraph("Transfer_ID：   "+report_id));
+					document.add(new Paragraph("Transfer_Time：   "+report_time));
 					document.add(new Paragraph("Transfer_Start:   "+report_start));
 					document.add(new Paragraph("Transfer_Mid:   "+report_mid));
 					document.add(new Paragraph("Transfer_End:   "+report_end));
@@ -263,7 +279,17 @@ public class TMS_Report extends JFrame {
 			}
 		});
 		button_1.setFont(new Font("Lucida Grande", Font.PLAIN, 13));
-		button_1.setBounds(174, 273, 105, 24);
+		button_1.setBounds(174, 303, 105, 24);
 		contentPane.add(button_1);
+		
+		JLabel label_6 = new JLabel("转运时间：");
+		label_6.setFont(new Font("Dialog", Font.PLAIN, 14));
+		label_6.setBounds(87, 258, 75, 24);
+		contentPane.add(label_6);
+		
+		JLabel Label_time = new JLabel((String) null);
+		Label_time.setBounds(174, 263, 114, 24);
+		contentPane.add(Label_time);
+		Label_time.setText(report_time);
 	}
 }

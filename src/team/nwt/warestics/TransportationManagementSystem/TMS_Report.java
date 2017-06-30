@@ -6,25 +6,41 @@ import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 
+
+import com.itextpdf.text.Document;
+import com.itextpdf.text.DocumentException;
+import com.itextpdf.text.FontFactory;
+import com.itextpdf.text.Paragraph;
+import com.itextpdf.text.pdf.PdfWriter;  
+import com.itextpdf.text.pdf.BaseFont;
+import com.itextpdf.text.pdf.CMYKColor;
+
 import team.nwt.warestics.MySQLConnect;
 
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
+
 import java.awt.Font;
 import javax.swing.JTextField;
 import javax.swing.JButton;
 import java.awt.event.ActionListener;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.text.AttributedCharacterIterator.Attribute;
+import java.util.Map;
 import java.awt.event.ActionEvent;
 
 public class TMS_Report extends JFrame {
 
 	private JPanel contentPane;
-	static String search_id=TMS.text;
-	static String search_start;
-	static String search_mid;
-	static String search_end;
-	static String search_check;
+	static String report_id=TMS.text;
+	static String report_start;
+	static String report_mid;
+	static String report_end;
+	static String report_check;
 	static String check_state;
 
 	/**
@@ -34,7 +50,7 @@ public class TMS_Report extends JFrame {
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
 				try {
-					TMS_Search frame = new TMS_Search();
+					TMS_Report frame = new TMS_Report();
 					frame.setVisible(true);
 				} catch (Exception e) {
 					e.printStackTrace();
@@ -51,14 +67,14 @@ public class TMS_Report extends JFrame {
 //*****************************初始查询开始****************************************
 		
 		//查询始发地
-		String sql_start = "SELECT transfer_start FROM tb_transfer WHERE transfer_id='"+search_id+"'";
+		String sql_start = "SELECT transfer_start FROM tb_transfer WHERE transfer_id='"+report_id+"'";
 		MySQLConnect con_start = new MySQLConnect(sql_start);
 		try {
 			ResultSet result_start = con_start.pst.executeQuery();
 			
 			if(result_start.next()){
-				search_start = result_start.getString("transfer_start");
-//				System.out.println(search_start);							//测试输出
+				report_start = result_start.getString("transfer_start");
+//				System.out.println(report_start);							//测试输出
 			}
 
 		} catch (SQLException e1) {
@@ -67,13 +83,13 @@ public class TMS_Report extends JFrame {
 		}
 		
 		//查询中转站
-		String sql_mid = "SELECT transfer_mid FROM tb_transfer WHERE transfer_id='"+search_id+"'";
+		String sql_mid = "SELECT transfer_mid FROM tb_transfer WHERE transfer_id='"+report_id+"'";
 		MySQLConnect con_mid = new MySQLConnect(sql_mid);
 		try {
 			ResultSet result_mid = con_mid.pst.executeQuery();
 			
 			if(result_mid.next()){
-				search_mid = result_mid.getString("transfer_mid");
+				report_mid = result_mid.getString("transfer_mid");
 			}
 
 		} catch (SQLException e1) {
@@ -82,13 +98,13 @@ public class TMS_Report extends JFrame {
 		}
 		
 		//查询终点站
-		String sql_end = "SELECT transfer_end FROM tb_transfer WHERE transfer_id='"+search_id+"'";
+		String sql_end = "SELECT transfer_end FROM tb_transfer WHERE transfer_id='"+report_id+"'";
 		MySQLConnect con_end = new MySQLConnect(sql_end);
 		try {
 			ResultSet result_end = con_end.pst.executeQuery();
 			
 			if(result_end.next()){
-				search_end = result_end.getString("transfer_end");
+				report_end = result_end.getString("transfer_end");
 			}
 
 		} catch (SQLException e1) {
@@ -97,14 +113,14 @@ public class TMS_Report extends JFrame {
 		}
 		
 		//查询审核情况
-		String sql_check = "SELECT transfer_check FROM tb_transfer WHERE transfer_id='"+search_id+"'";
+		String sql_check = "SELECT transfer_check FROM tb_transfer WHERE transfer_id='"+report_id+"'";
 		MySQLConnect con_check = new MySQLConnect(sql_check);
 		try {
 			ResultSet result_check = con_check.pst.executeQuery();
 			
 			if(result_check.next()){
-				search_check = result_check.getString("transfer_check");
-				if(search_check.compareTo("Y")==0){
+				report_check = result_check.getString("transfer_check");
+				if(report_check.compareTo("Y")==0){
 					check_state="合格";
 //					System.out.println(check_state);
 				}
@@ -163,7 +179,7 @@ public class TMS_Report extends JFrame {
 		JLabel Label_id = new JLabel("transfer_id");
 		Label_id.setBounds(174, 74, 114, 24);
 		contentPane.add(Label_id);
-		Label_id.setText(search_id);
+		Label_id.setText(report_id);
 		
 		JLabel label_4 = new JLabel("目的地：");
 		label_4.setFont(new Font("Dialog", Font.PLAIN, 14));
@@ -173,17 +189,17 @@ public class TMS_Report extends JFrame {
 		JLabel Label_start = new JLabel("transfer_start");
 		Label_start.setBounds(174, 115, 114, 24);
 		contentPane.add(Label_start);
-		Label_start.setText(search_start);			//打印始发地信息
+		Label_start.setText(report_start);			//打印始发地信息
 		
 		JLabel Label_mid = new JLabel("transfer_mid");
 		Label_mid.setBounds(174, 151, 114, 24);
 		contentPane.add(Label_mid);
-		Label_mid.setText(search_mid);				//打印中转站
+		Label_mid.setText(report_mid);				//打印中转站
 		
 		JLabel Label_end = new JLabel("transfer_end");
 		Label_end.setBounds(174, 187, 114, 24);
 		contentPane.add(Label_end);
-		Label_end.setText(search_end);				//打印目的地
+		Label_end.setText(report_end);				//打印目的地
 		
 		JLabel label_5 = new JLabel("审核情况：");
 		label_5.setFont(new Font("Dialog", Font.PLAIN, 14));
@@ -197,6 +213,55 @@ public class TMS_Report extends JFrame {
 		Label_check.setText(check_state);
 		
 		JButton button_1 = new JButton("生成报告");
+		button_1.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {					//生成PDF在项目的根目录
+				
+				//Step 1—Create a Document.  
+				Document document = new Document();  
+				//Step 2—Get a PdfWriter instance.  
+				try {
+					PdfWriter.getInstance(document, new FileOutputStream(report_id+".pdf"));
+				} catch (FileNotFoundException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				} catch (DocumentException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				}  
+				//Step 3—Open the Document.  
+				document.open();  
+//				//中文字体
+//				try {
+//					BaseFont baseFont = BaseFont.createFont("STSong-Light",BaseFont.IDENTITY_H,BaseFont.NOT_EMBEDDED);
+//					@SuppressWarnings("unchecked")
+//					Font font = new Font((Map<? extends Attribute, ?>) baseFont);
+//				} catch (DocumentException e2) {
+//					// TODO Auto-generated catch block
+//					e2.printStackTrace();
+//				} catch (IOException e2) {
+//					// TODO Auto-generated catch block
+//					e2.printStackTrace();
+//				} 
+				
+//				com.itextpdf.text.Font fontZh = FontFactory.getFont("STSong-Light", "UniGB-UCS2-H", 14, Font.BOLD, new CMYKColor(0, 255, 0, 0));  
+				
+				//Step 4—Add content.  
+				try {
+					document.add(new Paragraph("Transfer_ID：   "+report_id));
+					document.add(new Paragraph("Transfer_Start:   "+report_start));
+					document.add(new Paragraph("Transfer_Mid:   "+report_mid));
+					document.add(new Paragraph("Transfer_End:   "+report_end));
+					document.add(new Paragraph("Transfer_Check:   "+report_check));
+					 
+				} catch (DocumentException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				}  
+				//Step 5—Close the Document.  
+				document.close();  
+				JOptionPane.showMessageDialog(null, "生成报告成功！", "提示",JOptionPane.INFORMATION_MESSAGE);
+			}
+		});
 		button_1.setFont(new Font("Lucida Grande", Font.PLAIN, 13));
 		button_1.setBounds(174, 273, 105, 24);
 		contentPane.add(button_1);

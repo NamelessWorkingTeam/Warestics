@@ -9,6 +9,8 @@ import javax.swing.border.EmptyBorder;
 import team.nwt.warestics.MySQLConnect;
 
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
+
 import java.awt.Font;
 import javax.swing.JTextField;
 import javax.swing.JButton;
@@ -145,8 +147,14 @@ public class TMS_Search extends JFrame {
 						if(search_state.compareTo("Y")==0){
 							state_now="已转运";
 						}
-						else state_now="未转运";
+						else if(search_state.compareTo("N")==0) {
+							state_now="待转运";
+						}
+						else if(search_state.compareTo("T")==0) {
+							state_now="已退单";
+						}
 						
+
 					}
 
 				} catch (SQLException e1) {

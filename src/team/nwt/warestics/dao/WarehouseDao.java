@@ -3,10 +3,14 @@ package team.nwt.warestics.dao;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Vector;
 
 public class WarehouseDao extends BaseDao {
-	//根据物品id删除仓库记录
+	/**
+	 * 根据物品id删除仓库记录
+	 */
 	public boolean deleteByGoodsId(int goods_id){
 		String sql="delete from `tb_warehouse` where goods_id=?";
 		
@@ -25,7 +29,9 @@ public class WarehouseDao extends BaseDao {
 		}
 		
 	}
-	//更新x仓库y物品z库存 若不存在,则直接添加记录
+	/**
+	 * 更新x仓库y物品z库存 若不存在,则直接添加记录
+	 */
 	public boolean updateGoods(int warehose_id,int goods_id,double number){
 		String insertSql="insert into `tb_warehouse`(`warehouse_id`,`goods_id`,`goods_number`) values(?,?,?) "
 				+ "on duplicate key update `goods_number`=`goods_number`+?";
@@ -49,7 +55,9 @@ public class WarehouseDao extends BaseDao {
 		}
 	
 	}
-	//获取仓库记录 返回Vector<Vector<String>> vData类型做为盘点表的表格内容
+	/**
+	 * 获取仓库记录 返回Vector<Vector<String>> vData类型做为盘点表的表格内容
+	 */
 	public Vector<Vector<String>> getInventoryInformation(){
 		String sql="select `warehouse_id`,`tb_warehouse`.`goods_id`,`goods_name`,`goods_number` from `tb_warehouse`,`tb_goods` "
 				+ "where `tb_warehouse`.`goods_id`=`tb_goods`.`goods_id` "
@@ -76,4 +84,35 @@ public class WarehouseDao extends BaseDao {
 			return null;
 		}
 	}
+	/**
+	 * 获取仓库记录 返回List<Warehouse> 类型做为盘点表的打印数据内容
+	 */
+	public List<Warehouse> getInventoryInformationForPDF(){
+		String sql="select `warehouse_id`,`tb_warehouse`.`goods_id`,`goods_name`,`goods_number` from `tb_warehouse`,`tb_goods` "
+				+ "where `tb_warehouse`.`goods_id`=`tb_goods`.`goods_id` "
+				+ "order by `warehouse_id`";
+		List<Warehouse> warehouses=new ArrayList();
+		try {
+			PreparedStatement preparedStatement=getConnection().prepareStatement(sql);
+			ResultSet resultSet=preparedStatement.executeQuery();
+			
+			while(resultSet.next()){
+				Warehouse warehouse=new Warehouse();
+				warehouse.setWarehouse_id(resultSet.getInt("warehouse_id"));
+				warehouse.setGoods_id(resultSet.getInt("goods_id"));
+				warehouse.setGoods_name(resultSet.getString("goods_name"));
+				warehouse.setGoods_number(resultSet.getDouble("goods_number"));
+				
+				
+				warehouses.add(warehouse);				
+			}
+			preparedStatement.close();
+			return warehouses;
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+			return null;
+		}
+	}
+
 }

@@ -19,6 +19,7 @@ import java.awt.event.MouseEvent;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Vector;
 
 import javax.swing.JPanel;
@@ -29,7 +30,9 @@ import javax.swing.JTextField;
 import javax.swing.border.EmptyBorder;
 import javax.swing.table.DefaultTableModel;
 
+import team.nwt.warestics.CreatePDF;
 import team.nwt.warestics.MySQLConnect;
+import team.nwt.warestics.dao.Warehouse;
 import team.nwt.warestics.dao.WarehouseDao;
 
 import java.awt.BorderLayout;
@@ -193,6 +196,10 @@ public class WarehouseManageGUI {
 		JButton btnNewButton_4 = new JButton("打印表格");
 		btnNewButton_4.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
+				String[] head={"warehouse_id","goods_id","goods_name","goods_number"};
+				List<Warehouse>warehouses=new WarehouseDao().getInventoryInformationForPDF();
+				String filePath = new CreatePDF().generatePDFs(head,warehouses);
+				System.out.println(filePath);
 			}
 		});
 		btnNewButton_4.setBounds(270, 224, 93, 23);

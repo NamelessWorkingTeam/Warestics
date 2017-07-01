@@ -24,6 +24,7 @@ public class BaseDao {
 	public Connection getConnection(){
 		return connection;
 	}
+
 	public void close(){
 		try {
 			connection.close();

@@ -58,18 +58,17 @@ public class TMS_Model extends AbstractTableModel {
 
 		ColumnNames= new Vector();
 		ColumnNames.add("商品id");
+//		ColumnNames.add("商品名称");
 		ColumnNames.add("商品数量");
-		ColumnNames.add("商品名称");
-	
 		RowData=new Vector(); 
 
-		String sql1 = "SELECT order_id FROM tb_transfer WHERE transfer_id='"+model_id+"'";
+		String sql1 = "SELECT order_id FROM tb_transfer WHERE transfer_id='"+model_id+"'";		//查询order_id
     	MySQLConnect con1 = new MySQLConnect(sql1);
     	try {
 			ResultSet result1 = con1.pst.executeQuery();
 			if(result1.next()){
 				model_order_id=result1.getString("order_id");
-				System.out.println(result1.getString("order_id"));			//测试order_id
+				System.out.println(model_order_id);			//测试order_id
 			}
 		} catch (SQLException e1) {
 			// TODO Auto-generated catch block
@@ -77,20 +76,33 @@ public class TMS_Model extends AbstractTableModel {
 		}
     	
     	
-//    	String sql2 = "SELECT goods_id,goods_number FROM tb_orderinformation WHERE order_id='"+model_order_id+"'";
+ //   	String sql2 = "SELECT goods_id,goods_number FROM tb_orderinformation WHERE order_id='"+model_order_id+"'";	//查询goods_id和goods_number
     	String sql2 = "SELECT * FROM tb_orderinformation WHERE order_id='2017062801'";
     	MySQLConnect con2 = new MySQLConnect(sql2);
     	try {
 			ResultSet result2 = con2.pst.executeQuery();
 			while(result2.next()){
 				
-				System.out.println(result2.getString("goods_id"));			//测试goods_id
-				System.out.println(result2.getString("goods_number"));		//测试goods_number
-				System.out.println("infomation表的"+result2.getString("order_id"));//测试orderinformation表的order_id
+				
+//sql3 start				
+//				String sql3 = "SELECT goods_name FROM tb_goods WHERE goods_id='"+result2.getString("goods_id")+"'";		//查询goods_name
+//				MySQLConnect con3 = new MySQLConnect(sql3);
+//				ResultSet result3 = con3.pst.executeQuery();
+//				while(result3.next()){
+//					model_goods_name=result3.getString("goods_name");
+//					System.out.println("result3---goods的name  "+result3.getString("goods_name"));		//测试goods_name
+//				}
+//sql3 end				
+				
+				
+				System.out.println("goods的id  "+result2.getString("goods_id"));			//测试goods_id
+				System.out.println("goods的number  "+result2.getString("goods_number"));		//测试goods_number
+//				System.out.println("goods的name  "+result3.getString("goods_name"));		//测试goods_name
+				System.out.println("infomation表的  "+result2.getString("order_id"));//测试orderinformation表的order_id
 				
 				Vector hang=new Vector();
-	            hang.add(result2.getInt(1));
-	        	hang.add(result2.getInt(2));
+	            hang.add(result2.getInt(2));
+//	        	hang.add(result2.getString(2));
 	        	hang.add(result2.getDouble(3));
 	        	RowData.add(hang);
 	        }
@@ -99,7 +111,9 @@ public class TMS_Model extends AbstractTableModel {
 		} catch (SQLException e1) {
 			// TODO Auto-generated catch block
 			e1.printStackTrace();
+			System.out.println("!!!!!!error!!!!!!");
 		}
+    	
     	
     }
     

@@ -34,6 +34,9 @@ public class TMS_GoodsList extends JFrame implements ActionListener  {
 	private JPanel contentPane;
     JTable jt=null;
     JScrollPane jsp=null;
+    
+    static String GoodsList_transfer_id=TMS.text;
+    static String GoodsList_order_id;
 
 	/**
 	 * Launch the application.
@@ -55,6 +58,20 @@ public class TMS_GoodsList extends JFrame implements ActionListener  {
 	 * Create the frame.
 	 */
 	public TMS_GoodsList() {
+		
+		String sql_id = "SELECT order_id FROM tb_transfer WHERE transfer_id='"+GoodsList_transfer_id+"'";
+		MySQLConnect con_id = new MySQLConnect(sql_id);
+		try {
+			ResultSet result_id = con_id.pst.executeQuery();
+			while(result_id.next()){
+				GoodsList_order_id = result_id.getString("order_id");
+			}
+			
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(100, 100, 481, 390);
 		contentPane = new JPanel();
@@ -86,8 +103,18 @@ public class TMS_GoodsList extends JFrame implements ActionListener  {
         jt=new JTable(x);
 		jsp=new JScrollPane(jt);
 		getContentPane().add(jsp);
+		
+		JPanel panel = new JPanel();
+		contentPane.add(panel, BorderLayout.NORTH);
+		
+		JLabel lblNewLabel = new JLabel("订单ID：");
+		panel.add(lblNewLabel);
+		
+		JLabel Label_id = new JLabel("New label");
+		panel.add(Label_id);
 		this.setBounds(12, 76, 380, 560);
 		this.setVisible(true);
+		Label_id.setText(GoodsList_order_id);
 
 		}
 

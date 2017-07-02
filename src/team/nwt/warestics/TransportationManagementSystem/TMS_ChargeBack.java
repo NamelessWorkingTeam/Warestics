@@ -162,7 +162,7 @@ public class TMS_ChargeBack extends JFrame {
 //*****************************初始查询结束****************************************	
 		
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		setBounds(100, 100, 450, 608);
+		setBounds(100, 100, 450, 468);
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 		setContentPane(contentPane);
@@ -200,7 +200,7 @@ public class TMS_ChargeBack extends JFrame {
 				dispose();
 			}
 		});
-		button.setBounds(272, 381, 105, 24);
+		button.setBounds(294, 389, 105, 24);
 		contentPane.add(button);
 		
 		JLabel Label_id = new JLabel("transfer_id");
@@ -266,7 +266,7 @@ public class TMS_ChargeBack extends JFrame {
 			}
 		});
 		button_1.setFont(new Font("Lucida Grande", Font.PLAIN, 13));
-		button_1.setBounds(272, 285, 105, 24);
+		button_1.setBounds(222, 285, 105, 24);
 		contentPane.add(button_1);
 		
 		JButton button_2 = new JButton("查看商品明细");
@@ -283,7 +283,7 @@ public class TMS_ChargeBack extends JFrame {
 			}
 		});
 		button_2.setFont(new Font("Lucida Grande", Font.PLAIN, 13));
-		button_2.setBounds(74, 285, 105, 24);
+		button_2.setBounds(62, 285, 105, 24);
 		contentPane.add(button_2);
 		
 		

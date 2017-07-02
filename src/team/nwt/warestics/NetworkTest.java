@@ -48,7 +48,7 @@ public class NetworkTest extends JFrame {
 		btnNewButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				
-				clt.SendMessage();			// 向服务端发送“new”信息
+				clt.SendMessage("test");			// 向服务端发送“test”信息
 			}
 		});
 		btnNewButton.setBounds(132, 157, 113, 27);

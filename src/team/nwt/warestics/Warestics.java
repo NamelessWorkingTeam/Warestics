@@ -1,7 +1,6 @@
 package team.nwt.warestics;
 
 import java.sql.*;
-
 /**
  * 
  * @author Liu Yummy
@@ -49,7 +48,7 @@ public class Warestics {
          * 	各模块的用户名请各位自行查阅 ACCOUNTS 表
          * 
          */
-        
+        //QRCode.encodeQRcode("1211111111113", 500, 500);
         
 	}
 

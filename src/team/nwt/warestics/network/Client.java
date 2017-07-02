@@ -15,8 +15,6 @@ public class Client {
 	public String incoming = null;
 
 	// private JTextField outgoing;
-	
-	public String outgoing;
 
 	private BufferedReader reader;
 
@@ -38,7 +36,6 @@ public class Client {
 	 */
 	public void startUp()
 	{
-        outgoing = "new";
 
         setupNetwork();
         
@@ -66,7 +63,7 @@ public class Client {
 		}
 	}
 
-	public void SendMessage() {
+	public void SendMessage(String outgoing) {
 		try {
 			// 向socket中写入消息
 			writer.println(outgoing);

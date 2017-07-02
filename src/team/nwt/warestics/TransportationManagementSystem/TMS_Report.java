@@ -251,8 +251,8 @@ public class TMS_Report extends JFrame {
 						if(report_state.compareTo("Y")==0){
 							state_now="已转运";
 						}
-						else state_now="未转运";
-						
+						else if (report_state.compareTo("N")==0) state_now="待转运";
+						else if (report_state.compareTo("T")==0) state_now="已退单";
 					}
 
 				} catch (SQLException e1) {
@@ -261,7 +261,7 @@ public class TMS_Report extends JFrame {
 				}
 				
 				//判断是否重复提交
-				if(report_state.compareTo("Y")!=0){
+				if(report_state.compareTo("N")==0){
 					//数据库转运状态已转运设置为Y
 					
 					String sql_now = "UPDATE tb_transfer SET transfer_state = 'Y'";
@@ -321,7 +321,12 @@ public class TMS_Report extends JFrame {
 					JOptionPane.showMessageDialog(null, "生成报告成功！", "提示",JOptionPane.INFORMATION_MESSAGE);
 //					dispose();
 				}
-				else JOptionPane.showMessageDialog(null, "已转运！不能重复提交！", "提示",JOptionPane.INFORMATION_MESSAGE);
+				else if(report_state.compareTo("Y")==0) JOptionPane.showMessageDialog(null, "已转运！不能重复提交！", "提示",JOptionPane.INFORMATION_MESSAGE);
+				
+				else if(report_state.compareTo("T")==0) JOptionPane.showMessageDialog(null, "已退单！不能提交转运！", "提示",JOptionPane.INFORMATION_MESSAGE);
+
+				
+				else JOptionPane.showMessageDialog(null, "数据库错误请联系管理员！", "提示",JOptionPane.INFORMATION_MESSAGE);
 
 			}
 		});

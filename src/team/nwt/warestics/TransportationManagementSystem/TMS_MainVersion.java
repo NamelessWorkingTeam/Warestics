@@ -33,6 +33,7 @@ public class TMS_MainVersion extends JFrame {
 	static String transfer_check;
 	static String update_check;
 	static String report_check;
+	static String back_check;
 	static String main_state;
 	static String state_now;
 	private JPanel contentPane;
@@ -131,6 +132,43 @@ public class TMS_MainVersion extends JFrame {
 		contentPane.add(button);
 		
 		JButton button_1 = new JButton("退单入库");
+		button_1.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				
+				String sql_back = "SELECT transfer_check FROM tb_transfer WHERE transfer_id ='"+main_id+"'";
+				MySQLConnect con_back = new MySQLConnect(sql_back);
+				try {
+					ResultSet result_back = con_back.pst.executeQuery();
+					if(result_back.next()){
+						back_check = result_back.getString("transfer_check");
+						if(back_check.compareTo("Y")==0){
+							if(main_state.compareTo("N")==0){
+								TMS_ChargeBack ChargeBack = new TMS_ChargeBack();
+								ChargeBack.setResizable(false);
+								ChargeBack.setLocationRelativeTo(null);
+								ChargeBack.setDefaultCloseOperation(DISPOSE_ON_CLOSE);
+								ChargeBack.setVisible(true);
+								dispose();
+							}
+							else if(main_state.compareTo("T")==0){
+								JOptionPane.showMessageDialog(null, "已退单！不能重复退单！", "提示",JOptionPane.INFORMATION_MESSAGE);
+							}
+							else if (main_state.compareTo("Y")==0){
+								JOptionPane.showMessageDialog(null, "已转运！不能退单！", "提示",JOptionPane.INFORMATION_MESSAGE);
+							}
+							else JOptionPane.showMessageDialog(null, "数据库错误！请联系管理员！", "提示",JOptionPane.INFORMATION_MESSAGE);
+							
+						}
+						else JOptionPane.showMessageDialog(null, "审核不合格或未提交审核！", "提示",JOptionPane.INFORMATION_MESSAGE);
+					}
+					
+				} catch (SQLException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				}
+
+			}
+		});
 		button_1.setFont(new Font("Lucida Grande", Font.PLAIN, 13));
 		button_1.setBounds(153, 203, 105, 24);
 		contentPane.add(button_1);
@@ -147,7 +185,7 @@ public class TMS_MainVersion extends JFrame {
 					if(result_update.next()){
 						update_check = result_update.getString("transfer_check");
 						if(update_check.compareTo("Y")==0){
-							if(main_state.compareTo("Y")!=0){
+							if(main_state.compareTo("N")==0){
 								TMS_Update update = new TMS_Update();
 								update.setResizable(false);
 								update.setLocationRelativeTo(null);
@@ -155,7 +193,14 @@ public class TMS_MainVersion extends JFrame {
 								update.setVisible(true);
 								dispose();
 							}
-							else JOptionPane.showMessageDialog(null, "已转运！不能更新目的地！", "提示",JOptionPane.INFORMATION_MESSAGE);
+							else if(main_state.compareTo("T")==0){
+								JOptionPane.showMessageDialog(null, "已退单！不能更新目的地！", "提示",JOptionPane.INFORMATION_MESSAGE);
+							}
+							else if (main_state.compareTo("Y")==0){
+								JOptionPane.showMessageDialog(null, "已转运！不能更新目的地！", "提示",JOptionPane.INFORMATION_MESSAGE);
+							}
+							else JOptionPane.showMessageDialog(null, "数据库错误！请联系管理员！", "提示",JOptionPane.INFORMATION_MESSAGE);
+							
 						}
 						else JOptionPane.showMessageDialog(null, "审核不合格或未提交审核！", "提示",JOptionPane.INFORMATION_MESSAGE);
 					}
@@ -177,15 +222,13 @@ public class TMS_MainVersion extends JFrame {
 		button_3.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				
-
-		
 				String sql_report = "SELECT transfer_check FROM tb_transfer WHERE transfer_id ='"+main_id+"'";
 				MySQLConnect con_report = new MySQLConnect(sql_report);
 				try {
 					ResultSet result_report = con_report.pst.executeQuery();
 					if(result_report.next()){
 						report_check = result_report.getString("transfer_check");
-						if(main_state.compareTo("Y")!=0){
+						if(main_state.compareTo("N")==0){
 							if(report_check.compareTo("Y")==0){
 								//当前时间（转运时间）
 								SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");//设置日期格式
@@ -209,7 +252,13 @@ public class TMS_MainVersion extends JFrame {
 							}
 							else JOptionPane.showMessageDialog(null, "审核不合格或未提交审核！", "提示",JOptionPane.INFORMATION_MESSAGE);
 						}
-						else JOptionPane.showMessageDialog(null, "已转运！不能重复提交！", "提示",JOptionPane.INFORMATION_MESSAGE);
+						else if(main_state.compareTo("T")==0){
+							JOptionPane.showMessageDialog(null, "已退单！不能提交转运！", "提示",JOptionPane.INFORMATION_MESSAGE);
+						}
+						else if (main_state.compareTo("Y")==0){
+							JOptionPane.showMessageDialog(null, "已转运！不能重复提交！", "提示",JOptionPane.INFORMATION_MESSAGE);
+						}
+						else JOptionPane.showMessageDialog(null, "数据库错误！请联系管理员！", "提示",JOptionPane.INFORMATION_MESSAGE);
 						
 					}
 					
@@ -268,7 +317,8 @@ public class TMS_MainVersion extends JFrame {
 		btnNewButton.setFont(new Font("Lucida Grande", Font.PLAIN, 13));
 		btnNewButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				if(main_state.compareTo("Y")!=0){
+				if(main_state.compareTo("N")==0){
+			
 					if(comboBox_check.getSelectedItem().toString().compareTo("合格")==0) transfer_check="Y";
 					if(comboBox_check.getSelectedItem().toString().compareTo("不合格")==0) transfer_check="N";
 					
@@ -276,7 +326,7 @@ public class TMS_MainVersion extends JFrame {
 					MySQLConnect con=new MySQLConnect(sql);
 					try {
 						con.pst.executeUpdate();
-						if(transfer_check=="Y"||transfer_check=="y"){
+						if(transfer_check=="Y"){
 							JOptionPane.showMessageDialog(null, "审核提交成功", "提示",JOptionPane.INFORMATION_MESSAGE);
 						}
 						else JOptionPane.showMessageDialog(null, "审核不合格，请联系地面管理人员", "提示",JOptionPane.INFORMATION_MESSAGE);
@@ -285,7 +335,13 @@ public class TMS_MainVersion extends JFrame {
 						e1.printStackTrace();
 					}
 				}
-				else JOptionPane.showMessageDialog(null, "已转运，不能修改审核", "提示",JOptionPane.INFORMATION_MESSAGE);
+				else if(main_state.compareTo("T")==0){
+					JOptionPane.showMessageDialog(null, "已退单！不能审核！", "提示",JOptionPane.INFORMATION_MESSAGE);
+				}
+				else if (main_state.compareTo("Y")==0){
+					JOptionPane.showMessageDialog(null, "已转运！不能审核！", "提示",JOptionPane.INFORMATION_MESSAGE);
+				}
+				else JOptionPane.showMessageDialog(null, "数据库错误！请联系管理员！", "提示",JOptionPane.INFORMATION_MESSAGE);
 
 				
 			}

@@ -64,7 +64,7 @@ public class TMS_GoodsList extends JFrame implements ActionListener  {
 		try {
 			ResultSet result_id = con_id.pst.executeQuery();
 			while(result_id.next()){
-				GoodsList_order_id = result_id.getString("order_id");
+				GoodsList_order_id = result_id.getString("order_id");	//
 			}
 			
 		} catch (SQLException e) {

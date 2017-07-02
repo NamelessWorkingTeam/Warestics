@@ -9,7 +9,7 @@ import javax.swing.JPanel;
 import javax.swing.JTextField;
 import javax.swing.table.DefaultTableModel;
 
-import team.nwt.warestics.dao.WarehouseDao;
+import team.nwt.warestics.dao.WarehouseInformationDao;
 
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
@@ -88,7 +88,7 @@ class Table implements Runnable{
 	@Override
 	public void run() {
 		// TODO Auto-generated method stub
-		
+		//以线程形式定时刷新table中的数据
 		while(true){
 			try {
 
@@ -98,7 +98,7 @@ class Table implements Runnable{
 				rowName.add("物品ID");
 				rowName.add("物品名称");		
 				rowName.add("库存量");
-				WarehouseDao warehouseDao=new WarehouseDao();
+				WarehouseInformationDao warehouseDao=new WarehouseInformationDao();
 				Vector<Vector<String>> vData=warehouseDao.getInventoryInformation();	
 				
 				warehouseDao.close();

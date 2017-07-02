@@ -32,8 +32,8 @@ import javax.swing.table.DefaultTableModel;
 
 import team.nwt.warestics.CreatePDF;
 import team.nwt.warestics.MySQLConnect;
-import team.nwt.warestics.dao.Warehouse;
-import team.nwt.warestics.dao.WarehouseDao;
+import team.nwt.warestics.dao.WarehouseInformation;
+import team.nwt.warestics.dao.WarehouseInformationDao;
 
 import java.awt.BorderLayout;
 import java.awt.FlowLayout;
@@ -58,8 +58,13 @@ public class WarehouseManageGUI {
 	private JScrollPane scrollPane_0_1 ;
 	private JComboBox comboBox_0_0;
 	private JComboBox comboBox_0_1 ;
-	private JComboBox comboBox_2_0;
-	private JComboBox comboBox_2_1;
+	private JComboBox comboBox_2_startGoodsName;
+	private JComboBox comboBox_2_startWarehouseId;
+	private JComboBox comboBox_2_startPositionId ;
+	private JComboBox comboBox_2_startAreaId ;
+	private JComboBox comboBox_2_endWarehouseId;
+	private JComboBox comboBox_2_endPositionId ;
+	private JComboBox comboBox_2_endAreaId ;
 	private JRadioButton rdbtnNewRadioButton_0_0;
 	private JRadioButton rdbtnNewRadioButton_0_1 ;
 	private ButtonGroup buttonGroup_0;
@@ -74,8 +79,8 @@ public class WarehouseManageGUI {
 	private JPanel panel_3;
 	private JPanel panel_4;
 	private static MySQLConnect db=null;
-	private JTextField textField_2_1;
-	private JTextField textField_2_2;
+	private JTextField textField_2_startGoodsId;
+	private JTextField textField_2_startGoodsNumber;
 	/**
 	 * Launch the application.
 	 */
@@ -126,11 +131,7 @@ public class WarehouseManageGUI {
 			@Override
 			public void mouseClicked(MouseEvent arg0) {
 				show_panel(1);
-				String sql="select `tb_goods`.`goods_id`,`goods_name`,"
-						+ "`goods_productiondate`,`goods_shelflife`,`warehouse_id`,`goods_number` "
-						+ "from `tb_goods`,`tb_warehouse` "
-						+ "where `tb_goods`.`goods_id`=`tb_warehouse`.`goods_id`";//查询语句
-				show_quality_table(sql);
+				show_quality_table();
 				//panel_1.updateUI();
 			}
 		});
@@ -142,7 +143,9 @@ public class WarehouseManageGUI {
 			public void mouseClicked(MouseEvent arg0) {
 				show_panel(2);
 				int warehouse_id=1;
-				update_comboBox_2_0(comboBox_2_0, warehouse_id);
+				int area_id=1;
+				int position_id=1;
+				update_comboBox_2_0(comboBox_2_startGoodsName, warehouse_id,area_id,position_id);
 				
 				panel_2.updateUI();
 			}
@@ -173,6 +176,201 @@ public class WarehouseManageGUI {
 		
 		buttonGroup_0=new ButtonGroup();
 		
+		panel_2 = new JPanel();
+		panel_2.setBounds(0, 0, 800, 450);
+		frame.getContentPane().add(panel_2);
+		panel_2.setLayout(null);
+		
+		JLabel label_2_0 = new JLabel("物品名:");
+		label_2_0.setBounds(60, 128, 90, 15);
+		panel_2.add(label_2_0);
+		
+		comboBox_2_startGoodsName = new JComboBox();
+		comboBox_2_startGoodsName.setBounds(174, 125, 90, 21);
+		panel_2.add(comboBox_2_startGoodsName);
+		
+		JLabel label_2_1 = new JLabel("仓库号:");
+		label_2_1.setBounds(60, 32, 90, 15);
+		panel_2.add(label_2_1);
+		
+		comboBox_2_startWarehouseId = new JComboBox();
+		comboBox_2_startWarehouseId.addItemListener(new ItemListener() {
+			public void itemStateChanged(ItemEvent arg0) {
+				int warehouse_id=Integer.parseInt((String)comboBox_2_startWarehouseId.getSelectedItem()) ;
+				int area_id=Integer.parseInt((String)comboBox_2_startAreaId.getSelectedItem());
+				int position_id=Integer.parseInt((String)comboBox_2_startPositionId.getSelectedItem());
+				update_comboBox_2_0(comboBox_2_startGoodsName, warehouse_id,area_id,position_id);
+
+			}
+		});
+		comboBox_2_startWarehouseId.setModel(new DefaultComboBoxModel(new String[] {"1", "2", "3", "4", "5", "6"}));
+		comboBox_2_startWarehouseId.setBounds(174, 28, 90, 21);
+		panel_2.add(comboBox_2_startWarehouseId);
+		
+		JLabel label_2_2 = new JLabel("调往");
+		label_2_2.setBounds(278, 73, 54, 37);
+		panel_2.add(label_2_2);
+		
+		JLabel label_2_3 = new JLabel("仓库号:");
+		label_2_3.setBounds(357, 32, 90, 15);
+		panel_2.add(label_2_3);
+		
+		comboBox_2_endWarehouseId = new JComboBox();
+		comboBox_2_endWarehouseId.setModel(new DefaultComboBoxModel(new String[] {"1", "2", "3", "4", "5", "6"}));
+		comboBox_2_endWarehouseId.setBounds(479, 29, 90, 21);
+		panel_2.add(comboBox_2_endWarehouseId);
+		
+		JLabel label_2_4 = new JLabel("数量:");
+		label_2_4.setBounds(369, 156, 90, 15);
+		panel_2.add(label_2_4);
+		
+		textField_2_0 = new JTextField();
+		textField_2_0.addKeyListener(new KeyAdapter() {
+			@Override
+			public void keyTyped(KeyEvent arg0) {
+				 int keyChar = arg0.getKeyChar();                 
+	                if(keyChar==KeyEvent.VK_DECIMAL||keyChar >= KeyEvent.VK_0 && keyChar <= KeyEvent.VK_9){  
+	                	
+	                	if(!textField_2_0.getText().equals("")){
+	                		double num=Double.parseDouble(textField_2_0.getText());
+		                      if(num>Double.parseDouble(textField_2_startGoodsNumber.getText())){
+		                    	  arg0.consume();
+		                      }
+	                    }
+	                	
+	                }else{  
+	                	arg0.consume(); //关键，屏蔽掉非法输入  
+	                }  
+			}
+		});
+		textField_2_0.setBounds(479, 153, 90, 21);
+		panel_2.add(textField_2_0);
+		textField_2_0.setColumns(10);
+		
+		JButton button_2 = new JButton("提交");
+		button_2.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				int Int_start_warehouse_id=Integer.parseInt((String)comboBox_2_startWarehouseId.getSelectedItem());
+				int Int_start_area_id=Integer.parseInt((String)comboBox_2_startAreaId.getSelectedItem());
+				int Int_start_position_id=Integer.parseInt((String)comboBox_2_startPositionId.getSelectedItem());
+				int Int_end_warehouse_id=Integer.parseInt((String)comboBox_2_endWarehouseId.getSelectedItem());
+				int Int_end_area_id=Integer.parseInt((String)comboBox_2_endAreaId.getSelectedItem());
+				int Int_end_position_id=Integer.parseInt((String)comboBox_2_endPositionId.getSelectedItem());
+				int Int_goods_id=Integer.parseInt(textField_2_startGoodsId.getText());
+				double Double_update_number=Double.parseDouble(textField_2_0.getText());
+				double Double_goods_number=Double.parseDouble(textField_2_startGoodsNumber.getText());
+				if(Double_update_number==Double_goods_number){
+					WarehouseInformationDao warehouseInformationDao=new WarehouseInformationDao();
+					if(warehouseInformationDao.deleteWarehoueInformation(Int_start_position_id, Int_start_area_id, Int_start_position_id, Int_goods_id)){
+						System.out.println("删除成功");
+					}else{
+						System.out.println("删除失败");
+					}
+					if(warehouseInformationDao.updateWarehouseInformation(Int_end_warehouse_id, Int_end_area_id, Int_end_position_id, Int_goods_id, Double_update_number)){
+						System.out.println("更新成功");
+					}else{
+						System.out.println("更新失败");
+					}
+					warehouseInformationDao.close();
+				}else if(Double_update_number<Double_goods_number){
+					//更新start仓库的物品信息
+					WarehouseInformationDao warehouseInformationDao=new WarehouseInformationDao();
+					if(warehouseInformationDao.updateWarehouseInformation(Int_start_warehouse_id,Int_start_area_id,Int_start_position_id, Int_goods_id, -Double_update_number)){
+						System.out.println("start更新成功");
+					}else{
+						System.out.println("start更新失败");
+					}
+					//更新end仓库的物品信息
+					if(warehouseInformationDao.updateWarehouseInformation(Int_end_warehouse_id,Int_end_area_id,Int_end_position_id,Int_goods_id, Double_update_number)){
+						System.out.println("end更新成功");
+					}else{
+						System.out.println("end更新失败");
+					}
+					warehouseInformationDao.close();
+				}
+				
+				int warehouse_id=1;
+				int area_id=1;
+				int position_id=1;
+				update_comboBox_2_0(comboBox_2_startGoodsName, warehouse_id,area_id,position_id);
+				panel_2.updateUI();
+			}
+		});
+		button_2.setBounds(278, 320, 280, 23);
+		panel_2.add(button_2);
+		
+		JLabel label_2_5 = new JLabel("物品ID:");
+		label_2_5.setBounds(60, 159, 54, 15);
+		panel_2.add(label_2_5);
+		
+		textField_2_startGoodsId = new JTextField();
+		textField_2_startGoodsId.setEditable(false);
+		textField_2_startGoodsId.setBounds(174, 156, 90, 21);
+		panel_2.add(textField_2_startGoodsId);
+		textField_2_startGoodsId.setColumns(10);
+		
+		JLabel label_2_6 = new JLabel("库存量");
+		label_2_6.setBounds(60, 195, 54, 15);
+		panel_2.add(label_2_6);
+		
+		textField_2_startGoodsNumber = new JTextField();
+		textField_2_startGoodsNumber.setEditable(false);
+		textField_2_startGoodsNumber.setBounds(174, 192, 90, 21);
+		panel_2.add(textField_2_startGoodsNumber);
+		textField_2_startGoodsNumber.setColumns(10);
+		
+		JLabel label_2_7 = new JLabel("区域");
+		label_2_7.setBounds(60, 61, 54, 15);
+		panel_2.add(label_2_7);
+		
+		comboBox_2_startAreaId = new JComboBox();
+		comboBox_2_startAreaId.addItemListener(new ItemListener() {
+			public void itemStateChanged(ItemEvent e) {
+				int warehouse_id=Integer.parseInt((String)comboBox_2_startWarehouseId.getSelectedItem()) ;
+				int area_id=Integer.parseInt((String)comboBox_2_startAreaId.getSelectedItem());
+				int position_id=Integer.parseInt((String)comboBox_2_startPositionId.getSelectedItem());
+				update_comboBox_2_0(comboBox_2_startGoodsName, warehouse_id,area_id,position_id);
+			}
+		});
+		comboBox_2_startAreaId.setModel(new DefaultComboBoxModel(new String[] {"1", "2"}));
+		comboBox_2_startAreaId.setBounds(174, 59, 90, 21);
+		panel_2.add(comboBox_2_startAreaId);
+		
+		JLabel label_2_8 = new JLabel("货架");
+		label_2_8.setBounds(60, 95, 54, 15);
+		panel_2.add(label_2_8);
+		
+		comboBox_2_startPositionId = new JComboBox();
+		comboBox_2_startPositionId.addItemListener(new ItemListener() {
+			public void itemStateChanged(ItemEvent e) {
+				int warehouse_id=Integer.parseInt((String)comboBox_2_startWarehouseId.getSelectedItem()) ;
+				int area_id=Integer.parseInt((String)comboBox_2_startAreaId.getSelectedItem());
+				int position_id=Integer.parseInt((String)comboBox_2_startPositionId.getSelectedItem());
+				update_comboBox_2_0(comboBox_2_startGoodsName, warehouse_id,area_id,position_id);
+			}
+		});
+		comboBox_2_startPositionId.setModel(new DefaultComboBoxModel(new String[] {"1", "2"}));
+		comboBox_2_startPositionId.setBounds(174, 95, 90, 21);
+		panel_2.add(comboBox_2_startPositionId);
+		
+		JLabel label = new JLabel("区域");
+		label.setBounds(357, 61, 54, 15);
+		panel_2.add(label);
+		
+		comboBox_2_endAreaId = new JComboBox();
+		comboBox_2_endAreaId.setModel(new DefaultComboBoxModel(new String[] {"1", "2"}));
+		comboBox_2_endAreaId.setBounds(479, 58, 90, 21);
+		panel_2.add(comboBox_2_endAreaId);
+		
+		JLabel label_1 = new JLabel("货架");
+		label_1.setBounds(357, 95, 54, 15);
+		panel_2.add(label_1);
+		
+		comboBox_2_endPositionId = new JComboBox();
+		comboBox_2_endPositionId.setModel(new DefaultComboBoxModel(new String[] {"1", "2"}));
+		comboBox_2_endPositionId.setBounds(479, 92, 90, 21);
+		panel_2.add(comboBox_2_endPositionId);
+		
 
 		
 //	table_1 = new JTable();
@@ -197,7 +395,7 @@ public class WarehouseManageGUI {
 		btnNewButton_4.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				String[] head={"warehouse_id","goods_id","goods_name","goods_number"};
-				List<Warehouse>warehouses=new WarehouseDao().getInventoryInformationForPDF();
+				List<WarehouseInformation>warehouses=new WarehouseInformationDao().getInventoryInformationForPDF();
 				String filePath = new CreatePDF().generatePDFs(head,warehouses);
 				System.out.println(filePath);
 			}
@@ -246,141 +444,6 @@ public class WarehouseManageGUI {
 		JLabel label_3_4 = new JLabel("目的地");
 		label_3_4.setBounds(304, 28, 36, 15);
 		panel_3.add(label_3_4);
-		
-		panel_2 = new JPanel();
-		panel_2.setBounds(0, 0, 800, 450);
-		frame.getContentPane().add(panel_2);
-		panel_2.setLayout(null);
-		
-		JLabel label_2_0 = new JLabel("物品名:");
-		label_2_0.setBounds(60, 98, 90, 15);
-		panel_2.add(label_2_0);
-		
-		comboBox_2_0 = new JComboBox();
-		comboBox_2_0.setBounds(174, 95, 90, 21);
-		panel_2.add(comboBox_2_0);
-		
-		JLabel label_2_1 = new JLabel("仓库号:");
-		label_2_1.setBounds(60, 32, 90, 15);
-		panel_2.add(label_2_1);
-		
-		comboBox_2_1 = new JComboBox();
-		comboBox_2_1.addItemListener(new ItemListener() {
-			public void itemStateChanged(ItemEvent arg0) {
-				int warehouse_id=Integer.parseInt((String)comboBox_2_1.getSelectedItem()) ;
-				//System.out.println(warehouse_id);
-				update_comboBox_2_0(comboBox_2_0, warehouse_id);
-				//panel_2.updateUI();
-			}
-		});
-		comboBox_2_1.setModel(new DefaultComboBoxModel(new String[] {"1", "2", "3", "4", "5", "6"}));
-		comboBox_2_1.setBounds(174, 28, 90, 21);
-		panel_2.add(comboBox_2_1);
-		
-		JLabel label_2_2 = new JLabel("调往");
-		label_2_2.setBounds(278, 73, 90, 15);
-		panel_2.add(label_2_2);
-		
-		JLabel label_2_3 = new JLabel("仓库号:");
-		label_2_3.setBounds(336, 32, 90, 15);
-		panel_2.add(label_2_3);
-		
-		JComboBox comboBox_2_2 = new JComboBox();
-		comboBox_2_2.setModel(new DefaultComboBoxModel(new String[] {"1", "2", "3", "4", "5", "6"}));
-		comboBox_2_2.setBounds(417, 28, 90, 21);
-		panel_2.add(comboBox_2_2);
-		
-		JLabel label_2_4 = new JLabel("数量:");
-		label_2_4.setBounds(334, 98, 90, 15);
-		panel_2.add(label_2_4);
-		
-		textField_2_0 = new JTextField();
-		textField_2_0.addKeyListener(new KeyAdapter() {
-			@Override
-			public void keyTyped(KeyEvent arg0) {
-				 int keyChar = arg0.getKeyChar();                 
-	                if(keyChar==KeyEvent.VK_DECIMAL||keyChar >= KeyEvent.VK_0 && keyChar <= KeyEvent.VK_9){  
-	                	
-	                	if(!textField_2_0.getText().equals("")){
-	                		double num=Double.parseDouble(textField_2_0.getText());
-		                      if(num>Double.parseDouble(textField_2_2.getText())){
-		                    	  arg0.consume();
-		                      }
-	                    }
-	                	
-	                }else{  
-	                	arg0.consume(); //关键，屏蔽掉非法输入  
-	                }  
-			}
-		});
-		textField_2_0.setBounds(420, 98, 90, 21);
-		panel_2.add(textField_2_0);
-		textField_2_0.setColumns(10);
-		
-		JButton button_2 = new JButton("提交");
-		button_2.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent arg0) {
-				int Int_start_warehouse_id=Integer.parseInt((String)comboBox_2_1.getSelectedItem());
-				int Int_end_warehouse_id=Integer.parseInt((String)comboBox_2_2.getSelectedItem());
-				int Int_goods_id=Integer.parseInt(textField_2_1.getText());
-				double Double_update_number=Double.parseDouble(textField_2_0.getText());
-				double Double_goods_number=Double.parseDouble(textField_2_2.getText());
-				if(Double_update_number==Double_goods_number){
-					WarehouseDao warehouseDao=new WarehouseDao();
-					if(warehouseDao.deleteByGoodsId(Int_goods_id)){
-						System.out.println("删除成功");
-					}else{
-						System.out.println("删除失败");
-					}
-					if(warehouseDao.updateGoods(Int_end_warehouse_id, Int_goods_id, Double_update_number)){
-						System.out.println("更新成功");
-					}else{
-						System.out.println("更新失败");
-					}
-					warehouseDao.close();
-				}else if(Double_update_number<Double_goods_number){
-					//更新start仓库的物品信息
-					WarehouseDao warehouseDao=new WarehouseDao();
-					if(warehouseDao.updateGoods(Int_start_warehouse_id, Int_goods_id, -Double_update_number)){
-						System.out.println("start更新成功");
-					}else{
-						System.out.println("start更新失败");
-					}
-					//更新end仓库的物品信息
-					if(warehouseDao.updateGoods(Int_end_warehouse_id, Int_goods_id, Double_update_number)){
-						System.out.println("end更新成功");
-					}else{
-						System.out.println("end更新失败");
-					}
-				}
-				
-				int warehouse_id=1;
-				update_comboBox_2_0(comboBox_2_0, warehouse_id);
-				panel_2.updateUI();
-			}
-		});
-		button_2.setBounds(417, 181, 90, 23);
-		panel_2.add(button_2);
-		
-		JLabel label_2_5 = new JLabel("物品ID:");
-		label_2_5.setBounds(60, 145, 54, 15);
-		panel_2.add(label_2_5);
-		
-		textField_2_1 = new JTextField();
-		textField_2_1.setEditable(false);
-		textField_2_1.setBounds(174, 142, 90, 21);
-		panel_2.add(textField_2_1);
-		textField_2_1.setColumns(10);
-		
-		JLabel label_2_6 = new JLabel("库存量");
-		label_2_6.setBounds(60, 195, 54, 15);
-		panel_2.add(label_2_6);
-		
-		textField_2_2 = new JTextField();
-		textField_2_2.setEditable(false);
-		textField_2_2.setBounds(174, 192, 90, 21);
-		panel_2.add(textField_2_2);
-		textField_2_2.setColumns(10);
 		
 		panel_0 = new JPanel();
 		panel_0.setBounds(0, 0, 800, 450);
@@ -690,39 +753,24 @@ public class WarehouseManageGUI {
 		scrollPane_0_1.setViewportView(table_0_1);
 	}
 	
-	private void show_quality_table(String sql){
-		db=new MySQLConnect(sql);
-		Vector<Vector<String>> vData_1=new Vector<>();	
-		try {
-			ResultSet resultSet=db.pst.executeQuery();
-			while(resultSet.next()){
-				Vector<String>rowData=new Vector<>();
-				rowData.add(resultSet.getString(1));				
-				rowData.add(resultSet.getString(2));
-				rowData.add(resultSet.getString(3));
-				rowData.add(resultSet.getString(4));
-				rowData.add(resultSet.getString(5));
-				rowData.add(resultSet.getString(6));
-				
-				vData_1.add(rowData);
-			}
-			resultSet.close();		// 关闭执行的语句连接
-	        db.close();			// 关闭数据库连接
-
-		} catch (SQLException e1) {
-			// TODO Auto-generated catch block
-			e1.printStackTrace();
-		}
+	private void show_quality_table(){
+		WarehouseInformationDao warehouseInformationDao=new WarehouseInformationDao();
+		
+		
+		
 		Vector<String> rowName=new Vector<>();
 		rowName.add("物品ID");
 		rowName.add("物品名称");
 		rowName.add("生产日期");
 		rowName.add("保质期");
-		rowName.add("存储位置");
+		rowName.add("仓库");
+		rowName.add("区域");
+		rowName.add("位置");
 		rowName.add("物品数量");
-		//Vector<Vector<String>> vData=new Vector<>();		
-		
-		DefaultTableModel DFM_1=new DefaultTableModel(vData_1,rowName);
+			
+		Vector<Vector<String>> vData=warehouseInformationDao.getQualityInformation();
+		warehouseInformationDao.close();
+		DefaultTableModel DFM_1=new DefaultTableModel(vData,rowName);
 		table_1.setModel(DFM_1);
 		//table_1.updateUI();
 		//scrollPane_1.updateUI();
@@ -734,67 +782,52 @@ public class WarehouseManageGUI {
 		rowName.add("物品ID");
 		rowName.add("物品名称");		
 		rowName.add("库存量");
-		WarehouseDao warehouseDao=new WarehouseDao();
-		Vector<Vector<String>> vData=warehouseDao.getInventoryInformation();	
+		WarehouseInformationDao warehouseInformationDao=new WarehouseInformationDao();
+		Vector<Vector<String>> vData=warehouseInformationDao.getInventoryInformation();	
 		
-		warehouseDao.close();
+		warehouseInformationDao.close();
 		DefaultTableModel DFM=new DefaultTableModel(vData,rowName);
 		table_4.setModel(DFM);
 	}
-	private void update_comboBox_2_0(JComboBox comboBox_2_0,int warehouse_id){
-		String sql_count_1="select count(`goods_id`) as `number` from `tb_warehouse` where `warehouse_id`="+warehouse_id;
+	private void update_comboBox_2_0(JComboBox comboBox_2_0,int warehouse_id,int area_id,int position_id){
+
+		WarehouseInformationDao warehouseInformationDao=new WarehouseInformationDao();
 		
-		db=new MySQLConnect(sql_count_1);
-		ResultSet resultSet=null;
+		int max=warehouseInformationDao.getCountofGoodsId(warehouse_id, area_id, position_id);
 		
-		int max=0;
-		try {
-			resultSet=db.pst.executeQuery();
-			if(resultSet.next()){
-				max=resultSet.getInt("number");
-			}
-			resultSet.close();
-			db.close();
-		} catch (SQLException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		String sql="select `tb_goods`.`goods_id`,`goods_name`,`goods_number` "
-				+ "from `tb_goods`,`tb_warehouse`  "
-				+ "where `tb_goods`.`goods_id`=`tb_warehouse`.`goods_id` "
-				+ "and `warehouse_id`="+warehouse_id;
+		
 		if(max>0){
-			db=new MySQLConnect(sql);
+			
 			String[]columnNames=new String[max];
 			double[] goods_numbers=new double[max];
 			int[] goods_ids=new int[max];
-			db=new MySQLConnect(sql);
-			ResultSet reSet=null;
+	
+			ResultSet resultSet=warehouseInformationDao.getResultSetofGoodsId(warehouse_id, area_id, position_id);
 			try {
-				reSet=db.pst.executeQuery();
+
 				int i=0;
-				while(reSet.next()){
-					columnNames[i]=reSet.getString("goods_name");
-					goods_numbers[i]=reSet.getDouble("goods_number");
-					goods_ids[i]=reSet.getInt("goods_id");
+				while(resultSet.next()){
+					columnNames[i]=resultSet.getString("goods_name");
+					goods_numbers[i]=resultSet.getDouble("goods_number");
+					goods_ids[i]=resultSet.getInt("goods_id");
 				}
-				reSet.close();
-				db.close();
+				resultSet.close();
 			} catch (SQLException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
+			warehouseInformationDao.close();
 			comboBox_2_0.setModel(new DefaultComboBoxModel<>(columnNames));
-			textField_2_1.setText(""+goods_ids[0]);
-			textField_2_2.setText(""+goods_numbers[0]);
+			textField_2_startGoodsId.setText(""+goods_ids[0]);
+			textField_2_startGoodsNumber.setText(""+goods_numbers[0]);
 		}else if(max==0){
 			comboBox_2_0.setModel(new DefaultComboBoxModel<>(new String[]{}));
-			textField_2_1.setText("");
-			textField_2_2.setText("");
+			textField_2_startGoodsId.setText("");
+			textField_2_startGoodsNumber.setText("");
 		}
 		comboBox_2_0.updateUI();
-		textField_2_1.updateUI();
-		textField_2_2.updateUI();
+		textField_2_startGoodsId.updateUI();
+		textField_2_startGoodsNumber.updateUI();
 	}
 }
 

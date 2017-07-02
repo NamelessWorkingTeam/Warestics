@@ -1,6 +1,7 @@
 package team.nwt.warestics;
 
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
@@ -20,7 +21,7 @@ import com.itextpdf.text.pdf.PdfWriter;
 
 public class CreatePDF {
 	Document document=new Document();// 建立一个Document对象
-
+	FileOutputStream fileOutputStream;
 	private static Font headfont;// 设置字体大小
 	private static Font keyfont;// 设置字体大小
 	private static Font textfont;// 设置字体大小
@@ -44,12 +45,21 @@ public class CreatePDF {
 	public CreatePDF(File file){
 
 		document.setPageSize(PageSize.A4);// 设置页面大小
-		try{
-			PdfWriter.getInstance(document, new FileOutputStream(file));
+		
+		try {
+			fileOutputStream=new FileOutputStream(file);
+			PdfWriter.getInstance(document, fileOutputStream);
 			document.open();
-		}catch (Exception e) {			  
-			e.printStackTrace();
+		} catch (FileNotFoundException | DocumentException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
 		}
+//		try{
+//			PdfWriter.getInstance(document, new FileOutputStream(file));
+//			document.open();
+//		}catch (Exception e) {			  
+//			e.printStackTrace();
+//		}
 	}
 	public CreatePDF()
 	{
@@ -61,7 +71,8 @@ public class CreatePDF {
 		document.setPageSize(PageSize.A4);// 设置页面大小
 		try
 		{
-			PdfWriter.getInstance(document, new FileOutputStream(file));
+			fileOutputStream=new FileOutputStream(file);
+			PdfWriter.getInstance(document, fileOutputStream);
 			document.open();
 		}
 		catch (Exception e)
@@ -256,6 +267,7 @@ public class CreatePDF {
 		}
 
 		//关闭流
+
 		document.close();
 	}
 
@@ -299,7 +311,13 @@ public class CreatePDF {
 			e.printStackTrace();
 		}
 		new CreatePDF(file).generatePDF(head,list,head.length);
-		
+		//关闭流
+		try {
+			fileOutputStream.close();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 		return saveFilePathAndName;
 	}
 }

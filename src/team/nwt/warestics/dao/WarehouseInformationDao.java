@@ -66,7 +66,7 @@ public class WarehouseInformationDao extends BaseDao {
 	 * 获取仓库记录 返回Vector<Vector<String>> vData类型做为盘点表的表格内容
 	 */
 	public Vector<Vector<String>> getInventoryInformation(){
-		String sql="select `warehouse_id`,`area_id`,`position_id`,`tb_warehouse`.`goods_id`,`goods_name`,`goods_number` "
+		String sql="select `warehouse_id`,`area_id`,`position_id`,`tb_warehouseinformation`.`goods_id`,`goods_name`,`goods_number` "
 				+ "from `tb_warehouseinformation`,`tb_goods` "
 				+ "where `tb_warehouseinformation`.`goods_id`=`tb_goods`.`goods_id` "
 				+ "order by `warehouse_id`";
@@ -98,7 +98,7 @@ public class WarehouseInformationDao extends BaseDao {
 	 * 获取仓库记录 返回List<Warehouse> 类型做为盘点表的打印数据内容
 	 */
 	public List<WarehouseInformation> getInventoryInformationForPDF(){
-		String sql="select `warehouse_id`,`area_id`,`position_id`,`tb_warehouse`.`goods_id`,`goods_name`,`goods_number` "
+		String sql="select `warehouse_id`,`area_id`,`position_id`,`tb_warehouseinformation`.`goods_id`,`goods_name`,`goods_number` "
 				+ "from `tb_warehouseinformation`,`tb_goods` "
 				+ "where `tb_warehouseinformation`.`goods_id`=`tb_goods`.`goods_id` "
 				+ "order by `warehouse_id`";

@@ -394,7 +394,7 @@ public class WarehouseManageGUI {
 		JButton btnNewButton_4 = new JButton("打印表格");
 		btnNewButton_4.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				String[] head={"warehouse_id","goods_id","goods_name","goods_number"};
+				String[] head={"warehouse_id","area_id","position_id","goods_id","goods_name","goods_number"};
 				List<WarehouseInformation>warehouses=new WarehouseInformationDao().getInventoryInformationForPDF();
 				String filePath = new CreatePDF().generatePDFs(head,warehouses);
 				System.out.println(filePath);
@@ -778,7 +778,9 @@ public class WarehouseManageGUI {
 	}
 	private void show_inventory_table(){
 		Vector<String> rowName=new Vector<>();
-		rowName.add("仓库位置");
+		rowName.add("仓库号");
+		rowName.add("区域");
+		rowName.add("货架");
 		rowName.add("物品ID");
 		rowName.add("物品名称");		
 		rowName.add("库存量");

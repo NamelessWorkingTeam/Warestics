@@ -253,9 +253,26 @@ public class TMS_ChargeBack extends JFrame {
 						report_state = result_state.getString("transfer_state");
 						if(report_state.compareTo("Y")==0){
 							state_now="已转运";
+							JOptionPane.showMessageDialog(null, "已转运！", "提示",JOptionPane.INFORMATION_MESSAGE);
 						}
-						else if (report_state.compareTo("N")==0) state_now="待转运";
-						else if (report_state.compareTo("T")==0) state_now="已退单";
+						else if (report_state.compareTo("N")==0) {
+							state_now="待转运";
+							
+							String sql_alter = "UPDATE tb_transfer SET transfer_state = 'T' WHERE transfer_id='"+report_id+"'";
+							MySQLConnect con_alter = new MySQLConnect(sql_alter);
+							try {
+								con_alter.pst.executeUpdate();
+								JOptionPane.showMessageDialog(null, "已退单！", "提示",JOptionPane.INFORMATION_MESSAGE);
+							} catch (SQLException e2) {
+								// TODO Auto-generated catch block
+								e2.printStackTrace();
+							}
+							
+						}
+						else if (report_state.compareTo("T")==0) {
+							state_now="已退单";
+							JOptionPane.showMessageDialog(null, "已退单！请勿重复退单！", "提示",JOptionPane.INFORMATION_MESSAGE);
+						}
 					}
 
 				} catch (SQLException e1) {

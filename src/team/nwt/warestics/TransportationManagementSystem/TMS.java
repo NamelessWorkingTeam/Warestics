@@ -13,7 +13,13 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.awt.event.ActionEvent;
 
-
+/**
+ * 
+ * @author liuhao
+ *本系统所调用数据库中的tb_transfer表中的transfe_state属性
+ *其中N为待转运，Y为已转运，T为已退单
+ *Warning:transfer_state中只有N/Y/T三个状态，其他数据会导致数据库出错！！
+ */
 
 public class TMS extends JFrame {
 

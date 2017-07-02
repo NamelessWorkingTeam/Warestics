@@ -91,9 +91,14 @@ public class DMSAdminSystemDemandManage extends JFrame implements ActionListener
 		});
 		btnNewButton_3.setFont(new Font("微软雅黑", Font.PLAIN, 15));
 		panel_1.add(btnNewButton_3);
-		JButton btnNewButton_4 = new JButton("删除");
+		JButton btnNewButton_4 = new JButton("打包");
 		btnNewButton_4.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
+
+				DMSPackSearch newframe = new DMSPackSearch();
+				newframe.setVisible(true);
+				//dispose();
+				
 //				String sql="DELETE FROM MEDICINE WHERE MED_NAME = ('"+textField.getText()+"')";
 //				MySQLConnect con=new MySQLConnect(sql);	
 //				int key=1;//定义一个中间变量，来判断输入信息的窗口，如果成功 则 保存成功

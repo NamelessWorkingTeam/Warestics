@@ -307,7 +307,7 @@ public class TMS_MainVersion extends JFrame {
 		label_1.setFont(new Font("Dialog", Font.PLAIN, 14));
 		
 		JComboBox comboBox_check = new JComboBox();
-		comboBox_check.setModel(new DefaultComboBoxModel(new String[] {"合格", "不合格"}));
+		comboBox_check.setModel(new DefaultComboBoxModel(new String[] {"-请选择-", "合格", "不合格"}));
 		comboBox_check.setBounds(153, 136, 105, 24);
 		contentPane.add(comboBox_check);
 		
@@ -320,7 +320,8 @@ public class TMS_MainVersion extends JFrame {
 				if(main_state.compareTo("N")==0){
 			
 					if(comboBox_check.getSelectedItem().toString().compareTo("合格")==0) transfer_check="Y";
-					if(comboBox_check.getSelectedItem().toString().compareTo("不合格")==0) transfer_check="N";
+					else if(comboBox_check.getSelectedItem().toString().compareTo("不合格")==0) transfer_check="N";
+					
 					
 					String sql="UPDATE tb_transfer SET transfer_check='"+transfer_check+"' WHERE transfer_id = '"+main_id+"'";
 					MySQLConnect con=new MySQLConnect(sql);
@@ -329,7 +330,8 @@ public class TMS_MainVersion extends JFrame {
 						if(transfer_check=="Y"){
 							JOptionPane.showMessageDialog(null, "审核提交成功", "提示",JOptionPane.INFORMATION_MESSAGE);
 						}
-						else JOptionPane.showMessageDialog(null, "审核不合格，请联系地面管理人员", "提示",JOptionPane.INFORMATION_MESSAGE);
+						else if(transfer_check=="N") JOptionPane.showMessageDialog(null, "审核不合格，请联系地面管理人员", "提示",JOptionPane.INFORMATION_MESSAGE);
+						else JOptionPane.showMessageDialog(null, "选择不能为空！", "提示",JOptionPane.INFORMATION_MESSAGE);
 					} catch (SQLException e1) {
 						// TODO Auto-generated catch block
 						e1.printStackTrace();

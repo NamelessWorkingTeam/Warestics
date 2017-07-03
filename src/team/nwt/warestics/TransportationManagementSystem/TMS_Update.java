@@ -129,16 +129,20 @@ public class TMS_Update extends JFrame {
 			public void actionPerformed(ActionEvent e) {
 				
 				text_end=textField_2.getText();
-				String sql = "UPDATE tb_transfer SET transfer_end='"+text_end+"' WHERE transfer_id='"+update_id+"'";
-				MySQLConnect con = new MySQLConnect(sql);
-				try {
-					con.pst.executeUpdate();
-					JOptionPane.showMessageDialog(null, "更新成功！", "提示",JOptionPane.INFORMATION_MESSAGE);
-				} catch (SQLException e1) {
-					// TODO Auto-generated catch block
-					JOptionPane.showMessageDialog(null, "更新失败！", "提示", JOptionPane.ERROR_MESSAGE);
-					e1.printStackTrace();
+				if(text_end.length()==0) JOptionPane.showMessageDialog(null, "目的地不能为空！", "提示",JOptionPane.INFORMATION_MESSAGE);
+				else{
+					String sql = "UPDATE tb_transfer SET transfer_end='"+text_end+"' WHERE transfer_id='"+update_id+"'";
+					MySQLConnect con = new MySQLConnect(sql);
+					try {
+						con.pst.executeUpdate();
+						JOptionPane.showMessageDialog(null, "更新成功！", "提示",JOptionPane.INFORMATION_MESSAGE);
+					} catch (SQLException e1) {
+						// TODO Auto-generated catch block
+						JOptionPane.showMessageDialog(null, "更新失败！", "提示", JOptionPane.ERROR_MESSAGE);
+						e1.printStackTrace();
+					}
 				}
+
 				
 			}
 		});

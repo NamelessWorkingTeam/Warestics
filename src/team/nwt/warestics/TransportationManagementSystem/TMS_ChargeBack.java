@@ -52,11 +52,7 @@ public class TMS_ChargeBack extends JFrame {
 	static String report_state;			//转运状态（数据库）
 	static String state_now;			//转运状态（中文）
 	
-	JTable jt=null;
-
-    private JTable table_goods;
 	
-
 	/**
 	 * Launch the application.
 	 */
@@ -166,7 +162,7 @@ public class TMS_ChargeBack extends JFrame {
 //*****************************初始查询结束****************************************	
 		
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		setBounds(100, 100, 450, 487);
+		setBounds(100, 100, 450, 468);
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 		setContentPane(contentPane);
@@ -179,17 +175,17 @@ public class TMS_ChargeBack extends JFrame {
 		
 		JLabel label_1 = new JLabel("\u8F6C\u8FD0\u5355\u53F7\uFF1A");
 		label_1.setFont(new Font("Dialog", Font.PLAIN, 14));
-		label_1.setBounds(85, 52, 75, 24);
+		label_1.setBounds(74, 77, 75, 24);
 		contentPane.add(label_1);
 		
 		JLabel label_2 = new JLabel("始发地：");
 		label_2.setFont(new Font("Dialog", Font.PLAIN, 14));
-		label_2.setBounds(85, 93, 75, 24);
+		label_2.setBounds(74, 118, 75, 24);
 		contentPane.add(label_2);
 		
 		JLabel label_3 = new JLabel("中转站：");
 		label_3.setFont(new Font("Dialog", Font.PLAIN, 14));
-		label_3.setBounds(85, 129, 75, 24);
+		label_3.setBounds(74, 154, 75, 24);
 		contentPane.add(label_3);
 		
 		JButton button = new JButton("返回上一级");
@@ -204,42 +200,42 @@ public class TMS_ChargeBack extends JFrame {
 				dispose();
 			}
 		});
-		button.setBounds(279, 399, 105, 24);
+		button.setBounds(294, 389, 105, 24);
 		contentPane.add(button);
 		
 		JLabel Label_id = new JLabel("transfer_id");
-		Label_id.setBounds(172, 53, 114, 24);
+		Label_id.setBounds(161, 78, 114, 24);
 		contentPane.add(Label_id);
 		Label_id.setText(report_id);
 		
 		JLabel label_4 = new JLabel("目的地：");
 		label_4.setFont(new Font("Dialog", Font.PLAIN, 14));
-		label_4.setBounds(85, 165, 75, 24);
+		label_4.setBounds(74, 190, 75, 24);
 		contentPane.add(label_4);
 		
 		JLabel Label_start = new JLabel("transfer_start");
-		Label_start.setBounds(172, 94, 114, 24);
+		Label_start.setBounds(161, 119, 114, 24);
 		contentPane.add(Label_start);
 		Label_start.setText(report_start);			//打印始发地信息
 		
 		JLabel Label_mid = new JLabel("transfer_mid");
-		Label_mid.setBounds(172, 130, 114, 24);
+		Label_mid.setBounds(161, 155, 114, 24);
 		contentPane.add(Label_mid);
 		Label_mid.setText(report_mid);				//打印中转站
 		
 		JLabel Label_end = new JLabel("transfer_end");
-		Label_end.setBounds(172, 166, 114, 24);
+		Label_end.setBounds(161, 191, 114, 24);
 		contentPane.add(Label_end);
 		Label_end.setText(report_end);				//打印目的地
 		
 		JLabel label_5 = new JLabel("审核情况：");
 		label_5.setFont(new Font("Dialog", Font.PLAIN, 14));
-		label_5.setBounds(85, 201, 75, 24);
+		label_5.setBounds(74, 226, 75, 24);
 		contentPane.add(label_5);
 	
 		
 		JLabel Label_check = new JLabel("transfer_check");
-		Label_check.setBounds(172, 202, 114, 24);
+		Label_check.setBounds(161, 227, 114, 24);
 		contentPane.add(Label_check);
 		Label_check.setText(check_state);
 		
@@ -257,9 +253,26 @@ public class TMS_ChargeBack extends JFrame {
 						report_state = result_state.getString("transfer_state");
 						if(report_state.compareTo("Y")==0){
 							state_now="已转运";
+							JOptionPane.showMessageDialog(null, "已转运！", "提示",JOptionPane.INFORMATION_MESSAGE);
 						}
-						else if (report_state.compareTo("N")==0) state_now="待转运";
-						else if (report_state.compareTo("T")==0) state_now="已退单";
+						else if (report_state.compareTo("N")==0) {
+							state_now="待转运";
+							
+							String sql_alter = "UPDATE tb_transfer SET transfer_state = 'T' WHERE transfer_id='"+report_id+"'";
+							MySQLConnect con_alter = new MySQLConnect(sql_alter);
+							try {
+								con_alter.pst.executeUpdate();
+								JOptionPane.showMessageDialog(null, "已退单！", "提示",JOptionPane.INFORMATION_MESSAGE);
+							} catch (SQLException e2) {
+								// TODO Auto-generated catch block
+								e2.printStackTrace();
+							}
+							
+						}
+						else if (report_state.compareTo("T")==0) {
+							state_now="已退单";
+							JOptionPane.showMessageDialog(null, "已退单！请勿重复退单！", "提示",JOptionPane.INFORMATION_MESSAGE);
+						}
 					}
 
 				} catch (SQLException e1) {
@@ -269,15 +282,30 @@ public class TMS_ChargeBack extends JFrame {
 				
 			}
 		});
-		button_1.setFont(new Font("Lucida Grande", Font.PLAIN, 15));
-		button_1.setBounds(85, 398, 105, 24);
+		button_1.setFont(new Font("Lucida Grande", Font.PLAIN, 13));
+		button_1.setBounds(222, 285, 105, 24);
 		contentPane.add(button_1);
 		
+		JButton button_2 = new JButton("查看商品明细");
+		button_2.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				
+				TMS_GoodsList TMS_GoodsList = new TMS_GoodsList();
+				TMS_GoodsList.setResizable(false);
+				TMS_GoodsList.setLocationRelativeTo(null);
+				TMS_GoodsList.setDefaultCloseOperation(DISPOSE_ON_CLOSE);
+				TMS_GoodsList.setVisible(true);
+				dispose();
+				
+			}
+		});
+		button_2.setFont(new Font("Lucida Grande", Font.PLAIN, 13));
+		button_2.setBounds(62, 285, 105, 24);
+		contentPane.add(button_2);
 		
-		TMS_Model x=new TMS_Model();
-		table_goods = new JTable(x);
-		table_goods.setBounds(85, 237, 300, 140);
-		contentPane.add(table_goods);
+		
+		
+
 		
 
 

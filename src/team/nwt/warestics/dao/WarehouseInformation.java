@@ -2,7 +2,7 @@ package team.nwt.warestics.dao;
 
 import java.io.Serializable;
 
-public class Warehouse implements Serializable {
+public class WarehouseInformation implements Serializable {
 
 	/**
 	 * 
@@ -10,6 +10,8 @@ public class Warehouse implements Serializable {
 	private static final long serialVersionUID = 1L;
 	
 	private int warehouse_id;
+	private int area_id;
+	private int position_id;
 	private int goods_id;
 	private String goods_name;
 	private double goods_number;
@@ -36,6 +38,18 @@ public class Warehouse implements Serializable {
 	}
 	public void setGoods_number(double goods_number) {
 		this.goods_number = goods_number;
+	}
+	public int getArea_id() {
+		return area_id;
+	}
+	public void setArea_id(int area_id) {
+		this.area_id = area_id;
+	}
+	public int getPosition_id() {
+		return position_id;
+	}
+	public void setPosition_id(int position_id) {
+		this.position_id = position_id;
 	}
 	
 	

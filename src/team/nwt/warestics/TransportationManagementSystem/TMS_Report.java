@@ -264,7 +264,7 @@ public class TMS_Report extends JFrame {
 				if(report_state.compareTo("N")==0){
 					//数据库转运状态已转运设置为Y
 					
-					String sql_now = "UPDATE tb_transfer SET transfer_state = 'Y'";
+					String sql_now = "UPDATE tb_transfer SET transfer_state = 'Y' WHERE transfer_id = '"+report_id+"'";
 					MySQLConnect con_now = new MySQLConnect(sql_now);
 					try {
 						con_now.pst.executeUpdate();

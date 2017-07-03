@@ -11,10 +11,13 @@ import team.nwt.warestics.MySQLConnect;
 import team.nwt.warestics.TransportationManagementSystem.TMS;
 
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JButton;
 import java.awt.Font;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.awt.event.ActionListener;
+import java.awt.event.ActionEvent;
 
 public class DMSPack extends JFrame {
 
@@ -23,10 +26,10 @@ public class DMSPack extends JFrame {
 	static String search_id1=DMSPackSearch.text;  //订单id
 	static String search_id2;                    //发货id
 	static String search_goods_name;             //商品名称
-	static String search_number;                 //商品数量
-	static String search_volume;			     //商品体积
-	static String search_weight;			     //商品质量
-	
+	static float search_number;                 //商品数量
+	static float search_volume;			     //商品体积
+	static float search_weight;			     //商品质量
+	static String pack_plan;
 	/**
 	 * Launch the application.
 	 */
@@ -97,7 +100,7 @@ public class DMSPack extends JFrame {
 					ResultSet result_number = con_number.pst.executeQuery();
 					
 					if(result_number.next()){
-						search_number = result_number.getString("goods_number");
+						search_number = result_number.getFloat("goods_number");
 						
 					}
 
@@ -117,7 +120,7 @@ public class DMSPack extends JFrame {
 					ResultSet result_volume = con_volume.pst.executeQuery();
 					
 					if(result_volume.next()){
-						search_volume = result_volume.getString("goods_volume");
+						search_volume = result_volume.getFloat("goods_volume");
 						
 					}
 
@@ -137,7 +140,7 @@ public class DMSPack extends JFrame {
 					ResultSet result_weight = con_weight.pst.executeQuery();
 					
 					if(result_weight.next()){
-						search_weight = result_weight.getString("goods_weight");
+						search_weight = result_weight.getFloat("goods_weight");
 						
 					}
 
@@ -146,9 +149,9 @@ public class DMSPack extends JFrame {
 					e1.printStackTrace();
 				}
 				
-	    setTitle("订单信息详情");
+	    setTitle("打包方案详情");
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		setBounds(100, 100, 450, 426);
+		setBounds(100, 100, 450, 759);
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 		setContentPane(contentPane);
@@ -189,10 +192,7 @@ public class DMSPack extends JFrame {
 		lblNewLabel.setBounds(44, 266, 110, 18);
 		contentPane.add(lblNewLabel);
 		
-		JButton btnNewButton = new JButton("保存打包方案");
-		btnNewButton.setFont(new Font("微软雅黑", Font.PLAIN, 15));
-		btnNewButton.setBounds(253, 335, 136, 27);
-		contentPane.add(btnNewButton);
+		
 		
 		JLabel lblNewLabe_id11 = new JLabel("");
 		lblNewLabe_id11.setBounds(220, 38, 72, 18);
@@ -209,21 +209,142 @@ public class DMSPack extends JFrame {
 		contentPane.add(lblNewLabel_goodsname1);
 		lblNewLabel_goodsname1.setText(search_goods_name);
 		
+		
 		JLabel lblNewLabel_number1 = new JLabel("");
 		lblNewLabel_number1.setBounds(220, 152, 72, 18);
+		String y=String.valueOf(search_number);
+		lblNewLabel_number1.setText(y);
 		contentPane.add(lblNewLabel_number1);
-		lblNewLabel_number1.setText(search_number);
 		
 		JLabel lblNewLabel_volume1 = new JLabel("");
 		lblNewLabel_volume1.setBounds(220, 190, 72, 18);
 		contentPane.add(lblNewLabel_volume1);
-		lblNewLabel_volume1.setText(search_volume);
+		String s=String.valueOf(search_volume);
+		lblNewLabel_volume1.setText(s);
 		
 	
 		JLabel lblNewLabel_weight1 = new JLabel("");
 		lblNewLabel_weight1.setBounds(220, 228, 72, 18);
 		contentPane.add(lblNewLabel_weight1);
-		lblNewLabel_weight1.setText(search_weight);
+		String w=String.valueOf(search_weight);
+		lblNewLabel_weight1.setText(w);
+		
+		//打包方案判断
+		if(search_goods_name.equals("酒精"))
+			pack_plan="特殊方案";
+		else
+			if(search_volume<100&&search_weight<100)
+			pack_plan="方案1";
+			else
+				if(search_volume<100&&search_weight<1000&&100<search_weight)
+				pack_plan="方案2";
+				else
+					if(search_volume<100&&1000<search_weight)
+					pack_plan="方案3";
+					else
+						if(search_volume<1000&&100<search_volume&&search_weight<100)
+						pack_plan="方案4";
+						else
+							if(search_volume<1000&&100<search_volume&&100<search_weight&&search_weight<1000)
+							pack_plan="方案5";
+							else
+								if(search_volume<1000&&100<search_volume&&1000<search_weight)
+								pack_plan="方案6";
+								else
+									if(1000<search_volume&&search_weight<100)
+									pack_plan="方案7";
+									else
+										if(1000<search_volume&&100<search_weight&&search_weight<1000)
+										pack_plan="方案8";
+										else
+											if(1000<search_volume&&search_weight>1000)
+											pack_plan="方案9";
+		JLabel lblNewLabel_1 = new JLabel("");
+		lblNewLabel_1.setBounds(220, 267, 136, 18);
+		contentPane.add(lblNewLabel_1);
+		lblNewLabel_1.setText(pack_plan);
+		
+		System.out.println(pack_plan);
+		JButton btnNewButton = new JButton("保存打包方案");
+		btnNewButton.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+//				try {
+//				    int a = Integer.parseInt(search_id2);
+//				} catch (NumberFormatException e) {
+//				    e.printStackTrace();
+//				}
+				String sql1="UPDATE tb_delivery SET delivery_pack ='"+pack_plan+"' WHERE order_id='"+search_id1+"'";
+				
+			    MySQLConnect con1=new MySQLConnect(sql1);
+			    try {
+					con1.pst.executeUpdate();
+					 JOptionPane.showMessageDialog(null, "保存成功");  
+				} catch (SQLException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+			    
+			   
+				
+			}
+		});
+		btnNewButton.setFont(new Font("微软雅黑", Font.PLAIN, 15));
+		btnNewButton.setBounds(255, 644, 136, 27);
+		contentPane.add(btnNewButton);
+		
+		JLabel lblNewLabel_2 = new JLabel("打包方案说明：");
+		lblNewLabel_2.setFont(new Font("微软雅黑", Font.PLAIN, 15));
+		lblNewLabel_2.setBounds(44, 302, 110, 18);
+		contentPane.add(lblNewLabel_2);
+		
+		JLabel lblNewLabel_3 = new JLabel("方案1:体积<=100,质量<=100");
+		lblNewLabel_3.setFont(new Font("微软雅黑", Font.PLAIN, 15));
+		lblNewLabel_3.setBounds(44, 330, 336, 27);
+		contentPane.add(lblNewLabel_3);
+		
+		JLabel lblNewLabel_4 = new JLabel("方案2:体积<=100,100<质量<=1000");
+		lblNewLabel_4.setFont(new Font("微软雅黑", Font.PLAIN, 15));
+		lblNewLabel_4.setBounds(44, 355, 336, 27);
+		contentPane.add(lblNewLabel_4);
+		
+		JLabel lblNewLabel_5 = new JLabel("方案3:体积<=100,质量>1000");
+		lblNewLabel_5.setFont(new Font("微软雅黑", Font.PLAIN, 15));
+		lblNewLabel_5.setBounds(44, 380, 336, 27);
+		contentPane.add(lblNewLabel_5);
+		
+		JLabel lblNewLabel_6 = new JLabel("方案4:100<体积<=1000,质量<=100");
+		lblNewLabel_6.setFont(new Font("微软雅黑", Font.PLAIN, 15));
+		lblNewLabel_6.setBounds(44, 405, 336, 27);
+		contentPane.add(lblNewLabel_6);
+		
+		JLabel lblNewLabel_7 = new JLabel("方案5:100<体积<=1000,100<质量<=1000");
+		lblNewLabel_7.setFont(new Font("微软雅黑", Font.PLAIN, 15));
+		lblNewLabel_7.setBounds(44, 430, 336, 27);
+		contentPane.add(lblNewLabel_7);
+		
+		JLabel lblNewLabel_8 = new JLabel("方案6:100<体积<=1000,质量>1000");
+		lblNewLabel_8.setFont(new Font("微软雅黑", Font.PLAIN, 15));
+		lblNewLabel_8.setBounds(44, 455, 336, 27);
+		contentPane.add(lblNewLabel_8);
+		
+		JLabel lblNewLabel_9 = new JLabel("方案7:体积>1000,质量<=100");
+		lblNewLabel_9.setFont(new Font("微软雅黑", Font.PLAIN, 15));
+		lblNewLabel_9.setBounds(44, 480, 336, 27);
+		contentPane.add(lblNewLabel_9);
+		
+		JLabel lblNewLabel_10 = new JLabel("方案8:体积>1000,100<质量<=1000");
+		lblNewLabel_10.setFont(new Font("微软雅黑", Font.PLAIN, 15));
+		lblNewLabel_10.setBounds(44, 505, 336, 27);
+		contentPane.add(lblNewLabel_10);
+		
+		JLabel lblNewLabel_11 = new JLabel("方案9:体积>1000,质量>1000");
+		lblNewLabel_11.setFont(new Font("微软雅黑", Font.PLAIN, 15));
+		lblNewLabel_11.setBounds(44, 530, 336, 27);
+		contentPane.add(lblNewLabel_11);
+		
+		JLabel lblNewLabel_12 = new JLabel("特殊方案:如药品,化工产品等。");
+		lblNewLabel_12.setFont(new Font("微软雅黑", Font.PLAIN, 15));
+		lblNewLabel_12.setBounds(44, 555, 336, 27);
+		contentPane.add(lblNewLabel_12);
 	}
-
 }

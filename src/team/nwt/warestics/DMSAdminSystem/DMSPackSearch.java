@@ -99,6 +99,11 @@ public class DMSPackSearch extends JFrame {
 		contentPane.add(btnNewButton);
 		
 		JButton btnNewButton_1 = new JButton("退出");
+		btnNewButton_1.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				dispose();
+			}
+		});
 		btnNewButton_1.setFont(new Font("微软雅黑", Font.PLAIN, 15));
 		btnNewButton_1.setBounds(248, 177, 113, 27);
 		contentPane.add(btnNewButton_1);

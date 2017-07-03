@@ -80,7 +80,7 @@ public class DMSAdminSystemDemandManage extends JFrame implements ActionListener
 		JPanel panel_1 = new JPanel();
 		contentPane.add(panel_1, BorderLayout.SOUTH);
 		
-		JButton btnNewButton_3 = new JButton("修改");
+		JButton btnNewButton_3 = new JButton("发送需求");
 		btnNewButton_3.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				
@@ -97,19 +97,7 @@ public class DMSAdminSystemDemandManage extends JFrame implements ActionListener
 
 				DMSPackSearch newframe = new DMSPackSearch();
 				newframe.setVisible(true);
-				//dispose();
 				
-//				String sql="DELETE FROM MEDICINE WHERE MED_NAME = ('"+textField.getText()+"')";
-//				MySQLConnect con=new MySQLConnect(sql);	
-//				int key=1;//定义一个中间变量，来判断输入信息的窗口，如果成功 则 保存成功
-//				try{
-//					if(textField.getText().equals("")){
-//						JOptionPane.showMessageDialog(null, "内容不能为空"); key=0;}
-//					if(key==1){ con.pst.executeUpdate();   JOptionPane.showMessageDialog(null, "保存成功");}
-//					con.pst.executeUpdate();
-//				}catch(SQLException e1){
-//					e1.printStackTrace();
-//				}
 			}
 		});
 		btnNewButton_4.setFont(new Font("微软雅黑", Font.PLAIN, 15));

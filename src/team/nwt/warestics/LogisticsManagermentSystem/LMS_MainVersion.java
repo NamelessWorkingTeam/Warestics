@@ -88,6 +88,7 @@ public class LMS_MainVersion extends JFrame {
 					t.main(args);
 					LMS_MainVersion frame = new LMS_MainVersion();
 					frame.setLocationRelativeTo(null);
+					frame.setResizable(false);
 					frame.setVisible(true);
 				} catch (Exception e) {
 					e.printStackTrace();
@@ -137,6 +138,7 @@ public class LMS_MainVersion extends JFrame {
 				}
 				LMS_CarPackSuccess newframe = new LMS_CarPackSuccess();//页面跳转
 				newframe.setLocationRelativeTo(null);
+				newframe.setResizable(false);
 				newframe.setVisible(true);
 				panel_2.setVisible(false);
 				JPanel panel_3 = new JPanel();
@@ -166,6 +168,7 @@ public class LMS_MainVersion extends JFrame {
 				}
 				LMS_DriverSuccess newframe = new LMS_DriverSuccess();//页面跳转
 				newframe.setLocationRelativeTo(null);
+				newframe.setResizable(false);
 				newframe.setVisible(true);
 				JPanel panel_3 = new JPanel();
 				contentPane.add(panel_3, BorderLayout.EAST);
@@ -204,6 +207,7 @@ public class LMS_MainVersion extends JFrame {
 //				panel_2.add(Dmjsp2);
 				LMS_RouteSuccess newframe = new LMS_RouteSuccess();//页面跳转
 				newframe.setLocationRelativeTo(null);
+				newframe.setResizable(false);
 				newframe.setVisible(true);
 				JPanel panel_4 = new JPanel();
 				contentPane.add(panel_4, BorderLayout.EAST);
@@ -339,6 +343,7 @@ public class LMS_MainVersion extends JFrame {
 			public void actionPerformed(ActionEvent e) {
 				LMS_CarManagement newframe = new LMS_CarManagement();//页面跳转
 				newframe.setLocationRelativeTo(null);
+				newframe.setResizable(false);
 				newframe.setVisible(true);
 			}
 		});

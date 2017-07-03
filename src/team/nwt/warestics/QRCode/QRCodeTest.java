@@ -1,4 +1,4 @@
-package team.nwt.warestics;
+package team.nwt.warestics.QRCode;
 
 import java.awt.Graphics;  
 import java.awt.image.BufferedImage;  
@@ -11,7 +11,8 @@ import team.nwt.warestics.rms.*;
 public class QRCodeTest {  
     public static void main(String[] args) throws IOException {  
         JFrame jframe = new JFrame();  
-        jframe.add(new ImagePanel());  
+        BufferedImage image = QRCode.encodeQRcode("123123", 300, 300);  
+        jframe.add(new ImagePanel(image));  
         jframe.setSize(500, 500);  
         jframe.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);  
         jframe.setVisible(true);
@@ -19,17 +20,3 @@ public class QRCodeTest {
     }  
 }  
   
-class ImagePanel extends JPanel {  
-  
-    private BufferedImage image;  
-  
-    public ImagePanel() throws IOException {  
-        image = QRCode.encodeQRcode("徐一泓我爱你", 400, 400);  
-    }  
-  
-    @Override  
-    public void paintComponent(Graphics g) {  
-        g.drawImage(image, 0, 0, null);   
-    }  
-  
-}  

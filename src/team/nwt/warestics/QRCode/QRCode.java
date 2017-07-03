@@ -1,4 +1,4 @@
-package team.nwt.warestics;
+package team.nwt.warestics.QRCode;
 
 import com.google.zxing.BarcodeFormat;
 import com.google.zxing.Binarizer;

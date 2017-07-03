@@ -2,7 +2,28 @@ package team.nwt.warestics.LogisticsManagermentSystem;
 
 import java.awt.BorderLayout;
 import java.awt.EventQueue;
-
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.util.Vector;
+import javax.swing.JFrame;
+import javax.swing.JPanel;
+import javax.swing.JScrollPane;
+import javax.swing.JTable;
+import javax.swing.border.EmptyBorder;
+import javax.swing.JButton;
+import java.awt.event.ActionListener;
+import java.awt.event.ActionEvent;
+import javax.swing.JLabel;
+import javax.swing.JOptionPane;
+import java.sql.*;
+import javax.swing.*;
+import java.awt.*;
+import java.awt.event.*;
+import java.util.*;
+import team.nwt.warestics.MySQLConnect;
+import javax.swing.JTextField;
+import javax.swing.JButton;
+import javax.swing.JLabel;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
@@ -11,6 +32,40 @@ import javax.swing.JLabel;
 import javax.swing.JTextField;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
+import java.awt.Font;
+import java.awt.BorderLayout;
+import java.awt.EventQueue;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.util.Vector;
+import javax.swing.JFrame;
+import javax.swing.JPanel;
+import javax.swing.JScrollPane;
+import javax.swing.JTable;
+import javax.swing.border.EmptyBorder;
+import javax.swing.JButton;
+import java.awt.event.ActionListener;
+import java.awt.event.ActionEvent;
+import javax.swing.JLabel;
+import javax.swing.JOptionPane;
+import java.sql.*;
+import javax.swing.*;
+import java.awt.*;
+import java.awt.event.*;
+import java.util.*;
+import team.nwt.warestics.MySQLConnect;
+import javax.swing.JTextField;
+import javax.swing.JButton;
+import javax.swing.JLabel;
+import javax.swing.JFrame;
+import javax.swing.JPanel;
+import javax.swing.border.EmptyBorder;
+import javax.swing.JButton;
+import javax.swing.JLabel;
+import javax.swing.JTextField;
+import java.awt.event.ActionListener;
+import java.awt.event.ActionEvent;
+import java.awt.Font;
 
 public class LMS_MainVersion extends JFrame {
 
@@ -71,6 +126,7 @@ public class LMS_MainVersion extends JFrame {
 		contentPane.add(panel_3, BorderLayout.NORTH);
 		
 		JLabel label = new JLabel("物流管理系统");
+		label.setFont(new Font("宋体", Font.PLAIN, 20));
 		panel_3.add(label);
 		
 		JPanel panel_4 = new JPanel();

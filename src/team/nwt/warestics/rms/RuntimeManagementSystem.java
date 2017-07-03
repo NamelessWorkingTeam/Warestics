@@ -432,7 +432,7 @@ public class RuntimeManagementSystem extends JFrame {
 		button2.setEnabled(false);
 		button2.setFont(new Font("微软雅黑", Font.BOLD, 30));
 		
-		panel_1 = new ImagePanel(QRCode.encodeQRcode("111", 300, 300));
+		panel_1 = new ImagePanel("453645");
 		panel_1.setVisible(false);
 		GroupLayout gl_panel = new GroupLayout(panel);
 		gl_panel.setHorizontalGroup(

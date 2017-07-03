@@ -12,11 +12,10 @@ public class QRCodeTest {
     public static void main(String[] args) throws IOException {  
         JFrame jframe = new JFrame();  
         BufferedImage image = QRCode.encodeQRcode("123123", 300, 300);  
-        jframe.add(new ImagePanel(image));  
+        jframe.add(new ImagePanel("111"));  
         jframe.setSize(500, 500);  
         jframe.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);  
         jframe.setVisible(true);
         System.out.print(QRCode.decodeQRcode("D:\\test.jpg"));
     }  
 }  
-  

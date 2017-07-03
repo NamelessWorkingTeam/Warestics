@@ -10,9 +10,9 @@ public class ImagePanel extends JPanel {
 	  
     private BufferedImage image;  
   
-    public ImagePanel(BufferedImage image) throws IOException {  
-    	this.image = image;
-    }  
+    public ImagePanel(String QRCodeContent) throws IOException {  
+    	this.image = QRCode.encodeQRcode(QRCodeContent, 300, 300);
+    }
   
     public void setImage(BufferedImage image){
     	this.image = image;
@@ -24,4 +24,4 @@ public class ImagePanel extends JPanel {
         g.drawImage(image, 0, 0, null);   
     }  
   
-}  
+}

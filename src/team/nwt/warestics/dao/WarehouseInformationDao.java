@@ -34,17 +34,17 @@ public class WarehouseInformationDao extends BaseDao {
 		
 	}
 	/**
-	 * 2017/7/2 tb_warehouse更新后暂时未更新该方法
+	 * 
 	 * 更新x仓库y物品z库存 若不存在,则直接添加记录
 	 */
-	public boolean updateWarehouseInformation(int warehose_id,int area_id,int position_id,int goods_id,double number){
+	public boolean updateWarehouseInformation(int warehouse_id,int area_id,int position_id,int goods_id,double number){
 		String insertSql="insert into `tb_warehouseinformation`(`warehouse_id`,`area_id`,`position_id`,`goods_id`,`goods_number`) values(?,?,?,?,?) "
 				+ "on duplicate key update `goods_number`=`goods_number`+?";
 		PreparedStatement preparedStatement;		
 
 		try {
 			preparedStatement=connection.prepareStatement(insertSql);
-			preparedStatement.setInt(1, warehose_id);
+			preparedStatement.setInt(1, warehouse_id);
 			preparedStatement.setInt(2, area_id);
 			preparedStatement.setInt(3, position_id);
 			preparedStatement.setInt(4, goods_id);

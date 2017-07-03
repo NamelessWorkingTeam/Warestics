@@ -50,6 +50,7 @@ public class LMS_CarManagement extends JFrame implements ActionListener  {
 	 * Create the frame.
 	 */
 	public LMS_CarManagement() {
+		
 		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		setBounds(100, 100, 380, 560);
 		contentPane = new JPanel();

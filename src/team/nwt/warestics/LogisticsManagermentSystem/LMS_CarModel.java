@@ -86,11 +86,13 @@ public class LMS_CarModel extends AbstractTableModel {
     {
     	//建立表头  
     	ColumnNames= new Vector();	
-		ColumnNames.add("编号");
-		ColumnNames.add("姓名");
-		ColumnNames.add("科室");
-		ColumnNames.add("就诊总金额");
-		ColumnNames.add("就诊总人次");
+		ColumnNames.add("运输编号");
+		ColumnNames.add("货车编号");
+		ColumnNames.add("司机");
+		ColumnNames.add("出发地");
+		ColumnNames.add("目的地");		
+		ColumnNames.add("当前位置");
+		ColumnNames.add("当前状态");
 		RowData=new Vector(); 						// 此处填写要执行的语句
 	    db = new MySQLConnect(sql);							// 新建一个数据库连接
 	    try {
@@ -100,8 +102,10 @@ public class LMS_CarModel extends AbstractTableModel {
 	        	hang.add(ret.getString(1));
 	        	hang.add(ret.getString(2));
 	        	hang.add(ret.getString(3));
-	        	hang.add(ret.getDouble(4));
-	        	hang.add(ret.getInt(5));
+	        	hang.add(ret.getString(4));
+	        	hang.add(ret.getString(5));
+	        	hang.add(ret.getString(6));
+	        	hang.add(ret.getInt(7));
 	        	RowData.add(hang);
 	        }
 	        ret.close();		// 关闭执行的语句连接
@@ -116,25 +120,33 @@ public class LMS_CarModel extends AbstractTableModel {
     public LMS_CarModel()
     {
 		ColumnNames= new Vector();
-		ColumnNames.add("编号");
-		ColumnNames.add("姓名");
-		ColumnNames.add("科室");
-		ColumnNames.add("就诊总金额");
-		ColumnNames.add("就诊总人次");
+		ColumnNames.add("运输编号");
+		ColumnNames.add("货车编号");
+		ColumnNames.add("司机");
+		ColumnNames.add("出发地");
+		ColumnNames.add("目的地");		
+		ColumnNames.add("当前位置");
+		ColumnNames.add("当前状态");
 		//建立表头
 
 		RowData=new Vector(); 
-		sql = "SELECT ACC_ID,ACC_NAME,(SELECT SEC_NAME FROM SECTIONS WHERE SECTIONS.SEC_ID=ACCOUNTS.SEC_ID),(SELECT ROUND(IFNULL(SUM(IFNULL(RESULTS.RES_SUM,0)),0),2) FROM RESULTS WHERE RESULTS.ACC_ID=ACCOUNTS.ACC_ID),(SELECT COUNT(*) FROM RESULTS WHERE RESULTS.ACC_ID=ACCOUNTS.ACC_ID) FROM ACCOUNTS WHERE CAST(ACCOUNTS.ACC_ID AS UNSIGNED INT)>=500000";						// 此处填写要执行的语句
+		sql = "select delivery_id,car_id,car_driver,"
+				+ "car_provenance,order_enduseraddress,"
+				+ "car_currentposition,car_status from tb_order,"
+				+ "tb_delivery,tb_car where tb_delivery.order_id = tb_order.order_id "
+				+ "and tb_car.car_bourn=tb_order.order_enduseraddress;";						// 此处填写要执行的语句
 	    db = new MySQLConnect(sql);							// 新建一个数据库连接
 	    try {
 			ret = db.pst.executeQuery();					// 执行sql语句，得到结果集
 			while (ret.next()) {
 	            Vector hang=new Vector();
-	            hang.add(ret.getString(1));
+	        	hang.add(ret.getString(1));
 	        	hang.add(ret.getString(2));
 	        	hang.add(ret.getString(3));
-	        	hang.add(ret.getDouble(4));
-	        	hang.add(ret.getInt(5));
+	        	hang.add(ret.getString(4));
+	        	hang.add(ret.getString(5));
+	        	hang.add(ret.getString(6));
+	        	hang.add(ret.getInt(7));
 	        	RowData.add(hang);
 	        }
 	        ret.close();		// 关闭执行的语句连接

@@ -38,6 +38,7 @@ public class LMS_CarManagement extends JFrame implements ActionListener  {
 			public void run() {
 				try {
 					LMS_CarManagement frame = new LMS_CarManagement();
+					frame.setLocationRelativeTo(null);
 					frame.setVisible(true);
 				} catch (Exception e) {
 					e.printStackTrace();

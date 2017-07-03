@@ -95,6 +95,7 @@ public class LMS_DriverSuccess extends JFrame {
 			public void run() {
 				try {
 					LMS_DriverSuccess frame = new LMS_DriverSuccess();
+					frame.setLocationRelativeTo(null);
 					frame.setVisible(true);
 				} catch (Exception e) {
 					e.printStackTrace();

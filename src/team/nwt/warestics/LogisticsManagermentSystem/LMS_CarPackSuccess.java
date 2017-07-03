@@ -95,6 +95,7 @@ public class LMS_CarPackSuccess extends JFrame {
 			public void run() {
 				try {
 					LMS_CarPackSuccess frame = new LMS_CarPackSuccess();
+					frame.setLocationRelativeTo(null);
 					frame.setVisible(true);
 				} catch (Exception e) {
 					e.printStackTrace();

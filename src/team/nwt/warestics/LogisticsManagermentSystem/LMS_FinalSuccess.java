@@ -95,6 +95,7 @@ public class LMS_FinalSuccess extends JFrame {
 			public void run() {
 				try {
 					LMS_FinalSuccess frame = new LMS_FinalSuccess();
+					frame.setLocationRelativeTo(null);
 					frame.setVisible(true);
 				} catch (Exception e) {
 					e.printStackTrace();

@@ -335,11 +335,10 @@ public class LMS_MainVersion extends JFrame {
 		               //System.out.println(Result_Storge.getInt("MED_STORGE"));
 //		            JOptionPane.showMessageDialog(null,"编号："+ String_CheckName+"货车出现异常！", "警告", JOptionPane.ERROR_MESSAGE); //弹窗警告
 		            	   int n=JOptionPane.showConfirmDialog(null, "请确认是否发车","注意",JOptionPane.YES_NO_OPTION);
-		   				
 		   				if (n == 0){				
 		   				String sql="update tb_car set car_status=5 where tb_car.car_bourn = (select order_enduseraddress from tb_order)";
 		   				MySQLConnect MySQLConnect_Connection_UPDATE_STATE = new MySQLConnect(sql);
-		   				try {
+		   						   				try {
 		   					MySQLConnect_Connection_UPDATE_STATE.pst.executeUpdate();
 		   					MySQLConnect_Connection_UPDATE_STATE.pst.close();
 		   					MySQLConnect_Connection_UPDATE_STATE.close();
@@ -347,6 +346,30 @@ public class LMS_MainVersion extends JFrame {
 		   				// TODO Auto-generated catch block
 		   					e1.printStackTrace();
 		   				}
+		   				String sql1="update tb_delivery set delivery_depart='发车' where tb_delivery.order_id = (select order_id from tb_order)";
+		   				MySQLConnect MySQLConnect_Connection_UPDATE_STATE1 = new MySQLConnect(sql1);		   				
+		   				try {
+		   					MySQLConnect_Connection_UPDATE_STATE1.pst.executeUpdate();
+		   					MySQLConnect_Connection_UPDATE_STATE1.pst.close();
+		   					MySQLConnect_Connection_UPDATE_STATE1.close();
+		   				} catch (SQLException e1) {
+		   				// TODO Auto-generated catch block
+		   					e1.printStackTrace();
+		   				}	   			
+		   				
+		   				
+		   				JPanel panel_4 = new JPanel();
+		   				contentPane.add(panel_4, BorderLayout.WEST);
+		   				panel_4.setVisible(false);
+		   				JPanel panel_2 = new JPanel();
+		   				contentPane.add(panel_2, BorderLayout.WEST);
+		   				LMS_DeliveryModel Dm3=new LMS_DeliveryModel();
+		   				Dmjt3=new JTable(Dm3);
+		   				Dmjsp3=new JScrollPane(Dmjt3);
+		   				panel_2.add(Dmjsp3);
+		   				
+		   				
+		   				
 		   				JPanel panel_5 = new JPanel();
 		   				contentPane.add(panel_5, BorderLayout.EAST);
 		   				panel_5.setVisible(false);

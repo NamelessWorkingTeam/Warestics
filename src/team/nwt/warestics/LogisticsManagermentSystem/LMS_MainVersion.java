@@ -155,7 +155,20 @@ public class LMS_MainVersion extends JFrame {
 		JButton button_4 = new JButton("分配司机");
 		button_4.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				CarAlarm();
+				
+				String String_CheckStorgesql = null;   
+			    MySQLConnect db = null;  
+			    ResultSet Result_Storge = null;  
+		    	String_CheckStorgesql= "SELECT car_status FROM tb_car where tb_car.car_bourn = (select order_enduseraddress from tb_order)";	
+		       db = new MySQLConnect(String_CheckStorgesql);							
+		       try {
+		       	Result_Storge = db.pst.executeQuery();					
+					while (Result_Storge.next()) {
+//		               String String_CheckName = Result_Storge.getString("car_id");
+		               int Int_CheckStorge = Result_Storge.getInt("car_status");
+		               switch (Int_CheckStorge){
+		               case 1:
+		            	   				CarAlarm();
 				String sql="update tb_car set car_status=2 where tb_car.car_bourn = (select order_enduseraddress from tb_order)";
 				MySQLConnect MySQLConnect_Connection_UPDATE_STATE = new MySQLConnect(sql);
 				try {
@@ -179,9 +192,54 @@ public class LMS_MainVersion extends JFrame {
 				Dmjt4=new JTable(Dm4);
 				Dmjsp4=new JScrollPane(Dmjt4);
 				panel_4.add(Dmjsp4);
+		               break;
+		               case 0:
+		            	   JOptionPane.showMessageDialog(null,"系统还未完成装车！", "警告", JOptionPane.ERROR_MESSAGE); //弹窗警告
+		               break;
+					}}
+					Result_Storge.close();		
+			        db.close();			
+				} 
+		       catch (SQLException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+//				CarAlarm();
+//				String sql="update tb_car set car_status=2 where tb_car.car_bourn = (select order_enduseraddress from tb_order)";
+//				MySQLConnect MySQLConnect_Connection_UPDATE_STATE = new MySQLConnect(sql);
+//				try {
+//					MySQLConnect_Connection_UPDATE_STATE.pst.executeUpdate();
+//					MySQLConnect_Connection_UPDATE_STATE.pst.close();
+//					MySQLConnect_Connection_UPDATE_STATE.close();
+//				} catch (SQLException e1) {
+//				// TODO Auto-generated catch block
+//					e1.printStackTrace();
+//				}
+//				LMS_DriverSuccess newframe = new LMS_DriverSuccess();//页面跳转
+//				newframe.setLocationRelativeTo(null);
+//				newframe.setResizable(false);
+//				newframe.setVisible(true);
+//				JPanel panel_3 = new JPanel();
+//				contentPane.add(panel_3, BorderLayout.EAST);
+//				panel_3.setVisible(false);
+//				JPanel panel_4 = new JPanel();
+//				contentPane.add(panel_4, BorderLayout.EAST);
+//				LMS_CarModelDriver Dm4=new LMS_CarModelDriver();
+//				Dmjt4=new JTable(Dm4);
+//				Dmjsp4=new JScrollPane(Dmjt4);
+//				panel_4.add(Dmjsp4);
 				
 			}
-		});
+		}});
 		button_4.setBounds(30, 80, 113, 34);
 		panel.add(button_4);
 		
@@ -192,34 +250,65 @@ public class LMS_MainVersion extends JFrame {
 		JButton button_5 = new JButton("分配路线");
 		button_5.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				CarAlarm();
-				String sql="update tb_car set car_status=3 where tb_car.car_bourn = (select order_enduseraddress from tb_order)";
-				MySQLConnect MySQLConnect_Connection_UPDATE_STATE = new MySQLConnect(sql);
-				try {
-					MySQLConnect_Connection_UPDATE_STATE.pst.executeUpdate();
-					MySQLConnect_Connection_UPDATE_STATE.pst.close();
-					MySQLConnect_Connection_UPDATE_STATE.close();
-				} catch (SQLException e1) {
-				// TODO Auto-generated catch block
+//				CarAlarm();
+				String String_CheckStorgesql = null;   
+			    MySQLConnect db = null;  
+			    ResultSet Result_Storge = null;  
+		    	String_CheckStorgesql= "SELECT car_status FROM tb_car where tb_car.car_bourn = (select order_enduseraddress from tb_order)";	
+		       db = new MySQLConnect(String_CheckStorgesql);							
+		       try {
+		       	Result_Storge = db.pst.executeQuery();					
+					while (Result_Storge.next()) {
+//		               String String_CheckName = Result_Storge.getString("car_id");
+		               int Int_CheckStorge = Result_Storge.getInt("car_status");
+		               switch (Int_CheckStorge){
+		               case 2:
+		            	   String sql="update tb_car set car_status=3 where tb_car.car_bourn = (select order_enduseraddress from tb_order)";
+		   				MySQLConnect MySQLConnect_Connection_UPDATE_STATE = new MySQLConnect(sql);
+		   				try {
+		   					MySQLConnect_Connection_UPDATE_STATE.pst.executeUpdate();
+		   					MySQLConnect_Connection_UPDATE_STATE.pst.close();
+		   					MySQLConnect_Connection_UPDATE_STATE.close();
+		   				} catch (SQLException e1) {
+		   				// TODO Auto-generated catch block
+		   					e1.printStackTrace();
+		   				}
+//		   				Dm2.fireTableDataChanged();
+//		   				panel_2.add(Dmjsp2);
+		   				LMS_RouteSuccess newframe = new LMS_RouteSuccess();//页面跳转
+		   				newframe.setLocationRelativeTo(null);
+		   				newframe.setResizable(false);
+		   				newframe.setVisible(true);
+		   				JPanel panel_4 = new JPanel();
+		   				contentPane.add(panel_4, BorderLayout.EAST);
+		   				panel_4.setVisible(false);
+		   				JPanel panel_5 = new JPanel();
+		   				contentPane.add(panel_5, BorderLayout.EAST);
+		   				LMS_CarModelRoute Dm5=new LMS_CarModelRoute();
+		   				Dmjt5=new JTable(Dm5);
+		   				Dmjsp5=new JScrollPane(Dmjt5);
+		   				panel_5.add(Dmjsp5);
+		   			
+		               break;
+		               case 1:
+		            	   JOptionPane.showMessageDialog(null,"系统还未完成司机分配！", "警告", JOptionPane.ERROR_MESSAGE); //弹窗警告
+		               break;
+		               case 0:
+		            	   JOptionPane.showMessageDialog(null,"系统还未完成装车！", "警告", JOptionPane.ERROR_MESSAGE); //弹窗警告
+		               break;
+					}}
+					Result_Storge.close();		
+			        db.close();			
+				} 
+		       catch (SQLException e1) {
+					// TODO Auto-generated catch block
 					e1.printStackTrace();
-				}
-//				Dm2.fireTableDataChanged();
-//				panel_2.add(Dmjsp2);
-				LMS_RouteSuccess newframe = new LMS_RouteSuccess();//页面跳转
-				newframe.setLocationRelativeTo(null);
-				newframe.setResizable(false);
-				newframe.setVisible(true);
-				JPanel panel_4 = new JPanel();
-				contentPane.add(panel_4, BorderLayout.EAST);
-				panel_4.setVisible(false);
-				JPanel panel_5 = new JPanel();
-				contentPane.add(panel_5, BorderLayout.EAST);
-				LMS_CarModelRoute Dm5=new LMS_CarModelRoute();
-				Dmjt5=new JTable(Dm5);
-				Dmjsp5=new JScrollPane(Dmjt5);
-				panel_5.add(Dmjsp5);
-			}
-		});
+			}  
+			}});	
+				
+				
+				
+		
 		button_5.setBounds(30, 124, 113, 34);
 		panel.add(button_5);
 		
@@ -233,7 +322,7 @@ public class LMS_MainVersion extends JFrame {
 				String String_CheckStorgesql = null;   
 			    MySQLConnect db = null;  
 			    ResultSet Result_Storge = null;  
-		    	String_CheckStorgesql= "SELECT car_status FROM tb_car";	
+		    	String_CheckStorgesql= "SELECT car_status FROM tb_car where tb_car.car_bourn = (select order_enduseraddress from tb_order)";	
 		       db = new MySQLConnect(String_CheckStorgesql);							
 		       try {
 		       	Result_Storge = db.pst.executeQuery();					

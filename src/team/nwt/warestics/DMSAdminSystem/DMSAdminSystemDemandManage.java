@@ -96,8 +96,9 @@ public class DMSAdminSystemDemandManage extends JFrame implements ActionListener
 			public void actionPerformed(ActionEvent e) {
 
 				DMSPackSearch newframe = new DMSPackSearch();
+				newframe.setLocationRelativeTo(null);			// 将新窗口放置于屏幕正中心
 				newframe.setVisible(true);
-				
+				dispose();
 			}
 		});
 		btnNewButton_4.setFont(new Font("微软雅黑", Font.PLAIN, 15));
@@ -107,6 +108,7 @@ public class DMSAdminSystemDemandManage extends JFrame implements ActionListener
 		btnNewButton_2.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 				DMSAdminSystem newframe = new DMSAdminSystem();
+				newframe.setLocationRelativeTo(null);			// 将新窗口放置于屏幕正中心
 				newframe.setVisible(true);
 				
 				dispose();

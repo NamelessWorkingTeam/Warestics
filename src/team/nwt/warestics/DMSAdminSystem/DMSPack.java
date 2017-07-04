@@ -393,5 +393,18 @@ public class DMSPack extends JFrame {
 		lblNewLabel_2.setFont(new Font("微软雅黑", Font.PLAIN, 15));
 		lblNewLabel_2.setBounds(306, 49, 96, 18);
 		contentPane.add(lblNewLabel_2);
+		
+		JButton btnNewButton_1 = new JButton("返回");
+		btnNewButton_1.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				DMSPackSearch newframe = new DMSPackSearch();
+				newframe.setLocationRelativeTo(null);			// 将新窗口放置于屏幕正中心
+				newframe.setVisible(true);
+				
+				dispose();
+			}
+		});
+		btnNewButton_1.setBounds(44, 371, 113, 27);
+		contentPane.add(btnNewButton_1);
 	}
 }

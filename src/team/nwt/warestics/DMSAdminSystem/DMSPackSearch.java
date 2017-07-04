@@ -101,7 +101,12 @@ public class DMSPackSearch extends JFrame {
 		JButton btnNewButton_1 = new JButton("退出");
 		btnNewButton_1.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
+//				DMSAdminSystemDemandManage newframe = new DMSAdminSystemDemandManage();
+//				newframe.setLocationRelativeTo(null);			// 将新窗口放置于屏幕正中心
+//				newframe.setVisible(true);
+				
 				dispose();
+				
 			}
 		});
 		btnNewButton_1.setFont(new Font("微软雅黑", Font.PLAIN, 15));

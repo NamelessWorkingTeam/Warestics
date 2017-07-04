@@ -496,7 +496,7 @@ public class LMS_MainVersion extends JFrame {
 		label_1.setBounds(10, 365, 155, 24);
 		panel.add(label_1);
 		
-		JLabel label_3 = new JLabel("4代表正常行驶状态。");
+		JLabel label_3 = new JLabel("4代表进入正常行驶状态。");
 		label_3.setBounds(10, 385, 133, 24);
 		panel.add(label_3);
 		

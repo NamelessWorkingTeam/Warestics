@@ -6,6 +6,7 @@ import javax.swing.*;
 import javax.swing.border.EmptyBorder;
 
 import team.nwt.warestics.MySQLConnect;
+import team.nwt.warestics.GeneralLogin.GeneralLogin;
 
 import java.awt.Font;
 import java.awt.event.ActionListener;
@@ -110,7 +111,10 @@ public class TMS extends JFrame {
 		button.setFont(new Font("Dialog", Font.PLAIN, 13));
 		button.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
-				System.exit(0);
+		        GeneralLogin JFrame_Login = new GeneralLogin();		// 新建登录窗口
+		        JFrame_Login.setLocationRelativeTo(null);			// 将窗口放置于屏幕正中心
+		        dispose(); 											// 关闭当前窗口
+		        JFrame_Login.setVisible(true);						// 开启窗口
 			}
 		});
 		button.setBounds(311, 217, 93, 23);

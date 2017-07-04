@@ -1,6 +1,9 @@
 package team.nwt.warestics;
 
 import java.sql.*;
+
+import team.nwt.warestics.GeneralLogin.GeneralLogin;
+
 /**
  * 
  * @author Liu Yummy
@@ -45,11 +48,14 @@ public class Warestics {
         /** 
          * 
          * 	下面将正式开始程序！各位已经可以使用此模块登录到各自的模块中去
-         * 	各模块的用户名请各位自行查阅 ACCOUNTS 表
+         * 	各模块的用户名请各位自行查阅tb_account 表
          * 
          */
-        //QRCode.encodeQRcode("1211111111113", 500, 500);
-        
+
+		GeneralLogin GeneralLogin_NewFrame = new GeneralLogin();
+		GeneralLogin_NewFrame.setResizable(false);
+		GeneralLogin_NewFrame.setLocationRelativeTo(null);
+		GeneralLogin_NewFrame.setVisible(true);
 	}
 
 }

@@ -9,6 +9,7 @@ import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
 
 import team.nwt.warestics.MySQLConnect;
+import team.nwt.warestics.GeneralLogin.GeneralLogin;
 import team.nwt.warestics.QRCode.QRCode;
 import team.nwt.warestics.network.Client;
 
@@ -240,10 +241,10 @@ public class RuntimeManagementSystem extends JFrame {
 		JMenuItem menuItem = new JMenuItem("\u767B\u51FA");
 		menuItem.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-//		        GeneralLogin JFrame_Login = new GeneralLogin();		// 新建登录窗口
-//		        JFrame_Login.setLocationRelativeTo(null);			// 将窗口放置于屏幕正中心
-//		        dispose(); 											// 关闭当前窗口
-//		        JFrame_Login.setVisible(true);						// 开启窗口
+		        GeneralLogin JFrame_Login = new GeneralLogin();		// 新建登录窗口
+		        JFrame_Login.setLocationRelativeTo(null);			// 将窗口放置于屏幕正中心
+		        dispose(); 											// 关闭当前窗口
+		        JFrame_Login.setVisible(true);						// 开启窗口
 			}
 		});
 		

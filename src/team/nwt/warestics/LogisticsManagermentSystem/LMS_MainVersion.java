@@ -20,6 +20,8 @@ import java.awt.event.*;
 import java.util.*;
 import team.nwt.warestics.LogisticsManagermentSystem.*;
 import team.nwt.warestics.MySQLConnect;
+import team.nwt.warestics.GeneralLogin.GeneralLogin;
+
 import javax.swing.JTextField;
 import javax.swing.JButton;
 import javax.swing.JLabel;
@@ -559,9 +561,10 @@ public class LMS_MainVersion extends JFrame {
 		button.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				
-					setVisible(false);
-					dispose();
-					setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		        GeneralLogin JFrame_Login = new GeneralLogin();		// 新建登录窗口
+		        JFrame_Login.setLocationRelativeTo(null);			// 将窗口放置于屏幕正中心
+		        dispose(); 											// 关闭当前窗口
+		        JFrame_Login.setVisible(true);						// 开启窗口
 				
 			}
 		});

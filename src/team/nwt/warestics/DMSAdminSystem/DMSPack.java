@@ -204,12 +204,12 @@ public class DMSPack extends JFrame {
 		
 		
 		JLabel lblNewLabe_id11 = new JLabel("");
-		lblNewLabe_id11.setBounds(220, 49, 72, 18);
+		lblNewLabe_id11.setBounds(170, 49, 72, 18);
 		contentPane.add(lblNewLabe_id11);
 		lblNewLabe_id11.setText(search_id1);
 		
 		JLabel lblNewLabe_id21 = new JLabel("");
-		lblNewLabe_id21.setBounds(220, 93, 72, 18);
+		lblNewLabe_id21.setBounds(170, 93, 72, 18);
 		contentPane.add( lblNewLabe_id21);
 		lblNewLabe_id21.setText(search_id2);
 		
@@ -276,31 +276,57 @@ public class DMSPack extends JFrame {
 		int number = new Random().nextInt(10) + 1;;
 		
 		JLabel lblNewLabel_1 = new JLabel("");
-		lblNewLabel_1.setBounds(220, 137, 136, 18);
+		lblNewLabel_1.setBounds(170, 137, 136, 18);
 		contentPane.add(lblNewLabel_1);
 		lblNewLabel_1.setText("方案"+number);
 		
 		System.out.println(pack_plan);
+		
 		JButton btnNewButton = new JButton("保存打包方案");
 		btnNewButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
-//				try {
-//				    int a = Integer.parseInt(search_id2);
-//				} catch (NumberFormatException e) {
-//				    e.printStackTrace();
-//				}
-				String sql1="UPDATE tb_delivery SET delivery_pack ='"+number+"' WHERE order_id='"+search_id1+"'";
-				
-			    MySQLConnect con1=new MySQLConnect(sql1);
+
+                //添加判断,如果数据库中打包已有数据,生成方案会失败.
+		    	String r="";
+			    String sql2="select delivery_pack"
+			    		+ " from tb_delivery"
+			    		+ " where order_id="+Integer.parseInt(search_id1);
+			    MySQLConnect con2=new MySQLConnect(sql2);
 			    try {
-					con1.pst.executeUpdate();
-					 JOptionPane.showMessageDialog(null, "保存成功");  
-				} catch (SQLException e) {
+					ResultSet result=con2.pst.executeQuery();
+				    if(result.next()) {
+				    	r=result.getString(1);
+				    	if(!r.equals(""))
+				    	JOptionPane.showMessageDialog(null, "此订单已生成打包方案"); 
+				    }
+					
+				} catch (SQLException e1) {
 					// TODO Auto-generated catch block
-					e.printStackTrace();
-				}
+					e1.printStackTrace();
+				}	
+				 if(r.equals("")) { 
+					 String sql1="UPDATE tb_delivery SET delivery_pack ='"+number+"' WHERE order_id='"+search_id1+"'";
+					
+				    MySQLConnect con1=new MySQLConnect(sql1);
+				    try {
+						con1.pst.executeUpdate();
+						 JOptionPane.showMessageDialog(null, "保存成功");  
+					} catch (SQLException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					} 
+					 }
 			    
-			   
+//                  String sql1="UPDATE tb_delivery SET delivery_pack ='"+number+"' WHERE order_id='"+search_id1+"'";
+//				
+//			    MySQLConnect con1=new MySQLConnect(sql1);
+//			    try {
+//					con1.pst.executeUpdate();
+//					 JOptionPane.showMessageDialog(null, "保存成功");  
+//				} catch (SQLException e) {
+//					// TODO Auto-generated catch block
+//					e.printStackTrace();
+//				}
 				
 			}
 		});
@@ -362,5 +388,10 @@ public class DMSPack extends JFrame {
 		scrollPane.setViewportView(table);
 		
 		table.setModel(DTM);
+		
+		JLabel lblNewLabel_2 = new JLabel("发货物品详情:");
+		lblNewLabel_2.setFont(new Font("微软雅黑", Font.PLAIN, 15));
+		lblNewLabel_2.setBounds(306, 49, 96, 18);
+		contentPane.add(lblNewLabel_2);
 	}
 }

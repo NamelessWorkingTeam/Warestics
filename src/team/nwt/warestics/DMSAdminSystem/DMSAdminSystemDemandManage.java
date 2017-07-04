@@ -106,10 +106,10 @@ public class DMSAdminSystemDemandManage extends JFrame implements ActionListener
 		btnNewButton_2.setFont(new Font("微软雅黑", Font.PLAIN, 15));
 		btnNewButton_2.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
-//				AdminSystem newframe = new AdminSystem();
-//				newframe.setVisible(true);
-//				
-//				dispose();
+				DMSAdminSystem newframe = new DMSAdminSystem();
+				newframe.setVisible(true);
+				
+				dispose();
 				//setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 			}
 		});

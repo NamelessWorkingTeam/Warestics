@@ -55,7 +55,7 @@ public class DMSDeliveryModel extends AbstractTableModel {
 		ColumnNames= new Vector();
 		ColumnNames.add("发货id");
 		ColumnNames.add("订单id");
-		ColumnNames.add("打包状态");
+		ColumnNames.add("打包方案");
 		ColumnNames.add("发车状态");
 		
 		

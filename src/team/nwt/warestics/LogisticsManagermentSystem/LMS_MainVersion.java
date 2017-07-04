@@ -230,48 +230,120 @@ public class LMS_MainVersion extends JFrame {
 //				JOptionPane.showConfirmDialog(null, "请确认是否发车", "choose one", JOptionPane.YES_NO_OPTION); 
 				
 				
-				
-				
-				
-				
-				
-				
-				int n=JOptionPane.showConfirmDialog(null, "请确认是否发车","注意",JOptionPane.YES_NO_OPTION);
-				
-				if (n == 0){				
-				String sql="update tb_car set car_status=5 where tb_car.car_bourn = (select order_enduseraddress from tb_order)";
-				MySQLConnect MySQLConnect_Connection_UPDATE_STATE = new MySQLConnect(sql);
-				try {
-					MySQLConnect_Connection_UPDATE_STATE.pst.executeUpdate();
-					MySQLConnect_Connection_UPDATE_STATE.pst.close();
-					MySQLConnect_Connection_UPDATE_STATE.close();
-				} catch (SQLException e1) {
-				// TODO Auto-generated catch block
-					e1.printStackTrace();
-				}
-				JPanel panel_5 = new JPanel();
-				contentPane.add(panel_5, BorderLayout.EAST);
-				panel_5.setVisible(false);
-				JPanel panel_6 = new JPanel();
-				contentPane.add(panel_6, BorderLayout.EAST);
-				LMS_CarModel Dm6=new LMS_CarModel();
-				Dmjt6=new JTable(Dm6);
-				Dmjsp6=new JScrollPane(Dmjt6);
-				panel_6.add(Dmjsp6);
-//				LMS_FinalSuccess newframe = new LMS_FinalSuccess();//页面跳转
-//				newframe.setVisible(true);
-			} else {
-				JPanel panel_5 = new JPanel();
-				contentPane.add(panel_5, BorderLayout.EAST);
-				panel_5.setVisible(false);
-				JPanel panel_6 = new JPanel();
-				contentPane.add(panel_6, BorderLayout.EAST);
-				LMS_CarModel Dm6=new LMS_CarModel();
-				Dmjt6=new JTable(Dm6);
-				Dmjsp6=new JScrollPane(Dmjt6);
-				panel_6.add(Dmjsp6);	
+				String String_CheckStorgesql = null;   
+			    MySQLConnect db = null;  
+			    ResultSet Result_Storge = null;  
+		    	String_CheckStorgesql= "SELECT car_status FROM tb_car";	
+		       db = new MySQLConnect(String_CheckStorgesql);							
+		       try {
+		       	Result_Storge = db.pst.executeQuery();					
+					while (Result_Storge.next()) {
+//		               String String_CheckName = Result_Storge.getString("car_id");
+		               int Int_CheckStorge = Result_Storge.getInt("car_status");
+		               switch (Int_CheckStorge){
+		               case 4: 
+		               //System.out.println(String_CheckName);
+		               //System.out.println(Result_Storge.getInt("MED_STORGE"));
+//		            JOptionPane.showMessageDialog(null,"编号："+ String_CheckName+"货车出现异常！", "警告", JOptionPane.ERROR_MESSAGE); //弹窗警告
+		            	   int n=JOptionPane.showConfirmDialog(null, "请确认是否发车","注意",JOptionPane.YES_NO_OPTION);
+		   				
+		   				if (n == 0){				
+		   				String sql="update tb_car set car_status=5 where tb_car.car_bourn = (select order_enduseraddress from tb_order)";
+		   				MySQLConnect MySQLConnect_Connection_UPDATE_STATE = new MySQLConnect(sql);
+		   				try {
+		   					MySQLConnect_Connection_UPDATE_STATE.pst.executeUpdate();
+		   					MySQLConnect_Connection_UPDATE_STATE.pst.close();
+		   					MySQLConnect_Connection_UPDATE_STATE.close();
+		   				} catch (SQLException e1) {
+		   				// TODO Auto-generated catch block
+		   					e1.printStackTrace();
+		   				}
+		   				JPanel panel_5 = new JPanel();
+		   				contentPane.add(panel_5, BorderLayout.EAST);
+		   				panel_5.setVisible(false);
+		   				JPanel panel_6 = new JPanel();
+		   				contentPane.add(panel_6, BorderLayout.EAST);
+		   				LMS_CarModel Dm6=new LMS_CarModel();
+		   				Dmjt6=new JTable(Dm6);
+		   				Dmjsp6=new JScrollPane(Dmjt6);
+		   				panel_6.add(Dmjsp6);
+//		   				LMS_FinalSuccess newframe = new LMS_FinalSuccess();//页面跳转
+//		   				newframe.setVisible(true);
+		   			} else {
+		   				JPanel panel_5 = new JPanel();
+		   				contentPane.add(panel_5, BorderLayout.EAST);
+		   				panel_5.setVisible(false);
+		   				JPanel panel_6 = new JPanel();
+		   				contentPane.add(panel_6, BorderLayout.EAST);
+		   				LMS_CarModel Dm6=new LMS_CarModel();
+		   				Dmjt6=new JTable(Dm6);
+		   				Dmjsp6=new JScrollPane(Dmjt6);
+		   				panel_6.add(Dmjsp6);	
+		   			}	
+		   				
+		               ;
+		               break;
+		               case 3:
+		            	   JOptionPane.showMessageDialog(null,"司机还未确认发车！", "警告", JOptionPane.ERROR_MESSAGE);//弹窗警告
+		               break;
+		               case 2:
+		            	   JOptionPane.showMessageDialog(null,"系统还未完成行驶线路确认！", "警告", JOptionPane.ERROR_MESSAGE);//弹窗警告
+		               break;
+		               case 1:
+		            	   JOptionPane.showMessageDialog(null,"系统还未完成司机分配！", "警告", JOptionPane.ERROR_MESSAGE); //弹窗警告
+		               break;
+		               case 0:
+		            	   JOptionPane.showMessageDialog(null,"系统还未完成装车！", "警告", JOptionPane.ERROR_MESSAGE); //弹窗警告
+		               break;
+					}}
+					Result_Storge.close();		
+			        db.close();			
+				} catch (SQLException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+			}  
 			}
-		}});
+			});	
+				
+				
+				
+				
+//				int n=JOptionPane.showConfirmDialog(null, "请确认是否发车","注意",JOptionPane.YES_NO_OPTION);
+//				
+//				if (n == 0){				
+//				String sql="update tb_car set car_status=5 where tb_car.car_bourn = (select order_enduseraddress from tb_order)";
+//				MySQLConnect MySQLConnect_Connection_UPDATE_STATE = new MySQLConnect(sql);
+//				try {
+//					MySQLConnect_Connection_UPDATE_STATE.pst.executeUpdate();
+//					MySQLConnect_Connection_UPDATE_STATE.pst.close();
+//					MySQLConnect_Connection_UPDATE_STATE.close();
+//				} catch (SQLException e1) {
+//				// TODO Auto-generated catch block
+//					e1.printStackTrace();
+//				}
+//				JPanel panel_5 = new JPanel();
+//				contentPane.add(panel_5, BorderLayout.EAST);
+//				panel_5.setVisible(false);
+//				JPanel panel_6 = new JPanel();
+//				contentPane.add(panel_6, BorderLayout.EAST);
+//				LMS_CarModel Dm6=new LMS_CarModel();
+//				Dmjt6=new JTable(Dm6);
+//				Dmjsp6=new JScrollPane(Dmjt6);
+//				panel_6.add(Dmjsp6);
+////				LMS_FinalSuccess newframe = new LMS_FinalSuccess();//页面跳转
+////				newframe.setVisible(true);
+//			} else {
+//				JPanel panel_5 = new JPanel();
+//				contentPane.add(panel_5, BorderLayout.EAST);
+//				panel_5.setVisible(false);
+//				JPanel panel_6 = new JPanel();
+//				contentPane.add(panel_6, BorderLayout.EAST);
+//				LMS_CarModel Dm6=new LMS_CarModel();
+//				Dmjt6=new JTable(Dm6);
+//				Dmjsp6=new JScrollPane(Dmjt6);
+//				panel_6.add(Dmjsp6);	
+//			}
+		
 		button_6.setBounds(30, 168, 113, 34);
 		panel.add(button_6);
 		

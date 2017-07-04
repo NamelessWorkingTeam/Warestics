@@ -330,13 +330,13 @@ public class LMS_MainVersion extends JFrame {
 //		               String String_CheckName = Result_Storge.getString("car_id");
 		               int Int_CheckStorge = Result_Storge.getInt("car_status");
 		               switch (Int_CheckStorge){
-		               case 4: 
+		               case 3: 
 		               //System.out.println(String_CheckName);
 		               //System.out.println(Result_Storge.getInt("MED_STORGE"));
 //		            JOptionPane.showMessageDialog(null,"编号："+ String_CheckName+"货车出现异常！", "警告", JOptionPane.ERROR_MESSAGE); //弹窗警告
 		            	   int n=JOptionPane.showConfirmDialog(null, "请确认是否发车","注意",JOptionPane.YES_NO_OPTION);
 		   				if (n == 0){				
-		   				String sql="update tb_car set car_status=5 where tb_car.car_bourn = (select order_enduseraddress from tb_order)";
+		   				String sql="update tb_car set car_status=4 where tb_car.car_bourn = (select order_enduseraddress from tb_order)";
 		   				MySQLConnect MySQLConnect_Connection_UPDATE_STATE = new MySQLConnect(sql);
 		   						   				try {
 		   					MySQLConnect_Connection_UPDATE_STATE.pst.executeUpdate();
@@ -394,9 +394,6 @@ public class LMS_MainVersion extends JFrame {
 		   			}	
 		   				
 		               ;
-		               break;
-		               case 3:
-		            	   JOptionPane.showMessageDialog(null,"司机还未确认发车！", "警告", JOptionPane.ERROR_MESSAGE);//弹窗警告
 		               break;
 		               case 2:
 		            	   JOptionPane.showMessageDialog(null,"系统还未完成行驶线路确认！", "警告", JOptionPane.ERROR_MESSAGE);//弹窗警告
@@ -459,37 +456,37 @@ public class LMS_MainVersion extends JFrame {
 		button_6.setBounds(30, 168, 113, 34);
 		panel.add(button_6);
 		
-		JButton button_7 = new JButton("人工介入");
-		button_7.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent arg0) {
-				
-//				Component frame = null;
-//				JOptionPane.showInternalMessageDialog(null, "information","information", JOptionPane.INFORMATION_MESSAGE); 
-				JOptionPane.showMessageDialog(null, "人工介入成功，状态切换至正常行驶！", "警告", JOptionPane.ERROR_MESSAGE);
-//				int n= JOptionPane.showConfirmDialog(temporaryLostComponent, anchor);
-				String sql="update tb_car set car_status=5 where tb_car.car_bourn = (select order_enduseraddress from tb_order)";
-				MySQLConnect MySQLConnect_Connection_UPDATE_STATE = new MySQLConnect(sql);
-				try {
-					MySQLConnect_Connection_UPDATE_STATE.pst.executeUpdate();
-					MySQLConnect_Connection_UPDATE_STATE.pst.close();
-					MySQLConnect_Connection_UPDATE_STATE.close();
-				} catch (SQLException e1) {
-				// TODO Auto-generated catch block
-					e1.printStackTrace();
-				}
-				JPanel panel_5 = new JPanel();
-				contentPane.add(panel_5, BorderLayout.EAST);
-				panel_5.setVisible(false);
-				JPanel panel_6 = new JPanel();
-				contentPane.add(panel_6, BorderLayout.EAST);
-				LMS_CarModel Dm6=new LMS_CarModel();
-				Dmjt6=new JTable(Dm6);
-				Dmjsp6=new JScrollPane(Dmjt6);
-				panel_6.add(Dmjsp6);
-			}
-		});
-		button_7.setBounds(30, 212, 113, 34);
-		panel.add(button_7);
+//		JButton button_7 = new JButton("人工介入");
+//		button_7.addActionListener(new ActionListener() {
+//			public void actionPerformed(ActionEvent arg0) {
+//				
+////				Component frame = null;
+////				JOptionPane.showInternalMessageDialog(null, "information","information", JOptionPane.INFORMATION_MESSAGE); 
+//				JOptionPane.showMessageDialog(null, "人工介入成功，状态切换至正常行驶！", "警告", JOptionPane.ERROR_MESSAGE);
+////				int n= JOptionPane.showConfirmDialog(temporaryLostComponent, anchor);
+//				String sql="update tb_car set car_status=5 where tb_car.car_bourn = (select order_enduseraddress from tb_order)";
+//				MySQLConnect MySQLConnect_Connection_UPDATE_STATE = new MySQLConnect(sql);
+//				try {
+//					MySQLConnect_Connection_UPDATE_STATE.pst.executeUpdate();
+//					MySQLConnect_Connection_UPDATE_STATE.pst.close();
+//					MySQLConnect_Connection_UPDATE_STATE.close();
+//				} catch (SQLException e1) {
+//				// TODO Auto-generated catch block
+//					e1.printStackTrace();
+//				}
+//				JPanel panel_5 = new JPanel();
+//				contentPane.add(panel_5, BorderLayout.EAST);
+//				panel_5.setVisible(false);
+//				JPanel panel_6 = new JPanel();
+//				contentPane.add(panel_6, BorderLayout.EAST);
+//				LMS_CarModel Dm6=new LMS_CarModel();
+//				Dmjt6=new JTable(Dm6);
+//				Dmjsp6=new JScrollPane(Dmjt6);
+//				panel_6.add(Dmjsp6);
+//			}
+//		});
+//		button_7.setBounds(30, 212, 113, 34);
+//		panel.add(button_7);
 		
 		JLabel lblNewLabel = new JLabel("2代表司机分配就绪。");
 		lblNewLabel.setBounds(10, 345, 133, 24);
@@ -499,12 +496,8 @@ public class LMS_MainVersion extends JFrame {
 		label_1.setBounds(10, 365, 155, 24);
 		panel.add(label_1);
 		
-		JLabel label_2 = new JLabel("4代表司机确认，准备发车。");
-		label_2.setBounds(10, 385, 165, 24);
-		panel.add(label_2);
-		
-		JLabel label_3 = new JLabel("5代表正常行驶状态。");
-		label_3.setBounds(10, 405, 133, 24);
+		JLabel label_3 = new JLabel("4代表正常行驶状态。");
+		label_3.setBounds(10, 385, 133, 24);
 		panel.add(label_3);
 		
 		JLabel label_4 = new JLabel("1代表装车就绪。");
@@ -514,10 +507,6 @@ public class LMS_MainVersion extends JFrame {
 		JLabel label_5 = new JLabel("\t0代表车辆空闲\r\n");
 		label_5.setBounds(10, 305, 113, 24);
 		panel.add(label_5);
-		
-		JLabel label_6 = new JLabel("6代表手机端求救。");
-		label_6.setBounds(10, 425, 120, 24);
-		panel.add(label_6);
 		
 		LMS_DeliveryModel Dm=new LMS_DeliveryModel();
 		this.setVisible(true);

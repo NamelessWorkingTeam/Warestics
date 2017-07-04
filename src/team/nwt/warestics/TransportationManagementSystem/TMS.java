@@ -38,6 +38,8 @@ public class TMS extends JFrame {
 				try {
 					TMS frame = new TMS();
 					frame.setVisible(true);
+					frame.setLocationRelativeTo(null);
+					frame.setResizable(false);
 				} catch (Exception e) {
 					e.printStackTrace();
 				}

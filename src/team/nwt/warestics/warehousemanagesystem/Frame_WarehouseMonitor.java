@@ -1,49 +1,38 @@
 package team.nwt.warestics.warehousemanagesystem;
 
+import java.awt.BorderLayout;
 import java.awt.EventQueue;
 import java.awt.Font;
-import java.awt.Frame;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.io.IOException;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.util.Date;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 import java.util.Vector;
 
 import javax.swing.GroupLayout;
 import javax.swing.JButton;
 import javax.swing.JFrame;
+import javax.swing.JLabel;
+import javax.swing.JMenuBar;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
+import javax.swing.JScrollPane;
+import javax.swing.JTable;
 import javax.swing.JTextField;
 import javax.swing.SwingConstants;
-import javax.swing.Timer;
 import javax.swing.GroupLayout.Alignment;
 import javax.swing.LayoutStyle.ComponentPlacement;
 import javax.swing.border.BevelBorder;
-import javax.swing.event.TableModelListener;
+import javax.swing.border.EmptyBorder;
 import javax.swing.table.DefaultTableModel;
-import javax.swing.table.TableModel;
 
-import team.nwt.warestics.MySQLConnect;
 import team.nwt.warestics.QRCode.ImagePanel;
-import team.nwt.warestics.QRCode.QRCode;
 import team.nwt.warestics.dao.Stock;
 import team.nwt.warestics.dao.StockDao;
-import team.nwt.warestics.dao.WarehouseInformationDao;
 
-import javax.swing.JScrollPane;
-import javax.swing.JTable;
-import javax.swing.JLabel;
-import javax.swing.JTabbedPane;
-import javax.swing.JMenuBar;
-import javax.swing.JOptionPane;
+public class Frame_WarehouseMonitor extends JFrame {
 
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
-
-public class WarehouseMonitor {
-
+	private JPanel contentPane;
 	private JFrame frmMonitor;
 	private static JTable table_1;
 	private JTextField textField;
@@ -60,19 +49,15 @@ public class WarehouseMonitor {
     private JTable table_4;
     
     private JButton button1;
-
 	/**
-	 * 监测窗口,监测物品传输流程
 	 * Launch the application.
 	 */
 	public static void main(String[] args) {
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
 				try {
-					WarehouseMonitor window = new WarehouseMonitor();
-					window.frmMonitor.setVisible(true);
-					Thread thread1=new Thread(new Table(table_1, table_3));
-					thread1.start();
+					Frame_WarehouseMonitor frame = new Frame_WarehouseMonitor();
+					frame.setVisible(true);
 				} catch (Exception e) {
 					e.printStackTrace();
 				}
@@ -81,27 +66,28 @@ public class WarehouseMonitor {
 	}
 
 	/**
-	 * Create the application.
+	 * Create the frame.
 	 */
-	public WarehouseMonitor() {
-		initialize();
-	}
-
-	/**
-	 * Initialize the contents of the frame.
-	 */
-	private void initialize() {
-		frmMonitor = new JFrame();
-		frmMonitor.setTitle("Monitor");
-		frmMonitor.setBounds(100, 100, 1269, 767);
-		frmMonitor.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		frmMonitor.getContentPane().setLayout(null);
-		frmMonitor.setResizable(false);
+	public Frame_WarehouseMonitor() {
+		setTitle(" Monitor");
+		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		setBounds(100, 100, 1269, 767);
+		contentPane = new JPanel();
+		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
+		contentPane.setLayout(new BorderLayout(0, 0));
+		setContentPane(contentPane);
+		setResizable(false);
+//		frmMonitor = new JFrame();
+//		frmMonitor.setTitle("Monitor");
+//		frmMonitor.setBounds(100, 100, 1269, 767);
+//		frmMonitor.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+//		frmMonitor.getContentPane().setLayout(null);
+//		frmMonitor.setResizable(false);
 		
 		JLabel label_0 = new JLabel("待入库单号");
 		label_0.setBounds(10, 10, 200, 38);
 		label_0.setFont(new Font("微软雅黑", Font.BOLD, 36));
-		frmMonitor.getContentPane().add(label_0);
+		contentPane.add(label_0);
 		
 //		Vector rowName,vData;
 //    	//建立表头
@@ -165,7 +151,7 @@ public class WarehouseMonitor {
 				stockDao.close();
 				WarehouseManageUtil warehouseManageUtil=new WarehouseManageUtil();
 				if(warehouseManageUtil.stock(stock)){
-					JOptionPane.showMessageDialog(frmMonitor.getContentPane(),
+					JOptionPane.showMessageDialog(contentPane,
 							 "入库成功!", "入库信息", JOptionPane.INFORMATION_MESSAGE); 
 					
 				}else{
@@ -232,18 +218,18 @@ public class WarehouseMonitor {
 		table_4.setFont(new Font("微软雅黑", Font.BOLD, 36));
 		table_4.setModel(new DefaultTableModel(vData,rowName));
 		panel.setLayout(gl_panel);
-		frmMonitor.getContentPane().setLayout(null);
-		frmMonitor.getContentPane().add(label_0);
+		contentPane.setLayout(null);
+		contentPane.add(label_0);
 		
 				
 				JLabel label_2 = new JLabel("已入库单号");
 				label_2.setBounds(10, 331, 200, 49);
 				label_2.setFont(new Font("微软雅黑", Font.BOLD, 36));
-				frmMonitor.getContentPane().add(label_2);
+				contentPane.add(label_2);
 		
 		JScrollPane scrollPane = new JScrollPane();
 		scrollPane.setBounds(10, 58, 290, 282);
-		frmMonitor.getContentPane().add(scrollPane);
+		contentPane.add(scrollPane);
 		
 		
     	table_1=new JTable() {
@@ -274,11 +260,11 @@ public class WarehouseMonitor {
     					button1.setEnabled(true);
     				}
     			});
-		frmMonitor.getContentPane().add(panel);
+		contentPane.add(panel);
 		
 		JScrollPane scrollPane_1 = new JScrollPane();
 		scrollPane_1.setBounds(10, 390, 290, 269);
-		frmMonitor.getContentPane().add(scrollPane_1);
+		contentPane.add(scrollPane_1);
 		
 		table_3 = new JTable();
 		scrollPane_1.setViewportView(table_3);
@@ -286,7 +272,7 @@ public class WarehouseMonitor {
 		table_3.setFont(new Font("微软雅黑", Font.BOLD, 36));
 		
 		JMenuBar menuBar = new JMenuBar();
-		frmMonitor.setJMenuBar(menuBar);
+		setJMenuBar(menuBar);
 	}
 	public void show_stock_state_table(JTable table,String stock_state){
 		Vector rowName,vData;
@@ -306,69 +292,69 @@ public class WarehouseMonitor {
     	table.setModel(new DefaultTableModel(vData,rowName));
     	
 	}
+
 }
-//class Table implements Runnable{
-//	private JTable table_stock_wait;
-//	private JTable table_stock_finish;
-//	public Table(){
-//		
-//	}
-//	public Table(JTable table_stock_wait,JTable table_stock_finish){
-//		this.table_stock_wait=table_stock_wait;
-//		this.table_stock_finish=table_stock_finish;
-//	}
-//	
-//	@Override
-//	public void run() {
-//		// TODO Auto-generated method stub
-//		//以线程形式定时刷新table中的数据
-//		while(true){
-//			try {
-//				show_stock_state_table(table_stock_wait,"S");
-//				show_stock_state_table(table_stock_finish, "Y");
-////				Vector<String> rowName=new Vector<>();
-////				rowName.add("仓库位置");
-////				rowName.add("物品ID");
-////				rowName.add("物品名称");		
-////				rowName.add("库存量");
-////				WarehouseInformationDao warehouseDao=new WarehouseInformationDao();
-////				Vector<Vector<String>> vData=warehouseDao.getInventoryInformation();	
-////				
-////				warehouseDao.close();
-////				DefaultTableModel DFM=new DefaultTableModel(vData,rowName);
-////				table.setModel(DFM);
-////				//table.updateUI();
-////				table.addNotify();
-//				new Thread().sleep(5000);
-//				System.out.println("thread :"  
-//						+ Thread.currentThread().getName()); 
-//			} catch (InterruptedException e) {
-//				// TODO Auto-generated catch block
-//				e.printStackTrace();
-//			}
-//		}
-//	}
-//	
-//	public void show_stock_state_table(JTable table,String stock_state){
-//		Vector rowName,vData;
-//    	//建立表头
-//    	rowName= new Vector();
-//    	rowName.add("进货单号");
-//    	
-//    	//数据库连接
-//    	StockDao stockDao=new StockDao();
-//    	//获得数据
-//    	vData=stockDao.selectStockId(stock_state);
-//    	//关闭数据库连接
-//    	stockDao.close();
-//    	
-//    	table.setRowHeight(36);
-//    	table.setFont(new Font("微软雅黑", Font.BOLD, 36));
-//    	table.setModel(new DefaultTableModel(vData,rowName));
-//    	
-//    	table.addNotify();
-//	}
-//
-//};
-//
-//
+class Table implements Runnable{
+	private JTable table_stock_wait;
+	private JTable table_stock_finish;
+	public Table(){
+		
+	}
+	public Table(JTable table_stock_wait,JTable table_stock_finish){
+		this.table_stock_wait=table_stock_wait;
+		this.table_stock_finish=table_stock_finish;
+	}
+	
+	@Override
+	public void run() {
+		// TODO Auto-generated method stub
+		//以线程形式定时刷新table中的数据
+		while(true){
+			try {
+				show_stock_state_table(table_stock_wait,"S");
+				show_stock_state_table(table_stock_finish, "Y");
+//				Vector<String> rowName=new Vector<>();
+//				rowName.add("仓库位置");
+//				rowName.add("物品ID");
+//				rowName.add("物品名称");		
+//				rowName.add("库存量");
+//				WarehouseInformationDao warehouseDao=new WarehouseInformationDao();
+//				Vector<Vector<String>> vData=warehouseDao.getInventoryInformation();	
+//				
+//				warehouseDao.close();
+//				DefaultTableModel DFM=new DefaultTableModel(vData,rowName);
+//				table.setModel(DFM);
+//				//table.updateUI();
+//				table.addNotify();
+				new Thread().sleep(5000);
+				System.out.println("thread :"  
+						+ Thread.currentThread().getName()); 
+			} catch (InterruptedException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		}
+	}
+	
+	public void show_stock_state_table(JTable table,String stock_state){
+		Vector rowName,vData;
+    	//建立表头
+    	rowName= new Vector();
+    	rowName.add("进货单号");
+    	
+    	//数据库连接
+    	StockDao stockDao=new StockDao();
+    	//获得数据
+    	vData=stockDao.selectStockId(stock_state);
+    	//关闭数据库连接
+    	stockDao.close();
+    	
+    	table.setRowHeight(36);
+    	table.setFont(new Font("微软雅黑", Font.BOLD, 36));
+    	table.setModel(new DefaultTableModel(vData,rowName));
+    	
+    	table.addNotify();
+	}
+
+};
+

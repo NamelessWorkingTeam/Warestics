@@ -96,6 +96,7 @@ public class WarehouseMonitor {
 		frmMonitor.setBounds(100, 100, 1269, 767);
 		frmMonitor.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frmMonitor.getContentPane().setLayout(null);
+		frmMonitor.setResizable(false);
 		
 		JLabel label_0 = new JLabel("待入库单号");
 		label_0.setBounds(10, 10, 200, 38);

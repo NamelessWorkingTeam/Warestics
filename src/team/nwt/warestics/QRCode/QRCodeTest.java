@@ -16,6 +16,6 @@ public class QRCodeTest {
         jframe.setSize(500, 500);  
         jframe.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);  
         jframe.setVisible(true);
-        System.out.print(QRCode.decodeQRcode("D:\\test.jpg"));
+        // System.out.print(QRCode.decodeQRcode("D:\\test.jpg"));
     }  
 }  

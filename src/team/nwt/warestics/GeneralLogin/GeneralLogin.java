@@ -24,7 +24,7 @@ import team.nwt.warestics.DMSAdminSystem.DMSAdminSystem;
 import team.nwt.warestics.LogisticsManagermentSystem.LMS_MainVersion;
 import team.nwt.warestics.TransportationManagementSystem.TMS;
 import team.nwt.warestics.rms.RuntimeManagementSystem;
-import team.nwt.warestics.warehousemanagesystem.WarehouseManageGUI;
+import team.nwt.warestics.warehousemanagesystem.Frame_WarehouseManageGUI;
 
 import java.awt.Component;
 import javax.swing.JPasswordField;
@@ -156,12 +156,12 @@ public class GeneralLogin extends JFrame {
 									dispose();
 									break;
 								case 1:
-//									WarehouseManageGUI WarehouseManageGUI_NewFrame = new WarehouseManageGUI();
-//									WarehouseManageGUI_NewFrame.setResizable(false);
-//									WarehouseManageGUI_NewFrame.setLocationRelativeTo(null);
-//									WarehouseManageGUI_NewFrame.setDefaultCloseOperation(DISPOSE_ON_CLOSE);
-//									WarehouseManageGUI_NewFrame.setVisible(true);
-//									dispose();	
+									Frame_WarehouseManageGUI Frame_WarehouseManageGUI_NewFrame = new Frame_WarehouseManageGUI();
+									Frame_WarehouseManageGUI_NewFrame.setResizable(false);
+									Frame_WarehouseManageGUI_NewFrame.setLocationRelativeTo(null);
+									Frame_WarehouseManageGUI_NewFrame.setDefaultCloseOperation(DISPOSE_ON_CLOSE);
+									Frame_WarehouseManageGUI_NewFrame.setVisible(true);
+									dispose();	
 									break;
 								case 2:
 									DMSAdminSystem DMSAdminSystem_NewFrame = new DMSAdminSystem();

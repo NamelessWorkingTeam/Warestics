@@ -273,6 +273,9 @@ public class Frame_WarehouseMonitor extends JFrame {
 		
 		JMenuBar menuBar = new JMenuBar();
 		setJMenuBar(menuBar);
+		
+		Thread thread1=new Thread(new Table(table_1, table_3));
+		thread1.start();
 	}
 	public void show_stock_state_table(JTable table,String stock_state){
 		Vector rowName,vData;

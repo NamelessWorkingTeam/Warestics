@@ -95,6 +95,41 @@ public class WarehouseInformationDao extends BaseDao {
 		}
 	}
 	/**
+	 * 获取仓库记录 返回Vector<Vector<String>> vData类型做为盘点表的表格内容
+	 * @param goods_id -物品id
+	 */
+	public Vector<Vector<String>> getInventoryInformation(int good_id){
+		String sql="select `warehouse_id`,`area_id`,`position_id`,`tb_warehouseinformation`.`goods_id`,`goods_name`,`goods_number` "
+				+ "from `tb_warehouseinformation`,`tb_goods` "
+				+ "where `tb_warehouseinformation`.`goods_id`=`tb_goods`.`goods_id` "
+				+ "and `tb_warehouseinformation`.`goods_id`=? "
+				+ "order by `warehouse_id`";
+		try {
+			PreparedStatement preparedStatement=getConnection().prepareStatement(sql);
+			preparedStatement.setInt(1, good_id);
+			ResultSet resultSet=preparedStatement.executeQuery();
+			Vector<Vector<String>> vData=new Vector<>();
+			while(resultSet.next()){
+				Vector<String> rowData=new Vector<>();
+				rowData.add(""+resultSet.getInt("warehouse_id"));
+				rowData.add(""+resultSet.getInt("area_id"));
+				rowData.add(""+resultSet.getInt("position_id"));
+				rowData.add(""+resultSet.getInt("goods_id"));
+				rowData.add(resultSet.getString("goods_name"));
+				rowData.add(""+resultSet.getDouble("goods_number"));
+				
+				vData.add(rowData);
+				
+			}
+			preparedStatement.close();
+			return vData;
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+			return null;
+		}
+	}
+	/**
 	 * 获取仓库记录 返回List<Warehouse> 类型做为盘点表的打印数据内容
 	 */
 	public List<WarehouseInformation> getInventoryInformationForPDF(){

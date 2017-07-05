@@ -498,6 +498,7 @@ public class Frame_WarehouseManageGUI extends JFrame {
 		textField_2_startAreaID.setColumns(10);
 		
 		textField_2_startPositionID = new JTextField();
+		textField_2_startPositionID.setEditable(false);
 		textField_2_startPositionID.setBounds(550, 97, 130, 26);
 		panel_2.add(textField_2_startPositionID);
 		textField_2_startPositionID.setColumns(10);

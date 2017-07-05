@@ -165,7 +165,7 @@ public class RuntimeManagementSystem extends JFrame {
 		// START 已处理包裹列表展示
 		
 		String String_SQL_PAC_NAME_DONE = "SELECT transfer_id, transfer_end " +
-			 	  "FROM tb_transfer WHERE transfer_state = 'N';";;
+			 	  "FROM tb_transfer WHERE transfer_state = 'N';";
 		MySQLConnect MySQLConnect_Connection_DONE = new MySQLConnect(String_SQL_PAC_NAME_DONE);
 		ResultSet RS_PAC_NAME_DONE;
 		Vector RowData_DONE, ColumnNames_DONE;
@@ -222,7 +222,7 @@ public class RuntimeManagementSystem extends JFrame {
 	 * @throws IOException 
 	 */
 	public RuntimeManagementSystem(String account_id) throws IOException {
-		setTitle("NWSH \u533B\u751F\u7AEF");
+		setTitle("Warestics入库系统");
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		// setExtendedState(JFrame.MAXIMIZED_BOTH);
 
@@ -276,12 +276,12 @@ public class RuntimeManagementSystem extends JFrame {
 				
 
 		
-		JLabel label = new JLabel("入库待处理");
+		JLabel label = new JLabel("物品待处理");
 		label.setFont(new Font("微软雅黑", Font.BOLD, 28));
 
 		
 		
-		JLabel label_1 = new JLabel("入库已处理");
+		JLabel label_1 = new JLabel("物品已处理");
 		label_1.setFont(new Font("微软雅黑", Font.BOLD, 28));
 
 		
@@ -536,12 +536,42 @@ public class RuntimeManagementSystem extends JFrame {
 		button1.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 				String stock_id = JOptionPane.showInputDialog("请输入进货单号："); //提示输入员工姓名
-				// 打开入库审核界面
-				InBound InBound_NewFrame = new InBound(stock_id);
-				InBound_NewFrame.setResizable(false);
-				InBound_NewFrame.setLocationRelativeTo(null);
-				InBound_NewFrame.setDefaultCloseOperation(DISPOSE_ON_CLOSE);
-				InBound_NewFrame.setVisible(true);
+				
+				String String_SQL_STOCK_ID = "SELECT stock_id " +
+					 	  "FROM tb_stock WHERE stock_id = " + stock_id;
+				MySQLConnect Connection_STOCK_ID = new MySQLConnect(String_SQL_STOCK_ID);
+				ResultSet RS_STOCK_ID = null;
+				try {
+					RS_STOCK_ID = Connection_STOCK_ID.pst.executeQuery();
+					//RS_STOCK_ID.next();
+				} catch (SQLException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				}
+				try {
+					if(RS_STOCK_ID.next()) {
+						// 打开入库审核界面
+						InBound InBound_NewFrame = new InBound(stock_id);
+						InBound_NewFrame.setResizable(false);
+						InBound_NewFrame.setLocationRelativeTo(null);
+						InBound_NewFrame.setDefaultCloseOperation(DISPOSE_ON_CLOSE);
+						InBound_NewFrame.setVisible(true);
+					}
+					else {
+						JOptionPane.showMessageDialog(null, 
+								"无此进货单！", "系统信息", JOptionPane.WARNING_MESSAGE);
+					}
+				} catch (SQLException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+				try {
+					RS_STOCK_ID.close();
+				} catch (SQLException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+				Connection_STOCK_ID.close();
 			}
 		});
 		button2.addActionListener(new ActionListener() {

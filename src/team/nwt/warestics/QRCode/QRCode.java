@@ -105,14 +105,8 @@ public class QRCode {
         } catch (WriterException ex) {
             Logger.getLogger(QRCode.class.getName()).log(Level.SEVERE, null, ex);
         }
-        File f=new File("D:/test.jpg");
-        try {
-            ImageIO.write(qrCode, "JPEG", f);
-            qrCode.flush();
-        } catch (IOException e) {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
-        }
+        // ImageIO.write(qrCode, "JPEG", f);
+		qrCode.flush();
 
         return qrCode;
     }

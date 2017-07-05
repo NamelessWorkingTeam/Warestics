@@ -76,7 +76,7 @@ public class InBound extends JFrame {
 					panel.setVisible(true);
 					textField.setEnabled(false);
 					button.setEnabled(false);
-					dispose();
+					// dispose();
 				}
 
 			}

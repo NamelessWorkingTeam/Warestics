@@ -153,6 +153,9 @@ public class TMS_Search extends JFrame {
 						else if(search_state.compareTo("T")==0) {
 							state_now="已退单";
 						}
+						else if(search_state.compareTo("W")==0) {
+							state_now="已到站，等待转运";
+						}
 						
 
 					}

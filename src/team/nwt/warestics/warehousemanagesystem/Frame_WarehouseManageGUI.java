@@ -586,38 +586,31 @@ public class Frame_WarehouseManageGUI extends JFrame {
 						System.out.println("content is space");
 						String sql="select `tb_goods`.`goods_id`,`goods_name`,`goods_weight`,`goods_volume`,"
 								+ "`goods_picture`,`goods_productiondate`,`goods_shelflife`,`warehouse_id`,`goods_number` "
-								+ "from `tb_goods`,`tb_warehouse` "
-								+ "where `tb_goods`.`goods_id`=`tb_warehouse`.`goods_id`";//查询语句
+								+ "from `tb_goods`,`tb_warehouseinformation` "
+								+ "where `tb_goods`.`goods_id`=`tb_warehouseinformation`.`goods_id`";//查询语句
 						show_goods_table(sql);
 					}
 					else{
 						if(comboBox_0_1.getSelectedItem().equals("保质期")){
 							String sql="select `tb_goods`.`goods_id`,`goods_name`,`goods_weight`,`goods_volume`,"
 									+ "`goods_picture`,`goods_productiondate`,`goods_shelflife`,`warehouse_id`,`goods_number` "
-									+ "from `tb_goods`,`tb_warehouse` "
-									+ "where `tb_goods`.`goods_id`=`tb_warehouse`.`goods_id` "
+									+ "from `tb_goods`,`tb_warehouseinformation` "
+									+ "where `tb_goods`.`goods_id`=`tb_warehouseinformation`.`goods_id` "
 									+ "and `goods_shelflife`="+content;//查询语句
 							show_goods_table(sql);
 						}else if(comboBox_0_1.getSelectedItem().equals("物品ID")){
 							String sql="select `tb_goods`.`goods_id`,`goods_name`,`goods_weight`,`goods_volume`,"
 									+ "`goods_picture`,`goods_productiondate`,`goods_shelflife`,`warehouse_id`,`goods_number` "
-									+ "from `tb_goods`,`tb_warehouse` "
-									+ "where `tb_goods`.`goods_id`=`tb_warehouse`.`goods_id` "
-									+ "and `goods_id`="+content;//查询语句
-							show_goods_table(sql);
-						}else if(comboBox_0_1.getSelectedItem().equals("存储位置")){
-							String sql="select `tb_goods`.`goods_id`,`goods_name`,`goods_weight`,`goods_volume`,"
-									+ "`goods_picture`,`goods_productiondate`,`goods_shelflife`,`warehouse_id`,`goods_number` "
-									+ "from `tb_goods`,`tb_warehouse` "
-									+ "where `tb_goods`.`goods_id`=`tb_warehouse`.`goods_id` "
-									+ "and `warehouse_id`="+content;//查询语句
+									+ "from `tb_goods`,`tb_warehouseinformation` "
+									+ "where `tb_goods`.`goods_id`=`tb_warehouseinformation`.`goods_id` "
+									+ "and `tb_goods`.`goods_id`="+content;//查询语句
 							show_goods_table(sql);
 						}else if(comboBox_0_1.getSelectedItem().equals("生产日期")){
 							String sql="select `tb_goods`.`goods_id`,`goods_name`,`goods_weight`,`goods_volume`,"
 									+ "`goods_picture`,`goods_productiondate`,`goods_shelflife`,`warehouse_id`,`goods_number` "
-									+ "from `tb_goods`,`tb_warehouse` "
-									+ "where `tb_goods`.`goods_id`=`tb_warehouse`.`goods_id` "
-									+ "and `goods_productiondate`="+content;//查询语句
+									+ "from `tb_goods`,`tb_warehouseinformation` "
+									+ "where `tb_goods`.`goods_id`=`tb_warehouseinformation`.`goods_id` "
+									+ "and `goods_productiondate`='"+content+"'";//查询语句
 							show_goods_table(sql);
 						}
 					}
@@ -682,7 +675,7 @@ public class Frame_WarehouseManageGUI extends JFrame {
 		comboBox_0_1.setBounds(574, 40, 142, 30);
 		comboBox_0_1.setVisible(false);
 		panel_0.add(comboBox_0_1);
-		comboBox_0_1.setModel(new DefaultComboBoxModel(new String[] {"物品ID", "保质期", "进货日期"}));
+		comboBox_0_1.setModel(new DefaultComboBoxModel(new String[] {"物品ID", "保质期", "生产日期"}));
 
 
 
@@ -714,6 +707,8 @@ public class Frame_WarehouseManageGUI extends JFrame {
 				List<WarehouseInformation>warehouses=new WarehouseInformationDao().getInventoryInformationForPDF();
 				String filePath = new CreatePDF().generatePDFs(head,warehouses);
 				System.out.println(filePath);
+				 JOptionPane.showMessageDialog(contentPane,
+						 "PDF文件生成成功!", "系统信息", JOptionPane.INFORMATION_MESSAGE);
 			}
 		});
 		btnNewButton_3.setBounds(832, 452, 165, 23);

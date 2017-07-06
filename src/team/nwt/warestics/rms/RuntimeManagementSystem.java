@@ -520,6 +520,7 @@ public class RuntimeManagementSystem extends JFrame {
 				menuItem.setEnabled(false);
 				table_1.setEnabled(true);
 				table_2.setEnabled(true);
+				button1.setEnabled(true);
 			}
 		});
 		menuItem_2.addActionListener(new ActionListener() {
